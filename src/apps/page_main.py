@@ -3,8 +3,8 @@ Page
 """
 from typing import List, Any
 
-import dash_core_components as dcc
-from dash_html_components import H6
+from dash import dcc
+from dash.html import H6
 
 from src.apps.template_dash_page import TemplateDashPage, PageConfig
 
@@ -16,7 +16,7 @@ class PageMain(TemplateDashPage):  # type:ignore
 
     def __init__(self) -> None:
         TemplateDashPage.__init__(self)
-        self.page = PageConfig("/", "PageMain")
+        self._page = PageConfig("/", "PageMain")
 
     def create_content_list(self) -> List[Any]:
         return [

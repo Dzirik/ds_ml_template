@@ -5,7 +5,7 @@ from abc import abstractmethod
 from typing import List, Any
 from typing import NamedTuple
 
-from dash_html_components import Div
+from dash.html import Div
 
 from src.apps.block_header import BlockHeader
 from src.apps.block_sidebar import BlockSidebar
@@ -26,14 +26,14 @@ class TemplateDashPage:
     """
 
     def __init__(self) -> None:
-        self.page = PageConfig
+        self._page = PageConfig
 
     def get_url(self) -> str:
         """
         Returns url of the page.
         :return: str. Url of the page.
         """
-        return self.page.url
+        return self._page.url
 
     def create_layout(self) -> Div:
         """

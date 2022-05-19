@@ -5,9 +5,13 @@ A singleton pattern is used for that.
 """
 
 import logging.config
+import platform
+from os import getcwd
 from os.path import join, exists
 from time import sleep
 from typing import Any
+
+import git
 
 from src.global_constants import FOLDER_CONFIGURATIONS, SPECIAL_LOGGER_FILE_NAME
 from src.utils.envs import Envs
@@ -35,15 +39,27 @@ class Logger(metaclass=Singleton):
             profile_file_path = join("../../", FOLDER_CONFIGURATIONS, profile_file_name)
 
             if not exists(profile_file_path):
-                self._log_bad_file()
-                raise ValueError("Logger profile does not exit in the selected path.")
+                # because of problems with running dash drom /index.py - in config as well
+                profile_file_path = join(getcwd(), FOLDER_CONFIGURATIONS, profile_file_name)
 
+                if not exists(profile_file_path):
+                    print("hello")
+                    self._log_bad_file()
+                    raise ValueError("Logger profile does not exit in the selected path.")
+
+            print(f"A: {profile_file_path}")
             logging.config.fileConfig(fname=profile_file_path, disable_existing_loggers=False)
 
             self._logger = logging.getLogger(self._env.get_logger().replace("logger_", ""))
             self._is_logger = True
 
-            self._logger.debug("Logger was created.")
+            # pylint: disable=bare-except
+            try:
+                branch_name = str(git.Repo(search_parent_directories=True).active_branch.name)
+            except:
+                branch_name = "ERROR"
+            # pylint: enable=bare-except
+            self._logger.debug("Logger was created on %s in branche %s.", platform.node(), branch_name)
 
     @staticmethod
     def _log_bad_file() -> None:
@@ -64,6 +80,7 @@ class Logger(metaclass=Singleton):
         :param process_name: str. Process name to measure the time for.
         """
         self._process_name = process_name
+        self._timer.set_results_printing(False)
         self._timer.start()
         self._logger.debug("Process: %s; Timer started;", self._process_name)
 
@@ -72,7 +89,7 @@ class Logger(metaclass=Singleton):
         Adds meantime.
         :param message: str. Log message.
         """
-        diff_s, diff_m = self._timer.set_meantime(message)
+        diff_s, diff_m = self._timer.get_meantime(message)
         self._logger.debug("Process: %s; Timer meantime; Meantime of: %s; Duration [s]: %s; Duration [m]: %s",
                            self._process_name, message, diff_s, diff_m)
 
@@ -81,7 +98,7 @@ class Logger(metaclass=Singleton):
         Ends the timer.
         :param message: str. Log message.
         """
-        _, _, duration_s, duration_m = self._timer.end("Process ended")
+        _, _, duration_s, duration_m = self._timer.get_end("Process ended")
         self._logger.debug("Process: %s; Timer ended; Process Duration [s]: %s; Process Duration [m]: %s",
                            self._process_name, duration_s, duration_m)
         self._process_name = ""

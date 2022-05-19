@@ -12,14 +12,14 @@ class Markdown():
     FILE_NAME = "README.md"
 
     def __init__(self) -> None:
-        self.file: List[str]
+        self._file: List[str]
 
     def read_file(self) -> None:
         """
         Reads the file.
         """
-        with open(self.FILE_NAME, 'r') as file:
-            self.file = file.readlines()
+        with open(self.FILE_NAME, "r", encoding="utf8") as file:
+            self._file = file.readlines()
 
     @staticmethod
     def _get_section_level(line: str) -> int:
@@ -43,7 +43,7 @@ class Markdown():
         :param section_name: str. Section name without hashes and space before.
         """
         print_line = False
-        for line in md.file:
+        for line in self._file:
             if print_line:
                 if self._get_section_level(line) == 0:
                     if line[0] == "@":

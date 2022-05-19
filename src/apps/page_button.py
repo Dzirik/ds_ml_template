@@ -2,10 +2,11 @@
 Page
 """
 
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc
+from dash import html
 from dash.dependencies import Input, Output
-from dash_html_components import Div, H6, Br
+from dash.html import Div, H6, Br
+# from dash_html_components import Div, H6, Br
 
 from app import app
 from src.apps.template_dash_page import TemplateDashPage, PageConfig
@@ -19,7 +20,7 @@ class PageButton(TemplateDashPage):  # type:ignore
 
     def __init__(self) -> None:
         TemplateDashPage.__init__(self)
-        self.page = PageConfig("/PageButton", "PageButton")
+        self._page = PageConfig("/PageButton", "PageButton")
 
     def create_content_list(self) -> Div:
         return [
@@ -43,4 +44,4 @@ def update_output_div(input_value: str) -> str:
     :param input_value: str. Value to be returned.
     :return: str. Value.
     """
-    return 'Output: {}'.format(input_value)
+    return f"Output: {input_value}"

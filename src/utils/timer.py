@@ -5,7 +5,10 @@ from datetime import datetime
 from time import sleep, time
 from typing import Union, List, Tuple
 
+from pandas import DataFrame
+
 DEC_PLACES = 2
+
 
 class Timer:
     """
@@ -44,17 +47,11 @@ class Timer:
         self._mean_time_cumulative_secs = []
         self._mean_times_labels = []
 
-    def start_with_print(self) -> None:
-        """
-        Starts and saves the starting time of execution. Optionally prints results to the console.
-        """
-        self.start()
-
         if self._print_results:
             print(f"Date and Time of Starting Execution: {self._as_date(self._timer_start_time).strftime('%d/%m/%Y')} "
                   f"{self._as_date(self._timer_start_time).strftime('%X')}")
 
-    def set_meantime(self, label: Union[str, None] = None) -> Tuple[float, float]:
+    def get_meantime(self, label: Union[str, None] = None) -> Tuple[float, float]:
         """
         Adds meantime.
         :param label: str. Label of last interval.
@@ -70,17 +67,17 @@ class Timer:
 
         return round(diff, DEC_PLACES), round(diff / 60, DEC_PLACES)
 
-    def set_meantime_with_print(self, label: Union[str, None] = None) -> None:
+    def set_meantime(self, label: Union[str, None] = None) -> None:
         """
         Sets end of the mean time interval as time and (voluntary) label. Optionally prints results to the console.
         :param label: str. Label of interval that ended.
         """
-        diff_s, diff_m = self.set_meantime(label)
+        diff_s, diff_m = self.get_meantime(label)
 
         if self._print_results:
             print(f"Duration of: {label} is {diff_s} s, {diff_m} mins.")
 
-    def end(self, label: Union[str, None]) -> Tuple[float, float, float, float]:
+    def get_end(self, label: Union[str, None]) -> Tuple[float, float, float, float]:
         """
         Ends global time measurement.
         :param label: str. Label of last interval.
@@ -97,12 +94,12 @@ class Timer:
         return round(diff, DEC_PLACES), round(diff / 60, DEC_PLACES), round(duration, DEC_PLACES), \
                round(duration / 60, DEC_PLACES)
 
-    def end_with_print(self, label: Union[str, None] = None) -> None:
+    def end(self, label: Union[str, None] = None) -> None:
         """
         Ends and saves the end time. Optionally prints results to the console.
         :param label: str. Label of last interval.
         """
-        diff_s, diff_m, duration_s, duration_m = self.end(label)
+        diff_s, diff_m, duration_s, duration_m = self.get_end(label)
 
         if self._print_results:
             print(f"Duration of: {label} is {diff_s} s, {diff_m} mins.")
@@ -126,13 +123,17 @@ class Timer:
         """
         return self._timer_end_time
 
-    def get_data(self) -> Tuple[List[float], List[float], List[str]]:
+    def get_data(self) -> Tuple[List[float], List[float], List[str], DataFrame]:
         """
-        Returns mean duration and label times.
-        :return: Tuple[List[float], List[float], List[str]]. Mean duration times in seconds, cumulative mean times
-        and mean label times.
+        Returns interval durations, cumulative time, and label times both separately and in the form of a dataframe.
+        :return: Tuple[List[float], List[float], List[str], DataFrame]. Mean duration times in seconds, cumulative mean
+        times and mean label times.
         """
-        return self._mean_times_in_sec, self._mean_time_cumulative_secs, self._mean_times_labels
+        df = DataFrame()
+        df["LABEL"] = self._mean_times_labels
+        df["MEANTIMES [s]"] = self._mean_times_in_sec
+        df["CUMULATIVE TIME [s]"] = self._mean_time_cumulative_secs
+        return self._mean_times_in_sec, self._mean_time_cumulative_secs, self._mean_times_labels, df
 
     # HELPER FUNCTIONS ----------------------------------------------------------------------------
 
@@ -149,18 +150,18 @@ class Timer:
 if __name__ == "__main__":
     t = Timer()
 
-    t.start_with_print()
+    t.start()
     sleep(0.2)
 
-    t.set_meantime_with_print(label="First Interval")
+    t.set_meantime(label="First Interval")
     sleep(0.3)
 
-    t.set_meantime_with_print(label="Second Interval")
+    t.set_meantime(label="Second Interval")
     sleep(0.1)
 
-    t.end_with_print(label="Last Interval")
+    t.end(label="Last Interval")
 
-    (MT, MT_C, MT_L) = t.get_data()
+    (MT, MT_C, MT_L, DATA_FRAME) = t.get_data()
     print(round(sum(MT), 2))
 
     print(t.get_start_time())
@@ -168,19 +169,20 @@ if __name__ == "__main__":
     print(MT)
     print(MT_C)
     print(MT_L)
+    print(DATA_FRAME)
 
-    t.start_with_print()
+    t.start()
     sleep(0.1)
 
-    t.set_meantime_with_print(label="First Interval - second round")
+    t.set_meantime(label="First Interval - second round")
     sleep(0.05)
 
-    t.set_meantime_with_print(label="Second Interval - second round")
+    t.set_meantime(label="Second Interval - second round")
     sleep(0.01)
 
-    t.end_with_print(label="Last Interval - second round")
+    t.end(label="Last Interval - second round")
 
-    (MT, MT_C, MT_L) = t.get_data()
+    (MT, MT_C, MT_L, DATA_FRAME) = t.get_data()
     print(round(sum(MT), 2))
 
     print(t.get_start_time())
@@ -188,3 +190,4 @@ if __name__ == "__main__":
     print(MT)
     print(MT_C)
     print(MT_L)
+    print(DATA_FRAME)
