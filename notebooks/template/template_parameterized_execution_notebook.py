@@ -8,9 +8,9 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.6.0
+#       jupytext_version: 1.13.7
 #   kernelspec:
-#     display_name: Python 3
+#     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
@@ -21,6 +21,7 @@
 # * First, turn on the tabs option in View/Cells Toolbar/Tags. <img src="..\..\assets\par_ntb_tag.png">.
 # * Second, add a *parameters* tag to the cell where the selected variables to be parameterized are. If not specified/tagged, the parameters will be added as a separate cell at the top of the notebook. <img src="..\..\assets\par_ntb_tag_add.png">  
 # * The added tab can be seen at the top of the cell. <img src="..\..\assets\par_ntb_tag_added.png"> 
+# * Run the script; tested from PyCharm and it worked. From console is a problem with the path.
 #
 # > **INSTALATION NOTE:** Problems with pywin32 library was encountered with Anaconda 3.8. Downgrade to pywin32==225 helped.
 
