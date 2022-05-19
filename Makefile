@@ -7,6 +7,10 @@
 
 include make_config.mk
 
+FILE_CODE = src/$(FILE_FOLDER)/$(FILE_NAME).py
+FILE_TEST = tests/tests_$(FILE_FOLDER)/test_$(FILE_NAME).py
+FILE_DOCTEST = tests/tests_$(FILE_FOLDER)/test_$(FILE_NAME).txt
+
 # UTILS ----------------------------------------------------------------------------------------------------------------
 
 .DEFAULT: help
@@ -24,7 +28,7 @@ clear-console:
 
 create-venv: clear-console
 	@python ./src/utils/make_print_documentation.py create-venv
-	pip install virtualenv==16.7.5
+	pip install virtualenv==20.14.0
 	test -d .venv || virtualenv .venv
 	( \
        source .venv/Scripts/activate;\
@@ -98,9 +102,8 @@ lint-f: clear-console
 
 test-f: clear-console
 	@python ./src/utils/make_print_documentation.py test-f
-	@echo "  - File Name: $(FILE_NAME)"
 	@echo "  - File Folder: $(FILE_FOLDER)"
-	@echo ""
+	@echo "  - File Name: $(FILE_NAME)"
 ifeq ($(shell test -e $(FILE_TEST) && echo -n yes),yes)
 	@python -m pytest $(FILE_TEST)
 else
@@ -108,7 +111,7 @@ else
 	@echo ""
 endif
 ifeq ($(shell test -e $(FILE_DOCTEST) && echo -n yes),yes)
-	@python -m $(FILE_DOCTEST)
+	@python -m pytest $(FILE_DOCTEST)
 else
 	@echo ""
 	@echo "ERROR: FOLLOWING FILE DOES NOT EXIST: $(FILE_DOCTEST)"
@@ -137,7 +140,7 @@ all-ntb: clear-console mypy-ntb-no-clear lint-ntb-no-clear
 # if you need to ignore a file, add to @pytes line to the end --ignore=tests/tests_xxx/test_yyy.py
 cover-base:
 	@python ./src/utils/make_print_documentation.py cover-base
-	@pytest --cov-report html:coverage --cov-branch --cov=tests
+	@pytest --cov-report html:coverage --cov=src tests/
 
 cover: clear-console cover-base
 
