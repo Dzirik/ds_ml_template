@@ -1,0 +1,44 @@
+>>> from src.transformations.time_series_windows import TimeSeriesWindowsNumpy
+>>> from tests.tests_transformations.test_time_series_windows import generate_np_array
+>>> t = TimeSeriesWindowsNumpy()
+>>> X, Y = t.fit_predict(generate_np_array(10, 2), 3, 2, 1)
+>>> t.fit_predict(generate_np_array(10, 2), 3, 2, 1)
+(array([[[ 0.,  0.],
+        [ 1.,  2.],
+        [ 2.,  4.]],
+<BLANKLINE>
+       [[ 1.,  2.],
+        [ 2.,  4.],
+        [ 3.,  6.]],
+<BLANKLINE>
+       [[ 2.,  4.],
+        [ 3.,  6.],
+        [ 4.,  8.]],
+<BLANKLINE>
+       [[ 3.,  6.],
+        [ 4.,  8.],
+        [ 5., 10.]],
+<BLANKLINE>
+       [[ 4.,  8.],
+        [ 5., 10.],
+        [ 6., 12.]],
+<BLANKLINE>
+       [[ 5., 10.],
+        [ 6., 12.],
+        [ 7., 14.]]]), array([[[ 3.,  6.],
+        [ 4.,  8.]],
+<BLANKLINE>
+       [[ 4.,  8.],
+        [ 5., 10.]],
+<BLANKLINE>
+       [[ 5., 10.],
+        [ 6., 12.]],
+<BLANKLINE>
+       [[ 6., 12.],
+        [ 7., 14.]],
+<BLANKLINE>
+       [[ 7., 14.],
+        [ 8., 16.]],
+<BLANKLINE>
+       [[ 8., 16.],
+        [ 9., 18.]]]))
