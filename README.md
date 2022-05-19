@@ -1,5 +1,7 @@
 # ds_ml_template
 
+Repository template for data science and machine learning projects.
+
 <a name="table-of-content"></a>
 # Table of Content
 - [Introduction](#introduction)  
