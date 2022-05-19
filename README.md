@@ -30,12 +30,14 @@
 
 <a name="introduction"></a>
 # Introduction
-[ToC](#table-of-content)
+[ToC](#table-of-content)  
+
 This repository serves as a **template for Data Science and Machine Learning projects in Python 3.x ecosystem**. 
 It contains basic functionality and tools for easy and smooth work.
 
 <a name="installation"></a>
 # Installation
+[ToC](#table-of-content)  
 
 The installation with which the repository works is:
 - Windows 10 operating system.
@@ -68,6 +70,7 @@ The installation with which the repository works is:
 
 <a name="repository-set-up"></a>
 # Repository Set Up
+[ToC](#table-of-content)  
 
 Clone the repository and do the following to set it up properly:
 
@@ -96,8 +99,10 @@ used for testing and development.
 
 <a name="files-and-folders-structure"></a>
 # Files and Folders Structure
+[ToC](#table-of-content)  
 
 ## Folders
+[ToC](#table-of-content)  
 
 - *assets*
     - A folder for storing additional content relevant to the project (pictures, ...).
@@ -185,6 +190,7 @@ used for testing and development.
    Test files corresponding to the main code are stored in corresponding folders.
 
 ## Files
+[ToC](#table-of-content)  
 
 - *.gitignore*
     - Excludes some files and folder. The base is standard github-based file with some additional features. 
@@ -210,9 +216,11 @@ used for testing and development.
 
 <a name="code-quality"></a>
 # Code Quality
+[ToC](#table-of-content)  
 
 <a name="mypy"></a>
 ## Mypy
+[ToC](#table-of-content)  
 
 Mypy is a static type checker for Python. Execution time is reduced because types are checked before running.
 
@@ -251,6 +259,7 @@ It is excluded in the following style in the child class:
     - `class MyTransformer(BaseTransformer): # type:ignore`
 
 ### Excluded Situations
+[ToC](#table-of-content)  
  
  Two types of error are ignored by adding `# type:ignore` to the regarding the line of code
  * Untyped decorator makes function "test_density" untyped: This is caused by the missing annotation 
@@ -280,6 +289,7 @@ It is excluded in the following style in the child class:
 
 <a name="pylint"></a>
 ## Pylint
+[ToC](#table-of-content)  
 
 Pylint is a static code analysis tool that:
 - looks for programming errors,
@@ -325,6 +335,7 @@ after it is used for a specific part of code by using the command `#pylint: disa
     ```
   
 ### Excluded Situations
+[ToC](#table-of-content)  
 
 Overview
 - too-many-arguments: If a number of arguments are bigger than five, then pylint gives an error. This type of
@@ -349,6 +360,7 @@ make command together with a separate pylint configuration file was created to c
 
 <a name="pytest"></a>
 ## Pytest
+[ToC](#table-of-content)  
 
 Pytest is a framework that makes building simple and scalable tests easy.
 
@@ -383,6 +395,7 @@ tests\test_leap_year.py ......
 In this case, all four tests were passed.
 
 ### Coverage 
+[ToC](#table-of-content)  
 
 A coverage is a metric that indicates the number of code lines covered by tests.  
 To implement code coverage, the following possibilities were taken into account:
@@ -406,6 +419,7 @@ folder. This file will open in the browser and allow the user to specifically se
 
 <a name="makefile"></a>
 # Makefile
+[ToC](#table-of-content)  
 
 Several make commands were created to make the high level work easier. Please follow
 this chapter, because the documentation here is print together with the execution
@@ -565,11 +579,13 @@ Dash is running on: http://127.0.0.1:8050/
 
 <a name="low-level-tools"></a>
 # Low-Level Tools
+[ToC](#table-of-content)  
 
 A set of tools for working with the repository on the low level was created to allow different setups and monitoring. 
 
 <a name="environment-variables"></a>
 ## Environment Variables
+[ToC](#table-of-content)  
 
 Environmental variables control the behaviour of the repository. The class for doing that is placed in 
 */src/utils/envs.py*. Its primary function is to set and get the variables that control the behaviour of the repository.
@@ -594,6 +610,7 @@ For more information, please see the class itself and the
 
 <a name="environmental-configuration"></a>
 ## Environmental Configuration
+[ToC](#table-of-content)  
 
 During the development, different stages of the project need different set up; for example development, testing , 
 and production. Environment configurations allow different setups for different tasks. At this point, 
@@ -611,6 +628,7 @@ For more information, please see the class itself and the
 
 <a name="timer"></a>
 ## Timer
+[ToC](#table-of-content)  
 
 The timer is a class for measuring execution time. It is placed in /src/utils/timer.py. The logic of the timer is based 
 on start, meantimes, and the end. First of all, the timer has to be started. Next, a series of meantimes can be set. 
@@ -636,6 +654,7 @@ For more information, please see the class itself and the
 
 <a name="logger"></a>
 ## Logger
+[ToC](#table-of-content)  
 
 A logger was created for code monitoring. The standard logging library is used as a base. The class Logger uses a singleton pattern. There are three pre-defined logger configurations. Please see the Environmental variables section to see how to set them up. The configuration files are stored in /configurations.
 - *logger_file.conf*. Logged information is saved only into a file.
@@ -658,6 +677,7 @@ For more information, please see the class itself and the
 
 <a name="jupyter-notebooks"></a>
 # Jupyter Notebooks
+[ToC](#table-of-content)  
 
 Jupyter notebooks are the center point of the project. They represent the workflow of the analysis, 
 documentation of the process, simulations, they contain results. Their main use is as a client-server pattern. 
@@ -666,6 +686,7 @@ There is not important code stored in the notebooks there. The main code is outs
 
 <a name="jupytext-library"></a>
 ## Jupytext Library
+[ToC](#table-of-content)  
 
 The Jupyter notebook native format is *.ipynb, but they can be converted into different formats as *.html 
 and *.pdf files. The native *.ipynb format is not suitable for usage within the version control system, 
@@ -693,6 +714,7 @@ the *.ipynb are excluded from synchronisation with the server. This is specified
 
 <a name="jupyter-notebooks-folders"></a>
 ## Jupyter Notebooks Folders
+[ToC](#table-of-content)  
 
 There is a short description in [*Files and Folders Structure*](#files-and-folders-structure) chapter there. It will be discussed in more 
 details here to understand the flow and importance of respective folders.
@@ -718,6 +740,7 @@ These *.html files are updated every time the documentation Jupyter notebook is 
 
 <a name="jupyter-notebook-template"></a>
 ## Jupyter Notebook Template
+[ToC](#table-of-content)  
 
 As mentioned before, there is a notebook /notebooks/template/tempalate_notebook_final.py there in the repository. This notebook is used for all the final notebooks. The notebook uses the functionality mentioned in previous chapters, namely Envs, Config, and Logger.
 The notebook is divided into four main parts.
@@ -728,6 +751,7 @@ The notebook is divided into four main parts.
 
 <a name="parameterized-notebooks"></a>
 ## Parameterized Notebooks
+[ToC](#table-of-content)  
 
 During the simulation stage, a need of running one notebook with different parameter values can arrise. 
 In this case, a [papermill](https://github.com/nteract/papermill) library is very useful. 
@@ -737,11 +761,13 @@ There are two files created for this case:
 
 <a name="ready-to-use-functionality"></a>
 # Ready-to-Use Functionality
+[ToC](#table-of-content)  
 
 After having the primary codebase ready, the tools for the data science and machine learning tasks were developed on top. 
 
 <a name="visualisations"></a>
 ## Visualisations
+[ToC](#table-of-content)  
 
 Visualisations are a necessary part of the data science analytical process. A list of basic plot types was created to 
 serve for the analysis. A plotly library was chosen as a base. The reason is that the library is HTML based, 
@@ -756,6 +782,7 @@ together with the proper input and variants of the plots.
 
 <a name="data-frame-explorer"></a>
 ## Data Frame Explorer
+[ToC](#table-of-content)  
 
 Pandas data frame is a perfect structure for storing data and exploring data. For that, a class for fast initial data 
 frame exploration for created. It is located in the file */src/data/df_explorer*. The class returns:
@@ -770,6 +797,7 @@ HTML variant in */docs/data_frame_explorer_documentation.html*.
 
 <a name="sample-data-set"></a>
 ## Sample Data Set
+[ToC](#table-of-content)  
 
 Income Weather data set is an artificially created data set for testing purposes. The code is in the file 
 */src/data/income_weather_data_generator.py*. The data set consists of the following attributes:  
@@ -789,6 +817,7 @@ or its HTML variant in */docs/ income_weather_data_generator_documentation.html*
 
 <a name="time-one-hot-encoding"></a>
 ## Time One Hot Encoding
+[ToC](#table-of-content)  
 
 Seasonality in time series is a phenomenon that has to be properly studied. Depending on the task, it can be in range 
 from minutes, over days to months. Using regression, categorical variables reflecting these seasons have to be 
@@ -805,6 +834,7 @@ or its HTML variant in */docs/ datetime_one_hot_encoder_documentation.html*.
 
 <a name="dash"></a>
 # Dash
+[ToC](#table-of-content)  
 
 [Dash](https://dash.plotly.com/) is a framework for building applications in Python and other languages such as R and 
 Julia. It is written on the top of [Plotly](https://plotly.com/dash/). As was written in the Visualisation chapter, 
