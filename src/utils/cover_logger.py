@@ -17,12 +17,12 @@ class CoverageLogger:
     """
     COVERAGE_FOLDER_NAME = "coverage"
     COVERAGE_FILE_NAME = "index.html"
-    LOG_FOLDER_NAME = "reports"
+    LOG_FOLDER_NAME = "logs"
     LOG_FILE_NAME = "cover_log.csv"
 
     def __init__(self) -> None:
-        self.comment = ""
-        self.coverage: int = -1  # -1 to see when something is wrong - coverage must be >=0
+        self._comment = ""
+        self._coverage: int = -1  # -1 to see when something is wrong - coverage must be >=0
 
     @staticmethod
     def _get_current_time() -> str:
@@ -63,7 +63,7 @@ class CoverageLogger:
         """
         Asks for the coverage message.
         """
-        self.comment = input("Coverage Comment: ").replace(",", " ")
+        self._comment = input("Coverage Comment: ").replace(",", " ")
 
     def get_coverage_rate(self) -> None:
         """
@@ -76,7 +76,7 @@ class CoverageLogger:
             soup = BeautifulSoup(file, 'html.parser')
             coverage = soup.findAll("span", {"class": "pc_cov"})[0].text.replace("%", "")
 
-        self.coverage = int(coverage)
+        self._coverage = int(coverage)
 
     def write_in_csv(self) -> None:
         """
@@ -87,7 +87,7 @@ class CoverageLogger:
         with open(file_path, "a", encoding="utf-8", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([self._get_branch_name(), self._get_current_time(),
-                             self.coverage, self.comment])
+                             self._coverage, self._comment])
 
     def write_to_log_file(self) -> None:
         """

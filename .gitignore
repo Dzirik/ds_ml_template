@@ -4,12 +4,18 @@
 
 # config
 /make_config.mk
-/configurations/python_local.conf
+/configurations/python_personal.conf
 
+# Notebooks folder for tests
+/notebooks/temporal/*.ipynb
+/notebooks/temporal/*.py
+/notebooks/temporal/*.html
 
 # Notebooks for jupytext
 /notebooks/final/*.ipynb
+/notebooks/final/archive_gen_01_ma/*.ipynb
 /notebooks/raw/*.ipynb
+/notebooks/raw/archive_gen_01_ma/*.ipynb
 /notebooks/template/*.ipynb
 /notebooks/documentation/*.ipynb
 

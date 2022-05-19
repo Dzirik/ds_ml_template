@@ -1,0 +1,10 @@
+>>> from src.utils.date_time_functions import convert_datetime_to_string_date
+>>> from src.utils.date_time_functions import convert_string_date_to_datetime
+>>> from src.utils.date_time_functions import add_zeros_in_front_and_convert_to_string
+>>> from datetime import datetime
+>>> convert_datetime_to_string_date(datetime(2019, 11, 29, 15, 49, 59))
+'2019-11-29-15-49-59'
+>>> convert_string_date_to_datetime("2020-12-24-02-12-54")
+datetime.datetime(2020, 12, 24, 2, 12, 54)
+>>> add_zeros_in_front_and_convert_to_string(5, 100)
+'05'

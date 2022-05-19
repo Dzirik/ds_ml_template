@@ -20,7 +20,7 @@ def test_non_standard_leap_year() -> None:
     assert is_leap(2000)
 
 
-@pytest.mark.parametrize("year",  # type:ignore
+@pytest.mark.parametrize("year",
                          [1997, 2001, 1867]
                          )
 def test_non_leap_year(year: int) -> None:

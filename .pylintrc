@@ -248,12 +248,15 @@ function-naming-style=snake_case
 good-names=i,
            j,
            k,
+           l,
            ex,
            Run,
            n,
            m,
+           p,
            d,
            w,
+           x,
            y,
            df,
            ts,
@@ -265,6 +268,18 @@ good-names=i,
            Y_train,
            Y_test,
            id,
+           K,
+           A,
+           dx,
+           _A,
+           X_data,
+           Y_data,
+           X_splits,
+           Y_splits,
+           data_split_X,
+           data_split_Y,
+           X_data_list,
+           Y_data_list,
            _
 
 # Include a hint for the correct naming format with invalid-name.
@@ -521,7 +536,7 @@ valid-metaclass-classmethod-first-arg=cls
 [DESIGN]
 
 # Maximum number of arguments for function / method.
-max-args=5
+max-args=7
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes=7

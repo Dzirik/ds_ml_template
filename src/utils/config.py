@@ -2,8 +2,13 @@
 Code for handling configurations through the repository.
 
 A singleton pattern is used for that.
+
+Usage can be found in the end of the file and in jupyter notebook
+/notebooks/documentation/low_level_tools_documentation.py or
+/docs/ low_level_tools_documentation.html.
 """
 
+from os import getcwd
 from os.path import join, exists
 from typing import NamedTuple, List, Dict, Union
 
@@ -20,10 +25,12 @@ class Path(NamedTuple):
     """
     Configuration tuple for paths to data files.
     """
+    archive_data: str
     external_data: str
     interim_data: str
     processed_data: str
     raw_data: str
+    results_data: str
 
 
 class DatabaseCredentials(NamedTuple):
@@ -109,7 +116,6 @@ class Config(metaclass=Singleton):
         """
         return self._profile
 
-
     @staticmethod
     def _get_profile_file_path(profile_name: str) -> str:
         """
@@ -121,8 +127,12 @@ class Config(metaclass=Singleton):
         profile_file_path = join("../../", FOLDER_CONFIGURATIONS, profile_file_name)
 
         if not exists(profile_file_path):
-            Logger().error("Logger profile does not exist in the selected path.")
-            raise ValueError("Config profile does not exist in the selected path.")
+            # because of problems with running dash drom /index.py - in logger as well
+            profile_file_path = join(getcwd(), FOLDER_CONFIGURATIONS, profile_file_name)
+
+            if not exists(profile_file_path):
+                Logger().error("Logger profile does not exist in the selected path.")
+                raise ValueError("Config profile does not exist in the selected path.")
 
         return profile_file_path
 

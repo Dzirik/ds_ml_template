@@ -2,7 +2,7 @@
 Header
 """
 
-from dash_html_components import Div, H3
+from dash.html import Div, H3
 
 HEADER_STYLE = {
     "margin-left": "0rem",  # 16 for it to be right

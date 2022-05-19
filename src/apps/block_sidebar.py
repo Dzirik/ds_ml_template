@@ -1,13 +1,15 @@
 """
 Sidebar
+
+Link: https://dash-bootstrap-components.opensource.faculty.ai/docs/components/dropdown_menu/
 """
 
 from typing import Tuple, List, Union
 
-import dash_html_components as html
+from dash import html
+from dash.html import Div
 from dash_bootstrap_components import Nav, NavItem, NavLink, DropdownMenuItem, \
     DropdownMenu
-from dash_html_components import Div
 
 from src.utils.config import Config
 
@@ -20,7 +22,7 @@ class BlockSidebar:
     """
 
     def __init__(self) -> None:
-        self.header_config: List[Union[Tuple[str, str, str], List[Tuple[str, str, str]]]] = []
+        self._header_config: List[Union[Tuple[str, str, str], List[Tuple[str, str, str]]]] = []
 
     @staticmethod
     def _add_image() -> Div:

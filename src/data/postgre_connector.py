@@ -33,7 +33,7 @@ class PostgreDBConnector(AbstractDBConnector):
     """
 
     def __init__(self) -> None:
-        self.config = Config()
+        self._config = Config()
 
     def get_connection(self) -> Any:
         """
@@ -44,10 +44,10 @@ class PostgreDBConnector(AbstractDBConnector):
 
     def _create_connection_string(self) -> str:
         connection_string = f"postgresql+psycopg2://" \
-                            f"{self.config.get().db_cred.user}:" \
-                            f"{self.config.get().db_cred.password}@" \
-                            f"{self.config.get().db_cred.host}/" \
-                            f"{self.config.get().db_cred.db_name}"
+                            f"{self._config.get().db_cred.user}:" \
+                            f"{self._config.get().db_cred.password}@" \
+                            f"{self._config.get().db_cred.host}/" \
+                            f"{self._config.get().db_cred.db_name}"
         return connection_string
 
 

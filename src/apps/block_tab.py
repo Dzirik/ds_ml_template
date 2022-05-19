@@ -5,8 +5,8 @@ from abc import ABC
 from typing import List, Any
 
 from dash_bootstrap_components import Row
-from dash_core_components import Tabs, Tab
-from dash_html_components import Div
+from dash.dcc import Tabs, Tab
+from dash.html import Div
 
 
 class BlockTab(ABC):

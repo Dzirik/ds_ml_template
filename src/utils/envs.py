@@ -1,9 +1,14 @@
 """
 Simple wrapper for work with environmental variables within repository setting.
+
+Usage can be found in logger and config files and in jupyter notebook
+/notebooks/documentation/low_level_tools_documentation.py or
+/docs/ low_level_tools_documentation.html.
 """
 from os import environ
 
-from src.global_constants import ENV_CONFIG, DEFAULT_CONFIG, ENV_LOGGER, DEFAULT_LOGGER
+from src.global_constants import ENV_CONFIG, DEFAULT_CONFIG, ENV_LOGGER, DEFAULT_LOGGER, ENV_RUNNING_UNIT_TESTS, \
+    DEFAULT_RUNNING_UNIT_TESTS
 
 
 class Envs:
@@ -20,8 +25,7 @@ class Envs:
     def set_config(value: str) -> None:
         """
         Sets the environmental variable for config singleton with value.
-        :param name: str. Value to be setted.
-        :return:
+        :param value: str. Value to be set without .conf.
         """
         environ[ENV_CONFIG] = value
 
@@ -40,8 +44,7 @@ class Envs:
     def set_logger(value: str) -> None:
         """
         Sets the environmental variable for logger singleton with value.
-        :param name: str. Value to be setted.
-        :return:
+        :param value: str. Value to be set without .conf.
         """
         environ[ENV_LOGGER] = value
 
@@ -54,4 +57,22 @@ class Envs:
         value = environ.get(ENV_LOGGER)
         if value is None:
             value = DEFAULT_LOGGER
+        return value
+
+    @staticmethod
+    def set_running_unit_tests(value: str = "True") -> None:
+        """
+        Sets running unit tests.
+        """
+        environ[ENV_RUNNING_UNIT_TESTS] = value
+
+    @staticmethod
+    def get_running_unit_tests() -> str:
+        """
+        Returns if currently unit tests are running.
+        :return: bool. If running or not
+        """
+        value = environ.get(ENV_RUNNING_UNIT_TESTS)
+        if value is None:
+            value = DEFAULT_RUNNING_UNIT_TESTS
         return value
