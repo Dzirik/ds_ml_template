@@ -74,7 +74,7 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_personal" # default
+PYTHON_CONFIG_NAME = "python_repo" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
 NOTEBOOK_NAME = get_notebook_name()
@@ -127,7 +127,6 @@ if ADDAPT_WIDTH:
 # from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
-CRY_CONFIG_NAME = "cry_basic"
 
 # #### Constants for Setting Automatic Run
 # [ToC](#ToC)  
