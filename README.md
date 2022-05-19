@@ -1,5 +1,6 @@
 # ds_ml_template
 
+<a name="table-of-content"></a>
 # Table of Content
 - [Introduction](#introduction)  
 - [Installation](#installation)  
@@ -29,6 +30,7 @@
 
 <a name="introduction"></a>
 # Introduction
+[ToC](#table-of-content)
 This repository serves as a **template for Data Science and Machine Learning projects in Python 3.x ecosystem**. 
 It contains basic functionality and tools for easy and smooth work.
 
