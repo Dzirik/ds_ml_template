@@ -70,9 +70,6 @@ The installation with which the repository works is:
         - Binutils: 2.37-1
         - Make: 4.2.1-2
 
-Installation on WS900 linux - use separate file *requirements_linux.txt* and it was installed
-directly to (base) because of some troubles with venv.
-
 <a name="repository-set-up"></a>
 # Repository Set Up
 [ToC](#table-of-content)  
