@@ -7,8 +7,8 @@ Usage can be found in logger and config files and in jupyter notebook
 """
 from os import environ
 
-from src.constants.global_constants import ENV_CONFIG, DEFAULT_CONFIG, ENV_LOGGER, DEFAULT_LOGGER, ENV_RUNNING_UNIT_TESTS, \
-    DEFAULT_RUNNING_UNIT_TESTS
+from src.constants.global_constants import ENV_CONFIG, DEFAULT_CONFIG, ENV_LOGGER, DEFAULT_LOGGER, \
+    ENV_RUNNING_UNIT_TESTS, DEFAULT_RUNNING_UNIT_TESTS
 
 
 class Envs:
