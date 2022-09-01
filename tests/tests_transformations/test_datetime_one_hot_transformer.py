@@ -15,7 +15,7 @@ from numpy.random import randint, seed
 from pandas import DatetimeIndex
 
 from src.exceptions.development_exception import NoProperOptionInIf
-from src.global_constants import FP, P
+from src.constants.global_constants import FP, P
 from src.transformations.datetime_one_hot_transformer import DatetimeOneHotEncoderTransformer
 from src.utils.envs import Envs
 from src.utils.leap_year import is_leap

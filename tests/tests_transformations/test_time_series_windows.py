@@ -10,7 +10,7 @@ from numpy import array, array_equal, ndarray, dtype
 from pandas import DataFrame
 
 from src.exceptions.development_exception import NoProperOptionInIf
-from src.global_constants import FP, P
+from src.constants.global_constants import FP, P
 from src.transformations.time_series_windows import TimeSeriesWindowsDummy, TimeSeriesWindowsNumpy, \
     TimeSeriesWindowsPandas
 

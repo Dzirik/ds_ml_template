@@ -12,7 +12,7 @@ from app import app
 from src.apps.page_button import PageButton
 from src.apps.page_main import PageMain
 from src.apps.page_sample_tab import PageSampleTab
-from src.global_constants import ENV_DASH_DEBUG_MODE, ENV_DASH_DOCKER
+from src.constants.global_constants import ENV_DASH_DEBUG_MODE, ENV_DASH_DOCKER
 from src.utils.envs import Envs
 
 ENVS = Envs()
