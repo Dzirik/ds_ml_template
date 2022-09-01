@@ -15,7 +15,7 @@ from typing import NamedTuple, List, Dict, Union
 import typedload
 from pyhocon import ConfigFactory
 
-from src.global_constants import FOLDER_CONFIGURATIONS
+from src.constants.global_constants import FOLDER_CONFIGURATIONS
 from src.utils.envs import Envs
 from src.utils.logger import Logger
 from src.utils.singleton_meta import Singleton

@@ -8,7 +8,7 @@ from typing import Union, List, Dict, Any, Optional
 import plotly.graph_objs as go
 import plotly.offline as py
 
-from src.global_constants import COLORS
+from src.constants.global_constants import COLORS
 
 
 class PlotlyBase(ABC):

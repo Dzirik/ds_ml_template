@@ -124,7 +124,7 @@ if ADDAPT_WIDTH:
 # #### General Constants
 # [ToC](#ToC)  
 
-# from src.global_constants import *  # Remember to import only the constants in use
+# from src.constants.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
 

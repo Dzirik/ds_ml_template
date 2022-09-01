@@ -6,9 +6,9 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.6.0
+#       jupytext_version: 1.13.7
 #   kernelspec:
-#     display_name: Python 3
+#     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
@@ -76,7 +76,7 @@ Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
 
 # Constants (please use all letter upper), ...
 
-from src.global_constants import *  # Remember to import only the constants in use
+from src.constants.global_constants import *  # Remember to import only the constants in use
 
 # # ANALYSIS ---------------------------------------------------------
 

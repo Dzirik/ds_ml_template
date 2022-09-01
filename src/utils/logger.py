@@ -13,7 +13,7 @@ from typing import Any
 
 import git
 
-from src.global_constants import FOLDER_CONFIGURATIONS, SPECIAL_LOGGER_FILE_NAME
+from src.constants.global_constants import FOLDER_CONFIGURATIONS, SPECIAL_LOGGER_FILE_NAME
 from src.utils.envs import Envs
 from src.utils.singleton_meta import Singleton
 from src.utils.timer import Timer
