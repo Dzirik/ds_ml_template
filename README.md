@@ -70,6 +70,9 @@ The installation with which the repository works is:
         - Binutils: 2.37-1
         - Make: 4.2.1-2
 
+Installation on WS900 linux - use separate file *requirements_linux.txt* and it was installed
+directly to (base) because of some troubles with venv.
+
 <a name="repository-set-up"></a>
 # Repository Set Up
 [ToC](#table-of-content)  
@@ -163,6 +166,9 @@ used for testing and development.
     - A main folder for storing source code with folders for respective tasks and areas of interest.
     - *apps*
         - Code for Dash application.
+    - *constants*
+        - Folder for storing constants. One file is present from the very beginning - *global_constants.py*, which is 
+          a file for storing global constants like attributes names. Please use capitals for these (eg. ATR_DATE).
     - *data*
         - Code for reading, formatting, and manipulating the data.
     - *exceptions*
@@ -184,8 +190,6 @@ used for testing and development.
         - Code used across the whole project.
     - *visualisations*
         - Code for plots creation.
-    - *global_constants.py*
-        - File for storing global constants like attributes names. Please use capitals for these (eg. ATR_DATE).        
     - *Note*: In pycharm mark it as a source folder.
 - *tests*
    - For storing tests to file. The structure of this folder is similar to src, but the folders start with *tests_*. 
@@ -256,7 +260,7 @@ See the [cheat sheet](https://mypy.readthedocs.io/en/latest/cheat_sheet_py3.html
 - Pytest fixtures *Untyped decorator makes function "test_density" untyped :* in files *tests_**. 
 It is excluded using:
     - `@pytest.mark.parametrize("df, type_of_normalisation", # type:ignore`
-- Pytest fixture *Class cannot subclass 'BaseTransformator' (has type 'Any')*. 
+- Pytest fixture *Class cannot subclass 'BaseTransformer' (has type 'Any')*. 
 It is excluded in the following style in the child class:
     - `class MyTransformer(BaseTransformer): # type:ignore`
 
@@ -595,15 +599,15 @@ The methods are the following:
 - `set_config(value: str)`. Sets the name of the environment configuration file to be used.
 - `get_config() -> str`. Gets the name of the environment configuration file to be used. If none was set before, 
 the default configuration file name is used. The default name is stored in the variable `DEFAULT_CONFIG`, 
-which can be found in the file */src/global_constants.py.
+which can be found in the file */src/constants/global_constants.py.
 - `set_logger(value: str)`. Sets the name of the logger configuration file to be used.
 - `get_logger(value: str) -> str`. Gets the name of the logger file to be used. If none was set before, 
 the default logger file name is used. The default name is stored in the variable `DEFAULT_LOGGER`, 
-which can be found in the file /src/global_constants.py.
+which can be found in the file /src/constants/global_constants.py.
 - `set_running_unit_tests(value: str = “True”)`. Sets the indicator if in running unit tests mode.
 - `get_running_unit_tests() -> str`. Gets the indicator if in running test mode. If none was set before, 
 the default value is used. The default name is stored in the variable `DEFAULT_RUNNING_UNIT_TESTS`, 
-which can be found in the file */src/global_constants.py*.
+which can be found in the file */src/constants/global_constants.py*.
 
 For more information, please see the class itself and the 
 *notebook /notebooks/documentation/low_level_tools_documentation.py* or 
