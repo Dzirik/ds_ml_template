@@ -53,7 +53,7 @@ def _transform(type_of_method: str, transformer_class: Any, data: Union[DataFram
     elif type_of_method == P:
         X, Y = transformer.predict(data, input_window_length, output_window_len, shift)
     else:
-        raise NoProperOptionInIf(transformer.get_info().class_name)
+        raise NoProperOptionInIf(transformer.get_class_info().class_name)
     return X, Y
 
 
