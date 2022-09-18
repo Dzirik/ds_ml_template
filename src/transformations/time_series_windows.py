@@ -4,7 +4,7 @@ Transformer
 Creates training/testing windows of selected length for time series as 2D object (time x data dim). There are three
 variants:
 - Dummy - just for testing.
-- Numpy.
+- Numpy. - the fastest.
 - Pandas.
 
 Testing and comparison can be found inf notebooks/documentation/time_series_windows_documentation.py
@@ -15,7 +15,7 @@ from typing import Tuple, Any, List
 from numpy import array, zeros, hsplit, lib, concatenate, ndarray, dtype
 from pandas import DataFrame
 
-from src.transformations.base_transformer import BaseTransformer, TransformerDataDescription
+from src.transformations.base_transformer import BaseTransformer, TransformerDescription
 
 
 class TimeSeriesWindowsDummy(BaseTransformer):  # type:ignore
@@ -24,10 +24,10 @@ class TimeSeriesWindowsDummy(BaseTransformer):  # type:ignore
     """
 
     def __init__(self) -> None:
-        data_description = TransformerDataDescription(input_type=[array], input_elements_type=None,
-                                                      output_type=[array], output_elements_type=None)
+        transformer_description = TransformerDescription(input_type=[array], input_elements_type=None,
+                                                         output_type=[array], output_elements_type=None)
         BaseTransformer.__init__(self, class_name="TimeSeriesWindowsDummy",
-                                 data_description=data_description)
+                                 transformer_description=transformer_description)
 
     @staticmethod
     def _transform(data: ndarray[Any, dtype[Any]], input_window_len: int, output_window_len: int, shift: int) -> \
@@ -106,10 +106,10 @@ class TimeSeriesWindowsNumpy(BaseTransformer):  # type:ignore
     """
 
     def __init__(self) -> None:
-        data_description = TransformerDataDescription(input_type=[array], input_elements_type=None,
-                                                      output_type=[array], output_elements_type=None)
+        transformer_description = TransformerDescription(input_type=[array], input_elements_type=None,
+                                                         output_type=[array], output_elements_type=None)
         BaseTransformer.__init__(self, class_name="TimeSeriesWindowsNumpy",
-                                 data_description=data_description)
+                                 transformer_description=transformer_description)
 
     @staticmethod
     def _transform(data: ndarray[Any, dtype[Any]], input_window_len: int, output_window_len: int, shift: int) -> \
@@ -198,10 +198,10 @@ class TimeSeriesWindowsPandas(BaseTransformer):  # type:ignore
     """
 
     def __init__(self) -> None:
-        data_description = TransformerDataDescription(input_type=[DataFrame], input_elements_type=None,
-                                                      output_type=[array], output_elements_type=None)
+        transformer_description = TransformerDescription(input_type=[DataFrame], input_elements_type=None,
+                                                         output_type=[array], output_elements_type=None)
         BaseTransformer.__init__(self, class_name="TimeSeriesWindowsPandas",
-                                 data_description=data_description)
+                                 transformer_description=transformer_description)
 
     # pylint: disable=invalid-name
     @staticmethod

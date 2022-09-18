@@ -22,7 +22,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 from src.exceptions.development_exception import NoProperOptionInIf
 from src.exceptions.exception_executioner import ExceptionExecutioner
-from src.transformations.base_transformer import BaseTransformer, TransformerDataDescription
+from src.transformations.base_transformer import BaseTransformer, TransformerDescription
 
 
 class TimeAttributes(NamedTuple):
@@ -54,9 +54,10 @@ class DatetimeOneHotEncoderTransformer(BaseTransformer):  # type:ignore
     """
 
     def __init__(self, handle_unknown: str = "ignore") -> None:
-        data_description = TransformerDataDescription(input_type=[DatetimeIndex], input_elements_type=[None],
-                                                      output_type=[ndarray], output_elements_type=[int])
-        BaseTransformer.__init__(self, class_name="DatetimeOneHotEncoder", data_description=data_description)
+        transformer_description = TransformerDescription(input_type=[DatetimeIndex], input_elements_type=[None],
+                                                         output_type=[ndarray], output_elements_type=[int])
+        BaseTransformer.__init__(self, class_name="DatetimeOneHotEncoder",
+                                 transformer_description=transformer_description)
 
         self._do_attribute: TimeAttributes
         self._dt_attr_names: List[str] = []
@@ -119,8 +120,8 @@ class DatetimeOneHotEncoderTransformer(BaseTransformer):  # type:ignore
             self._dt_attr_names.append("MIN" + str(self._do_attribute.min_inerval))
 
         if numerical_values.shape[1] == 1:
-            ExceptionExecutioner(NoProperOptionInIf).log_and_raise(description=self._info.class_type + " " +
-                                                                               self._info.class_name)
+            ExceptionExecutioner(NoProperOptionInIf).log_and_raise(description=self._class_info.class_type + " " +
+                                                                               self._class_info.class_name)
 
         numerical_values = numerical_values[:, 1:]
 

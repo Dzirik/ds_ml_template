@@ -7,47 +7,20 @@ IMPORTANT NOTE: Data consistency is not checked here, the data input can be any 
 classes. Solution which would handle it in general in python environment wold be too time consuming.
 """
 
-from abc import ABC, abstractmethod
-from typing import Any, NamedTuple, List
+from abc import abstractmethod
+from typing import Any
+
+from src.utils.meta_class import MetaClass, TransformerDescription, TRANSFORMER_TYPE_NAME
 
 
-class TransformerDataDescription(NamedTuple):
-    """
-    Tuple for storing input and output data type.
-    """
-    input_type: List[Any]
-    input_elements_type: List[Any]
-    output_type: List[Any]
-    output_elements_type: List[Any]
-
-
-class TransformerClassInfo(NamedTuple):
-    """
-    Tuple for storing info about Transformer.
-    """
-    class_type: Any
-    class_name: Any
-    data: TransformerDataDescription
-
-
-class BaseTransformer(ABC):
+class BaseTransformer(MetaClass):  # type:ignore
     """
     Parent/base class for all transformers to ensure the same interface.
     """
 
-    def __init__(self, class_name: str, data_description: TransformerDataDescription) -> None:
-        self._info = TransformerClassInfo(
-            class_type="Transformer",
-            class_name=class_name,
-            data=data_description
-        )
-
-    def get_info(self) -> TransformerClassInfo:
-        """
-        Returns class information named tuple.
-        :return: TransformerClassInfo. Class information.
-        """
-        return self._info
+    def __init__(self, class_name: str, transformer_description: TransformerDescription) -> None:
+        MetaClass.__init__(self, class_type=TRANSFORMER_TYPE_NAME, class_name=class_name)
+        self.set_transformer_description(transformer_description=transformer_description)
 
     @abstractmethod
     def fit(self, data: Any) -> None:
