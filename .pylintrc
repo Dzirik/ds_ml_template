@@ -16,6 +16,10 @@ ignore=CVS
 # regex matches against base names, not paths.
 ignore-patterns=
 
+# JP - excluding tf from linter
+# JP - more paths: src/tf/.*$, src/rl/.*$
+ignore-paths=src/external/.*$
+
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
 #init-hook=
