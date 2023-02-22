@@ -170,6 +170,10 @@ used for testing and development.
         - Code for reading, formatting, and manipulating the data.
     - *exceptions*
         - Code for custom exceptions.
+    - *external*
+        - Code taken from external resources. **It is excluded from code quality check**.
+    - *jobs*
+        - Folder for code doing overall jobs tasks.
     - *models*
         - Code for models.
     - *pipelines*
