@@ -28,7 +28,7 @@ clear-console:
 
 create-venv: clear-console
 	@python ./src/utils/make_print_documentation.py create-venv
-	pip install virtualenv==20.14.0
+	pip install virtualenv==20.19.0
 	test -d .venv || virtualenv .venv
 	( \
        source .venv/Scripts/activate;\
