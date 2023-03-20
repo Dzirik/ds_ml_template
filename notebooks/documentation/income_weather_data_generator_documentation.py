@@ -30,6 +30,12 @@
 #     - [Data Generation](#2-1) 
 #     - [Explore Multidimensional Data](#2-2) 
 #     - [Explore Basic Data](#2-3)    
+#         - [Plot Output Variable](#2-3-1)
+#         - [Not Transformed Data](#2-3-2)
+#         - [Transformed Data](#2-3-3)
+#     - [Data For Machine Learning](#2-4)
+#         - [Basic Data](#2-4-1)
+#         - [Multidimensional Data](#2-4-2)
 # - [Final Timestamp](#3)
 
 # <a name="0"></a>
@@ -37,6 +43,58 @@
 # [ToC](#ToC)
 
 # Income data an artificial data set created for (time series) regression problems.
+#
+# There are two types of data there:
+# - Basic one dimensional data.
+# - More complex 2D data for DNN testing.
+#
+# NOTE:
+# - The only attribute that would need normalisation is temperature. But the data is kept as it is, it should not affect 
+# the output much, so it is not normalised.
+#
+# There are even whole train/test data sets for both catetory present there.
+#
+# All data:
+# ```p
+# data_gen = IncomeWeatherDataGenerator()
+# (X_train, X_test), (Y_train_reg, Y_test_reg), (Y_train_bin, Y_test_bin), (Y_train_ter, Y_test_ter), \
+# (Y_train_ter_oh, Y_test_ter_oh) = data_gen.generate_basic_ml_data()
+#
+# (X_train, X_test), (Y_train_reg, Y_test_reg), (Y_train_bin, Y_test_bin), (Y_train_ter, Y_test_ter), \
+# (Y_train_ter_oh, Y_test_ter_oh) = data_gen.generate_multidim_ml_data()
+# ```  
+#
+# Regression:
+# ```p
+# data_gen = IncomeWeatherDataGenerator()
+# (X_train, X_test), (Y_train, Y_test), _, _, _ = data_gen.generate_basic_ml_data()
+#
+# (X_train, X_test), (Y_train, Y_test), _, _, _ = data_gen.generate_multidim_ml_data()
+# ```  
+#
+# Binary Classification:
+# ```p
+# data_gen = IncomeWeatherDataGenerator()
+# (X_train, X_test), _, (Y_train, Y_test), _, _ = data_gen.generate_basic_ml_data()
+#
+# (X_train, X_test), _, (Y_train, Y_test), _, _ = data_gen.generate_multidim_ml_data()
+# ```  
+#
+# Tertiary Classification Dense:
+# ```p
+# data_gen = IncomeWeatherDataGenerator()
+# (X_train, X_test), _, _, (Y_train, Y_test), _ = data_gen.generate_basic_ml_data()
+#
+# (X_train, X_test), _, _, (Y_train, Y_test), _ = data_gen.generate_multidim_ml_data()
+# ```  
+#
+# Tertiary Classification One Hot:
+# ```p
+# data_gen = IncomeWeatherDataGenerator()
+# (X_train, X_test), _, _, _, (Y_train, Y_test) = data_gen.generate_basic_ml_data()
+#
+# (X_train, X_test), _, _, _, (Y_train, Y_test) = data_gen.generate_multidim_ml_data()
+# ```  
 
 # <a name="1"></a>
 # # GENERAL SETTINGS
@@ -75,7 +133,7 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_local" # default
+PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
 NOTEBOOK_NAME = get_notebook_name()
@@ -97,15 +155,17 @@ if ADDAPT_WIDTH:
 
 from pandas import options
 from numpy import array
+from collections import Counter
 
 # <a name="1-4"></a>
 # ### Internal Code
 # [ToC](#ToC)   
 # Code, libraries, classes, functions from within the repository.
 
-from src.data.income_weather_data_generator import IncomeWeatherDataGenerator
+from src.data.income_weather_data_generator import IncomeWeatherDataGenerator, ATTR_OUTPUT, ATTR_DATE
 from src.data.df_explorer import DFExplorer
 from pprint import pprint
+from src.visualisations.plotly_time_series import PlotlyTimeSeries
 
 # <a name="1-5"></a>
 # ### Constants
@@ -120,7 +180,7 @@ from pprint import pprint
 # from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
-CRY_CONFIG_NAME = "cry_basic"
+DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 
 # #### Constants for Setting Automatic Run
 # [ToC](#ToC)   
@@ -203,6 +263,22 @@ df_data_transformed.head()
 df_explorer = DFExplorer()
 
 # <a name="2-3-1"></a>
+# ### Plot Output Variable
+# [ToC](#ToC) 
+
+# +
+ts_visu = PlotlyTimeSeries()
+
+ts = df_data[ATTR_OUTPUT]
+ts.index = df_data[ATTR_DATE]
+ts_visu.plot(
+    series=[df_data[ATTR_OUTPUT]],
+    plot_title="Weather Output Variable",
+    y_title="Profit"
+)
+# -
+
+# <a name="2-3-2"></a>
 # ### Not Transformed Data
 # [ToC](#ToC)   
 
@@ -210,13 +286,75 @@ df_explorer.print_info_about_data_frame(df=df_data)
 
 df_explorer.print_attr_stats(df=df_data)
 
-# <a name="2-3-2"></a>
+# <a name="2-3-3"></a>
 # ### Transformed Data
 # [ToC](#ToC)   
 
 df_explorer.print_info_about_data_frame(df=df_data_transformed)
 
 df_explorer.print_attr_stats(df=df_data_transformed)
+
+# <a name="2-4"></a>
+# ## Data For Machine Learning
+# [ToC](#ToC)   
+
+# <a name="2-4-1"></a>
+# ### Basic Data
+# [ToC](#ToC) 
+
+# +
+data_gen = IncomeWeatherDataGenerator()
+
+(X_train, X_test), (Y_train_reg, Y_test_reg), (Y_train_bin, Y_test_bin), (Y_train_ter, Y_test_ter), \
+(Y_train_ter_oh, Y_test_ter_oh) = data_gen.generate_basic_ml_data()
+# -
+
+print(X_train.shape)
+print(Y_train_reg.shape)
+print(Y_train_bin.shape)
+print(Y_train_ter.shape)
+print(Y_train_ter_oh.shape)
+print("\n")
+print(X_test.shape)
+print(Y_test_reg.shape)
+print(Y_test_bin.shape)
+print(Y_test_ter.shape)
+print(Y_test_ter_oh.shape)
+
+print(Counter(list(Y_train_bin.reshape((Y_train_bin.shape[0],)).tolist())))
+print(Counter(list(Y_train_ter.reshape((Y_train_ter.shape[0],)).tolist())))
+print("\n")
+print(Counter(list(Y_test_bin.reshape((Y_test_bin.shape[0],)).tolist())))
+print(Counter(list(Y_test_ter.reshape((Y_test_ter.shape[0],)).tolist())))
+
+# <a name="2-4-2"></a>
+# ### Multidimensional Data
+# [ToC](#ToC) 
+
+# +
+data_gen = IncomeWeatherDataGenerator()
+
+(X_train, X_test), (Y_train_reg, Y_test_reg), (Y_train_bin, Y_test_bin), (Y_train_ter, Y_test_ter), \
+(Y_train_ter_oh, Y_test_ter_oh) = data_gen.generate_multidim_ml_data()
+# -
+
+print(X_train.shape)
+print(Y_train_reg.shape)
+print(Y_train_bin.shape)
+print(Y_train_ter.shape)
+print(Y_train_ter_oh.shape)
+print("\n")
+print(X_test.shape)
+print(Y_test_reg.shape)
+print(Y_test_bin.shape)
+print(Y_test_ter.shape)
+print(Y_test_ter_oh.shape)
+
+print(Counter(list(Y_train_bin.reshape((Y_train_bin.shape[0],)).tolist())))
+print(Counter(list(Y_train_ter.reshape((Y_train_ter.shape[0],)).tolist())))
+print("\n")
+print(Counter(list(Y_test_bin.reshape((Y_test_bin.shape[0],)).tolist())))
+print(Counter(list(Y_test_ter.reshape((Y_test_ter.shape[0],)).tolist())))
 
 # <a name="3"></a>
 # # Final Timestamp
