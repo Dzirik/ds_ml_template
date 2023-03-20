@@ -24,9 +24,9 @@ class PlotlyBarChart(PlotlyBase):  # type:ignore
 
     # pylint: disable=too-many-arguments
     # pylint: disable=arguments-differ
-    def plot(self, array_ids: ndarray[Any, dtype[Any]], array_values: ndarray[Any, dtype[Any]], plot_title: str,  \
-             name_ids: str, name_values: str, order_by_values: bool = True, dashboard: bool = False) \
-            -> Optional[go.Figure]:
+    def plot(self, array_ids: ndarray[Any, dtype[Any]], array_values: ndarray[Any, dtype[Any]], plot_title: str, \
+             name_ids: str, name_values: str, order_by_values: bool = True, reverse: bool = True, \
+             dashboard: bool = False) -> Optional[go.Figure]:
         """
         Sorts the data based on values and plots the figure or returns object to be plotted in Dash.
         :param array_ids: ndarray[Any, dtype[Any]]. 1D array of the data IDs.
@@ -35,6 +35,7 @@ class PlotlyBarChart(PlotlyBase):  # type:ignore
         :param name_ids: str. Name of the IDs for caption.
         :param name_values: str. Name of the values for captions.
         :param order_by_values: bool. If order by values (True) or by captions (False)
+        :param reverse: bool. If reverse the ordering.
         :param dashboard: bool. If use in dash application or not.
         :return: Optional[go.Figure]. If None, then plots the figure. Otherwise, it creates go.Figure to be plotted with
         Dash and its dcc.Graph() component.
@@ -46,9 +47,9 @@ class PlotlyBarChart(PlotlyBase):  # type:ignore
                        marker_line_width=1.5)
 
         if order_by_values:
-            category_array = [x for _, x in sorted(zip(array_values, array_ids), reverse=True)]
+            category_array = [x for _, x in sorted(zip(array_values, array_ids), reverse=reverse)] # True default
         else:
-            category_array = [x for x, _ in sorted(zip(array_ids, array_values), reverse=False)]
+            category_array = [x for x, _ in sorted(zip(array_ids, array_values), reverse=reverse)] # False default
 
         layout = {
             "xaxis_title": name_ids,

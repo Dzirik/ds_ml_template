@@ -92,7 +92,7 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_local" # default
+PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = True
 NOTEBOOK_NAME = get_notebook_name()
@@ -139,7 +139,7 @@ from src.visualisations.visualisation_functions import create_time_series
 # from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
-CRY_CONFIG_NAME = "cry_basic"
+DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 
 # #### Constants for Setting Automatic Run
 # [ToC](#ToC)   
@@ -149,10 +149,7 @@ CRY_CONFIG_NAME = "cry_basic"
 # #### Notebook Specific Constants
 # [ToC](#ToC)   
 
-ATTR_OPEN = "OPEN"
-ATTR_HIGH = "HIGH"
-ATTR_LOW = "LOW"
-ATTR_CLOSE = "CLOSE"
+
 
 # <a name='2'></a>
 # # Visualizations Examples
@@ -243,6 +240,7 @@ name_id = "Greek Alphabet"
 name_values = "Occurance"
 
 order_by_values = True
+reverse = True
 
 # +
 import src.visualisations.plotly_bar_chart as BAR
@@ -251,7 +249,7 @@ reload(BAR)
 
 bar_chart = BAR.PlotlyBarChart()
 
-bar_chart.plot(array_id, array_values, plot_title, name_id, name_values, order_by_values)
+bar_chart.plot(array_id, array_values, plot_title, name_id, name_values, order_by_values, reverse)
 # -
 
 # <a name='2-2-2'></a>
@@ -266,6 +264,7 @@ name_id = "Greek Alphabet"
 name_values = "Occurance"
 
 order_by_values = False
+reverse = False
 
 # +
 import src.visualisations.plotly_bar_chart as BAR
@@ -274,7 +273,7 @@ reload(BAR)
 
 bar_chart = BAR.PlotlyBarChart()
 
-bar_chart.plot(array_id, array_values, plot_title, name_id, name_values, order_by_values)
+bar_chart.plot(array_id, array_values, plot_title, name_id, name_values, order_by_values, reverse)
 
 # +
 array_id = array([3, 2, 4, 1])
