@@ -122,6 +122,8 @@ used for testing and development.
         - Data from external sources (dictionaries, synonyms, ...).
     - *interim*
         - Intermediate data between raw and fully processed. Not raw and also not finalized yet.
+    - *logs*
+        - Folder for logs, mainly from TenforFlow.
     - *processed*
         - Final data after all the preprocessing, merging, cleaning, transformation, enrichment, feature engineering etc.
     - *raw*

@@ -1,91 +1,46 @@
 """
 Code for handling configurations through the repository.
 
+The interface should be the same as in other configs, inheritance is not possible - cyrcular dependency.
+
 A singleton pattern is used for that.
 
 Usage can be found in the end of the file and in jupyter notebook
 /notebooks/documentation/low_level_tools_documentation.py or
 /docs/ low_level_tools_documentation.html.
 """
-
 from os import getcwd
 from os.path import join, exists
-from typing import NamedTuple, List, Dict, Union
+from typing import Dict, Any
 
 import typedload
 from pyhocon import ConfigFactory
 
 from src.constants.global_constants import FOLDER_CONFIGURATIONS
+from src.utils.config_data import ConfigData
 from src.utils.envs import Envs
 from src.utils.logger import Logger
 from src.utils.singleton_meta import Singleton
 
 
-class Path(NamedTuple):
+def _get_config_file_path(config_file_name: str) -> str:
     """
-    Configuration tuple for paths to data files.
+    Reads configuration file of name profile_name from configuration folder. Raises an exception if there is no
+    file.
+    :param config_file_name: Optional[str]. Name of the _profile and the file at the same time. File name without .conf.
     """
-    archive_data: str
-    external_data: str
-    interim_data: str
-    processed_data: str
-    raw_data: str
-    results_data: str
+    profile_file_name = f"{config_file_name}.conf"
+    profile_file_path = join("../../", FOLDER_CONFIGURATIONS, profile_file_name)
 
+    if not exists(profile_file_path):
+        # because of problems with running dash drom /index.py - in logger as well
+        profile_file_path = join(getcwd(), FOLDER_CONFIGURATIONS, profile_file_name)
 
-class DatabaseCredentials(NamedTuple):
-    """
-    Log in credentials for data base.
-    """
-    provider: str
-    user: str
-    password: str
-    host: str
-    port: int
-    db_name: str
+        if not exists(profile_file_path):
+            Logger().error("Logger profile does not exist in the selected path.")
+            raise ValueError("Config profile does not exist in the selected path.")
 
-
-class DashSettings(NamedTuple):
-    """
-    Configuration tuple for the dash setting.
-    """
-    header_link_color: str
-    header_font_weight: str
-    navbar_background_color: str
-    path_to_image: str
-
-
-class Dash(NamedTuple):
-    """
-    Configuration tuple for the dash.
-    """
-    sidebar_config: List[List[List[str]]]
-    list_of_pages: Dict[str, List[str]]
-    sidebar_style: Dict[str, Union[int, str]]
-    content_style: Dict[str, str]
-    sett: DashSettings
-
-
-class ParamNotebookExecution(NamedTuple):
-    """
-    Configuration tuple for the parameterized notebook execution.
-    """
-    use_default: bool
-    convert_to_html: bool
-    ntb_path: str
-    output_folder: str
-    notebook_executioner_params: List[Dict[str, Union[float, str]]]
-
-
-class Profile(NamedTuple):
-    """
-    Overall configuration tuple for everything.
-    """
-    name: str
-    path: Path
-    db_cred: DatabaseCredentials
-    dash: Dash
-    param_ntb_execution: ParamNotebookExecution
+    return profile_file_path
 
 
 class Config(metaclass=Singleton):
@@ -95,46 +50,42 @@ class Config(metaclass=Singleton):
     Singleton class.
 
     Takes settings from environmental variables or uses default "python_local.conf".
+
+    Methods should the same as in src/utils/base_config.py
     """
-    _is_profile = False
-    _profile: Profile
-    _env = Envs()
 
     def __init__(self) -> None:
+        self._data: ConfigData
+        self._is_profile = False
+        self._env = Envs()
+
+        self._parse_config()
+
+    def _parse_config(self) -> None:
+        """
+        Parses the config.
+        """
         if not self._is_profile:
-            self._profile = ConfigFactory.parse_file(self._get_profile_file_path(self._env.get_config()))
-            self._profile = typedload.load(self._profile, Profile)
+            self._data = ConfigFactory.parse_file(_get_config_file_path(self._env.get_config()))
+            self._data = typedload.load(self._data, ConfigData)
 
             Logger().debug(f"Python config was created from {self._env.get_config()}.conf file.")
 
             self._is_profile = True
 
-    def get(self) -> Profile:
+    def get_data(self) -> ConfigData:
         """
         Gets the _profile as Profile NamedTuple class.
         :return: Profile. NamedTuple containing settings.
         """
-        return self._profile
+        return self._data
 
-    @staticmethod
-    def _get_profile_file_path(profile_name: str) -> str:
+    def get_data_as_dict(self) -> Dict[Any, Any]:
         """
-        Reads configuration file of name profile_name from configuration folder. Raises an exception if there is no
-        file.
-        :param profile_name: Optional[str]. Name of the _profile and the file at the same time. File name without .conf.
+        Gets the data (named tuple) into dictionary.
+        :return: Dict[Any, Any].
         """
-        profile_file_name = f"{profile_name}.conf"
-        profile_file_path = join("../../", FOLDER_CONFIGURATIONS, profile_file_name)
-
-        if not exists(profile_file_path):
-            # because of problems with running dash drom /index.py - in logger as well
-            profile_file_path = join(getcwd(), FOLDER_CONFIGURATIONS, profile_file_name)
-
-            if not exists(profile_file_path):
-                Logger().error("Logger profile does not exist in the selected path.")
-                raise ValueError("Config profile does not exist in the selected path.")
-
-        return profile_file_path
+        return dict(self._data._asdict())
 
 
 if __name__ == "__main__":
@@ -154,12 +105,13 @@ if __name__ == "__main__":
     print(f"Is it just one object? {config_1 is config_2}")
 
     print("\n")
-    print(c.get().name)
-    print(c.get().path.external_data)
+    print(c.get_data().name)
+    print(c.get_data().path.external_data)
+    print(c.get_data().path.logs_data)
 
-    print(c.get().dash.sidebar_config)
+    print(c.get_data().dash.sidebar_config)
 
-    print(len(c.get().dash.sidebar_config[1]))
-    print(len(c.get().dash))
-    for item in c.get().dash:
+    print(len(c.get_data().dash.sidebar_config[1]))
+    print(len(c.get_data().dash))
+    for item in c.get_data().dash:
         print(item)
