@@ -98,6 +98,7 @@ pandas==1.4.1
 pandocfilters==1.5.0
 papermill==2.3.4
 parso==0.8.3
+patsy==0.5.3
 pickleshare==0.7.5
 Pillow==9.0.1
 platformdirs==2.5.1
@@ -139,6 +140,7 @@ six==1.16.0
 smmap==5.0.0
 soupsieve==2.3.1
 stack-data==0.2.0
+statsmodels==0.13.5
 tabulate==0.8.9
 tenacity==8.0.1
 tensorboard==2.10.1
