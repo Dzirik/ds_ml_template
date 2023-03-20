@@ -95,6 +95,12 @@ class TimeSeriesWindowsDummy(BaseTransformer):  # type:ignore
                  list.
         """
         return self._transform(data, input_window_len, output_window_len, shift)
+
+    def inverse(self) -> None:
+        """
+        Does the inverse transformation.
+        """
+        return None
     # pylint: enable=arguments-differ
 
 
@@ -189,6 +195,12 @@ class TimeSeriesWindowsNumpy(BaseTransformer):  # type:ignore
                  list.
         """
         return self._transform(data, input_window_len, output_window_len, shift)
+
+    def inverse(self) -> None:
+        """
+        Does the inverse transformation.
+        """
+        return None
     # pylint: enable=arguments-differ
 
 
@@ -274,4 +286,10 @@ class TimeSeriesWindowsPandas(BaseTransformer):  # type:ignore
                  list.
         """
         return self._transform(df, input_window_len, output_window_len, shift)
+
+    def inverse(self) -> None:
+        """
+        Does the inverse transformation.
+        """
+        return None
     # pylint: enable=arguments-differ
