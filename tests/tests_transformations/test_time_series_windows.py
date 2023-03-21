@@ -9,8 +9,8 @@ import pytest
 from numpy import array, array_equal, ndarray, dtype
 from pandas import DataFrame
 
-from src.exceptions.development_exception import NoProperOptionInIf
 from src.constants.global_constants import FP, P
+from src.exceptions.development_exception import NoProperOptionInIf
 from src.transformations.time_series_windows import TimeSeriesWindowsDummy, TimeSeriesWindowsNumpy, \
     TimeSeriesWindowsPandas
 
@@ -93,4 +93,14 @@ def test_sum_to_one(type_of_method: str, n: int, p: int, input_window_length: in
     )
     assert array_equal(X_d, X_n) and array_equal(Y_d, Y_n) and \
            array_equal(X_d, X_p) and array_equal(Y_d, Y_p)
+
+
+def test_inverse() -> None:
+    """
+    Tests empty (returns None) inverse.
+    """
+    t_1 = TimeSeriesWindowsNumpy()
+    t_2 = TimeSeriesWindowsDummy()
+    t_3 = TimeSeriesWindowsPandas()
+    assert t_1.inverse() is None and t_2.inverse() is None and t_3.inverse() is None
     # pylint: enable=invalid-name
