@@ -11,7 +11,7 @@ from sklearn.metrics import r2_score
 from src.models.base_ml_model import BaseMLModel, MLModelDescription
 
 
-class ModelStatsLinReg(BaseMLModel):  # type:ignore
+class StatsLinRegModel(BaseMLModel):  # type:ignore
     """
     Linear regression model from StatsModel library.
     """

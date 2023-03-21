@@ -117,11 +117,11 @@ from pandas import Series
 # +
 from src.data.income_weather_data_generator import IncomeWeatherDataGenerator
 
-from src.models.mean_model import MeanModel
-from src.models.model_stats_lin_reg import ModelStatsLinReg
+from src.models.ml_r_mean_model import MeanModel
+from src.models.ml_r_stats_lin_reg_model import StatsLinRegModel
 
-from src.models.max_entropy_classification_random_model import MaxEntropyClassificationRandomModel
-from src.models.distribution_classification_random_model import DistributionClassificationRandomModel
+from src.models.ml_c_max_entropy_classification_random_model import MaxEntropyClassificationRandomModel
+from src.models.ml_c_distribution_classification_random_model import DistributionClassificationRandomModel
 
 from src.visualisations.plotly_line_chart import PlotlyLineChart
 from src.visualisations.plotly_histogram import PlotlyHistogram
@@ -238,7 +238,7 @@ plot_histograms_and_residuals(train_residuals, test_residuals)
 # Results interpetation can be found [here](https://medium.com/swlh/interpreting-linear-regression-through-statsmodels-summary-4796d359035a).
 
 
-model = ModelStatsLinReg()
+model = StatsLinRegModel()
 model_params = {"intercept": True}
 
 # +
