@@ -284,6 +284,7 @@ good-names=i,
            data_split_Y,
            X_data_list,
            Y_data_list,
+           Y_hat,
            _
 
 # Include a hint for the correct naming format with invalid-name.
