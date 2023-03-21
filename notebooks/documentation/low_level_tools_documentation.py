@@ -181,7 +181,7 @@ from src.utils.config import Config
 # For setting the configuration file to be used, please see previous chapter.   
 # Getting current config:
 
-config_data = Config().get()
+config_data = Config().get_data()
 
 config_data
 

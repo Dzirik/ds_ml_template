@@ -14811,9 +14811,9 @@ Necessary libraries for notebook functionality:</p>
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>A: ../../configurations\logger_file_console.conf
-2022-05-19 20:27:03,485 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2022-05-19 20:27:03,488 - file_console - DEBUG - Logger was created on JIRI-A in branche 001_template_update.
-2022-05-19 20:27:03,488 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: low_level_tools_documentation.py; Timer started;
+2023-03-21 16:19:57,801 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
+2023-03-21 16:19:57,803 - file_console - DEBUG - Logger was created on WS-3000 in branche 005_cumulative_repository_update.
+2023-03-21 16:19:57,804 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: low_level_tools_documentation.py; Timer started;
 </pre>
 </div>
 </div>
@@ -15208,7 +15208,7 @@ Getting current config:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15230,7 +15230,7 @@ Getting current config:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2022-05-19 20:27:03,662 - file_console - DEBUG - Python config was created from python_repo.conf file.
+<pre>2023-03-21 16:19:58,007 - file_console - DEBUG - Python config was created from python_repo.conf file.
 </pre>
 </div>
 </div>
@@ -15271,7 +15271,7 @@ Getting current config:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>Profile(name=&#39;python_repo&#39;, path=Path(archive_data=&#39;../../data/archive&#39;, external_data=&#39;../../data/external&#39;, interim_data=&#39;../../data/interim&#39;, processed_data=&#39;../../data/processed&#39;, raw_data=&#39;../../data/raw&#39;, results_data=&#39;../../data/results&#39;), db_cred=DatabaseCredentials(provider=&#39;PostgreDBConnector&#39;, user=&#39;postgres&#39;, password=&#39;postgre_1234&#39;, host=&#39;localhost&#39;, port=5432, db_name=&#39;test&#39;), dash=Dash(sidebar_config=[[[&#39;page_main&#39;]], [[&#39;page_main&#39;, &#39;Demo&#39;], [&#39;page_button&#39;, &#39;Demo&#39;]], [[&#39;page_button&#39;, &#39;One Member List&#39;]], [[&#39;page_sample_tab&#39;]]], list_of_pages={&#39;page_button&#39;: [&#39;/PageButton&#39;, &#39;PageButton&#39;], &#39;page_main&#39;: [&#39;/&#39;, &#39;PageMain&#39;], &#39;page_sample_tab&#39;: [&#39;/PageSampleTab&#39;, &#39;PageSampleTab&#39;]}, sidebar_style={&#39;position&#39;: &#39;fixed&#39;, &#39;top&#39;: 0, &#39;left&#39;: 0, &#39;bottom&#39;: 0, &#39;width&#39;: &#39;16rem&#39;, &#39;padding&#39;: &#39;2rem 1rem&#39;, &#39;background-color&#39;: &#39;#f8f9fa&#39;}, content_style={&#39;margin-left&#39;: &#39;18rem&#39;, &#39;margin-right&#39;: &#39;2rem&#39;, &#39;padding&#39;: &#39;2rem 0rem&#39;}, sett=DashSettings(header_link_color=&#39;black&#39;, header_font_weight=&#39;bold&#39;, navbar_background_color=&#39;white&#39;, path_to_image=&#39;/assets/wolf.png&#39;)), param_ntb_execution=ParamNotebookExecution(use_default=True, convert_to_html=True, ntb_path=&#39;../../notebooks/template/template_parameterized_execution_notebook.ipynb&#39;, output_folder=&#39;../../reports&#39;, notebook_executioner_params=[{&#39;n&#39;: 10.0, &#39;a&#39;: 1.0, &#39;b&#39;: 1.0, &#39;title&#39;: &#39;Positive&#39;}, {&#39;n&#39;: 15.0, &#39;a&#39;: -1.0, &#39;b&#39;: -1.0, &#39;title&#39;: &#39;Negative&#39;}, {&#39;n&#39;: 20.0, &#39;a&#39;: 0.0, &#39;b&#39;: 2.0, &#39;title&#39;: &#39;Zero&#39;}]))</pre>
+<pre>ConfigData(name=&#39;python_repo&#39;, path=Path(archive_data=&#39;../../data/archive&#39;, external_data=&#39;../../data/external&#39;, interim_data=&#39;../../data/interim&#39;, logs_data=&#39;../../data/logs&#39;, processed_data=&#39;../../data/processed&#39;, raw_data=&#39;../../data/raw&#39;, results_data=&#39;../../data/results&#39;), db_cred=DatabaseCredentials(provider=&#39;PostgreDBConnector&#39;, user=&#39;postgres&#39;, password=&#39;postgre_1234&#39;, host=&#39;localhost&#39;, port=5432, db_name=&#39;test&#39;), dash=Dash(sidebar_config=[[[&#39;page_main&#39;]], [[&#39;page_main&#39;, &#39;Demo&#39;], [&#39;page_button&#39;, &#39;Demo&#39;]], [[&#39;page_button&#39;, &#39;One Member List&#39;]], [[&#39;page_sample_tab&#39;]]], list_of_pages={&#39;page_button&#39;: [&#39;/PageButton&#39;, &#39;PageButton&#39;], &#39;page_main&#39;: [&#39;/&#39;, &#39;PageMain&#39;], &#39;page_sample_tab&#39;: [&#39;/PageSampleTab&#39;, &#39;PageSampleTab&#39;]}, sidebar_style={&#39;position&#39;: &#39;fixed&#39;, &#39;top&#39;: 0, &#39;left&#39;: 0, &#39;bottom&#39;: 0, &#39;width&#39;: &#39;16rem&#39;, &#39;padding&#39;: &#39;2rem 1rem&#39;, &#39;background-color&#39;: &#39;#f8f9fa&#39;}, content_style={&#39;margin-left&#39;: &#39;18rem&#39;, &#39;margin-right&#39;: &#39;2rem&#39;, &#39;padding&#39;: &#39;2rem 0rem&#39;}, sett=DashSettings(header_link_color=&#39;black&#39;, header_font_weight=&#39;bold&#39;, navbar_background_color=&#39;white&#39;, path_to_image=&#39;/assets/wolf.png&#39;)), param_ntb_execution=ParamNotebookExecution(use_default=True, convert_to_html=True, ntb_path=&#39;../../notebooks/template/template_parameterized_execution_notebook.ipynb&#39;, output_folder=&#39;../../reports&#39;, notebook_executioner_params=[{&#39;n&#39;: 10.0, &#39;a&#39;: 1.0, &#39;b&#39;: 1.0, &#39;title&#39;: &#39;Positive&#39;}, {&#39;n&#39;: 15.0, &#39;a&#39;: -1.0, &#39;b&#39;: -1.0, &#39;title&#39;: &#39;Negative&#39;}, {&#39;n&#39;: 20.0, &#39;a&#39;: 0.0, &#39;b&#39;: 2.0, &#39;title&#39;: &#39;Zero&#39;}]))</pre>
 </div>
 
 </div>
@@ -15490,7 +15490,7 @@ Getting current config:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Date and Time of Starting Execution: 19/05/2022 18:27:03
+<pre>Date and Time of Starting Execution: 21/03/2023 15:19:58
 </pre>
 </div>
 </div>
@@ -15548,7 +15548,7 @@ Getting current config:</p>
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>Duration of: First meantime. is 1.03 s, 0.02 mins.
-Duration of: Second meantime. is 2.01 s, 0.03 mins.
+Duration of: Second meantime. is 2.02 s, 0.03 mins.
 Duration of: Third meantime. is 3.01 s, 0.05 mins.
 </pre>
 </div>
@@ -15601,7 +15601,7 @@ Duration of: Third meantime. is 3.01 s, 0.05 mins.
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>Duration of: Last interval. is 4.03 s, 0.07 mins.
-Date and Time of Ending Execution: 19/05/2022 18:27:13
+Date and Time of Ending Execution: 21/03/2023 15:20:08
 Overall Duration is: 10.08 s, 0.17 mins.
 </pre>
 </div>
@@ -15657,7 +15657,7 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[1.0316050052642822, 2.006998062133789, 3.0069985389709473, 4.029923915863037]
+<pre>[1.0260207653045654, 2.0154223442077637, 3.009608745574951, 4.027956962585449]
 </pre>
 </div>
 </div>
@@ -15696,7 +15696,7 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[1.0316050052642822, 3.0386030673980713, 6.0456016063690186, 10.075525522232056]
+<pre>[1.0260207653045654, 3.041443109512329, 6.05105185508728, 10.07900881767273]
 </pre>
 </div>
 </div>
@@ -15802,26 +15802,26 @@ Overall Duration is: 10.08 s, 0.17 mins.
     <tr>
       <th>0</th>
       <td>First meantime.</td>
-      <td>1.031605</td>
-      <td>1.031605</td>
+      <td>1.026021</td>
+      <td>1.026021</td>
     </tr>
     <tr>
       <th>1</th>
       <td>Second meantime.</td>
-      <td>2.006998</td>
-      <td>3.038603</td>
+      <td>2.015422</td>
+      <td>3.041443</td>
     </tr>
     <tr>
       <th>2</th>
       <td>Third meantime.</td>
-      <td>3.006999</td>
-      <td>6.045602</td>
+      <td>3.009609</td>
+      <td>6.051052</td>
     </tr>
     <tr>
       <th>3</th>
       <td>Last interval.</td>
-      <td>4.029924</td>
-      <td>10.075526</td>
+      <td>4.027957</td>
+      <td>10.079009</td>
     </tr>
   </tbody>
 </table>
@@ -15966,11 +15966,11 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2022-05-19 20:27:13,982 - file_console - DEBUG - debug
-2022-05-19 20:27:13,983 - file_console - INFO - info
-2022-05-19 20:27:13,984 - file_console - WARNING - warning
-2022-05-19 20:27:13,984 - file_console - ERROR - error
-2022-05-19 20:27:13,984 - file_console - CRITICAL - error
+<pre>2023-03-21 16:20:08,336 - file_console - DEBUG - debug
+2023-03-21 16:20:08,336 - file_console - INFO - info
+2023-03-21 16:20:08,337 - file_console - WARNING - warning
+2023-03-21 16:20:08,337 - file_console - ERROR - error
+2023-03-21 16:20:08,337 - file_console - CRITICAL - error
 </pre>
 </div>
 </div>
@@ -16026,10 +16026,10 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2022-05-19 20:27:13,997 - file_console - DEBUG - Process: Simple timer test; Timer started;
-2022-05-19 20:27:14,100 - file_console - DEBUG - Process: Simple timer test; Timer meantime; Meantime of: First interval; Duration [s]: 0.1; Duration [m]: 0.0
-2022-05-19 20:27:14,314 - file_console - DEBUG - Process: Simple timer test; Timer meantime; Meantime of: Second interval; Duration [s]: 0.21; Duration [m]: 0.0
-2022-05-19 20:27:14,314 - file_console - DEBUG - Process: Simple timer test; Timer ended; Process Duration [s]: 0.32; Process Duration [m]: 0.01
+<pre>2023-03-21 16:20:08,352 - file_console - DEBUG - Process: Simple timer test; Timer started;
+2023-03-21 16:20:08,458 - file_console - DEBUG - Process: Simple timer test; Timer meantime; Meantime of: First interval; Duration [s]: 0.11; Duration [m]: 0.0
+2023-03-21 16:20:08,661 - file_console - DEBUG - Process: Simple timer test; Timer meantime; Meantime of: Second interval; Duration [s]: 0.2; Duration [m]: 0.0
+2023-03-21 16:20:08,662 - file_console - DEBUG - Process: Simple timer test; Timer ended; Process Duration [s]: 0.31; Process Duration [m]: 0.01
 </pre>
 </div>
 </div>
@@ -16081,7 +16081,7 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2022-05-19 20:27:14,333 - file_console - DEBUG - Process: ; Timer ended; Process Duration [s]: 0.34; Process Duration [m]: 0.01
+<pre>2023-03-21 16:20:08,679 - file_console - DEBUG - Process: ; Timer ended; Process Duration [s]: 0.33; Process Duration [m]: 0.01
 </pre>
 </div>
 </div>

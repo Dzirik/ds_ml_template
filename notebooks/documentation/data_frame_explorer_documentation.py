@@ -139,7 +139,7 @@ FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
 # # ANALYSIS
 # [ToC](#ToC)   
 
-config = Config().get()
+config = Config().get_data()
 
 # <a name="2-1"></a>
 # ## Data Frame
