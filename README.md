@@ -5,8 +5,12 @@ Repository template for data science and machine learning projects.
 <a name="table-of-content"></a>
 # Table of Content
 - [Introduction](#introduction)  
-- [Installation](#installation)  
-- [Repository Set Up](#repository-set-up)  
+- [Installation Windows](#installation-windows)
+    - [Prerequisites](#prerequisites-windows)
+    - [Repository Set Up](#repository-set-up-windows)
+- [Installation Linux](#installation-linux)  
+    - [Prerequisites](#prerequisites-linux)
+    - [Repository Set Up](#repository-set-up-linux) 
 - [Files and Folders Structure](#files-and-folders-structure)  
 - [Code Quality](#code-quality)  
     - [Mypy](#mypy)
@@ -37,9 +41,13 @@ Repository template for data science and machine learning projects.
 This repository serves as a **template for Data Science and Machine Learning projects in Python 3.x ecosystem**. 
 It contains basic functionality and tools for easy and smooth work.
 
-<a name="installation"></a>
-# Installation
+<a name="installation-windows"></a>
+# Installation Windows
 [ToC](#table-of-content)  
+
+<a name="prerequisites-windows"></a>
+## Prerequisites
+[ToC](#table-of-content) 
 
 The installation with which the repository works is:
 - Windows 10 operating system.
@@ -70,8 +78,8 @@ The installation with which the repository works is:
         - Binutils: 2.37-1
         - Make: 4.2.1-2
 
-<a name="repository-set-up"></a>
-# Repository Set Up
+<a name="repository-set-up-windows"></a>
+## Repository Set Up
 [ToC](#table-of-content)  
 
 Clone the repository and do the following to set it up properly:
@@ -92,12 +100,13 @@ to set up global variables (not only) for configurations. A new configuration fi
    
     The default value of `DEFAULT_CONFIG` is set to `python_personal`. So for everything to work correctly, please create 
 */configurations/python_personal.conf* file.
-7. In the console, activate the virtual environment `.venv\Scripts\activate`.
-8. Test the repository code running `make all -i`. All tests should run without any problem.
-9. Create a playground notebook */notebooks/raw/playground_notebook.py*. This one is excluded from sync, so it can be 
+6. In the console, activate the virtual environment `.venv\Scripts\activate`.
+7. Test the repository code running `make all -i`. All tests should run without any problem.
+8. Create a playground notebook */notebooks/raw/playground_notebook.py*. This one is excluded from sync, so it can be 
 used for testing and development.
-10. The TensorFlow installation can be checked by running the notebook 
+9. The TensorFlow installation can be checked by running the notebook 
 */notebooks/documentation/tensorflow_installation_and_testing.py*.
+
 
 <a name="files-and-folders-structure"></a>
 # Files and Folders Structure
