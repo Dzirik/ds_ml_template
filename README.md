@@ -126,9 +126,21 @@ NOTE: For detailed information, please read the
 NOTE: The TensorFlow installation can be checked by running the notebook 
 */notebooks/documentation/tensorflow_installation_and_testing.py*.
 
+<a name="installation-linux"></a>
+# Installation Linux
+[ToC](#table-of-content)  
+
+<a name="prerequisites-linux"></a>
+## Prerequisites
+[ToC](#table-of-content) 
+
+<a name="repository-set-up-linux"></a>
+## Repository Set Up
+[ToC](#table-of-content) 
+
 <a name="files-and-folders-structure"></a>
 # Files and Folders Structure
-[ToC](#table-of-content)  
+[ToC](#table-of-content)
 
 ## Folders
 [ToC](#table-of-content)  
