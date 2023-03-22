@@ -117,7 +117,7 @@ NOTE: For detailed information, please read the
 
 1. Run Windows PowerShell as Administrator.
 2. Go to the repository folder.
-3. Run `install.ps1` PowerShell script. It creates all the necessary files.
+3. Run `install_win.ps1` PowerShell script. It creates all the necessary files.
    - If you do not have a permission, set up temporal or user permission as written 
    [here](https://www.easy365manager.com/script-ps1-cannot-be-loaded-because-running-scripts-is-disabled-on-this-system/).
 4. Run `make create-venv` in PowerShell console or in Anaconda prompt, if some error in PowerShell. (In general, 
