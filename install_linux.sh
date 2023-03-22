@@ -29,6 +29,7 @@ python ./src/utils/make_print_documentation.py create-venv
 pip install virtualenv==20.19.0
 test -d .venv || virtualenv .venv
 ( \
-     source .venv/bin/activate;\
+     # source .venv/bin/activate;\ # it didnt work here
+     . ./.venv/bin/activate;\
      pip install -r requirements_linux.txt;\
 )
