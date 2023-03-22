@@ -2,6 +2,9 @@
 # Data files
 #/Data/
 
+# requirements
+/requirements_linux.txt
+
 # config
 /make_config.mk
 /configurations/python_personal.conf
