@@ -3,3 +3,4 @@
 
 Copy "make_config_template.mk" "make_config.mk"
 Copy ".\configurations\python_repo.conf" ".\configurations\python_personal.conf"
+Copy ".\notebooks\template\template_notebook_final.py" ".\notebooks\raw\playground_notebook.py"
