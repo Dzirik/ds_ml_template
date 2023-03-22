@@ -50,7 +50,7 @@ It contains basic functionality and tools for easy and smooth work.
 ## Prerequisites
 [ToC](#table-of-content) 
 
-The installation with which the repository works is:
+Working set up:
 - Windows 10 operating system.
   
 - Installing Anaconda.
@@ -62,7 +62,7 @@ The installation with which the repository works is:
         - `conda --version`: 4.10.3
         - `python --version`: 3.9.7
 
-- Installing Tensorflow prerequisites.
+- Installing Tensorflow prerequisites for GPU usage.
     1. Install MS Visual studio version 2019.
     2. Install Cuda Toolking 11.2 (cuda_11.2.0_460.89_win10.exe).
     3. Install cuDNN compatible with 11.2, versn 8.1 was chose (cudnn-11.2-windows-x64-v8.1.0.77.zip) .
@@ -83,7 +83,7 @@ The installation with which the repository works is:
 ## Repository Set Up Step By Step
 [ToC](#table-of-content)  
 
-Clone the repository and do the following to set it up properly:
+Clone the repository, move to the main repository folder location, and do the following to set it up properly:
 
 1. Make a copy of a file *make_config_template.mk* and give it a name *make_config.mk*.
 2. Open a console in the repository folder and put there `make hello` command. A welcome and congratulation message 
@@ -130,13 +130,39 @@ NOTE: The TensorFlow installation can be checked by running the notebook
 # Installation Linux
 [ToC](#table-of-content)  
 
+**NOTE: This part is not complete and not properly tested, because my main development environment is Windows. So 
+mainly some code snippets from testing on Ubuntu 22.04 without GPU.**
+
 <a name="prerequisites-linux"></a>
 ## Prerequisites
 [ToC](#table-of-content) 
 
+Set Up:
+- Ubuntu 22.04
+- Anaconda of the same version as in [*Windows Installation*](installation-windows) section.
+- No GPU support was tested for TensorFlow.
+- Make installation: `sudo apt-get install make`.
+
 <a name="repository-set-up-linux"></a>
 ## Repository Set Up
 [ToC](#table-of-content) 
+
+Clone the repository, move to the main repository folder location, and do the following to set it up properly:
+1. Run `sh install_linux.sh` to:
+    - Make a copy of a file *make_config_template.mk* and give it a name *make_config.mk*.
+    - Create *requirements_linux.txt* by removing windows specific libraries from *requirements.txt*. The
+      file is excluded from sync with remote in *.gitignore*.
+    - Install the virtual environment .venv.
+    - Copy default repository configuration to personal configuration (see 
+    - [Windows Repository Set Up](#repository-set-up-windows) for more information).
+    - Copy */notebooks/template/template_notebook_repo.py* to  */notebooks/raw/playground_notebook.py*. This file is 
+      excluded from sync with remote in *.gitignore*.
+2. Run `make hello` command to see a welcome and congratulation message.
+3. In the console, run `make` or `make help`; a help showing all possible make commands will display.
+4. In the console, activate the virtual environment `source .venv\bin\activate`.
+5. Test the repository code running `make all -i`. All tests should run without any problem. 
+6. The TensorFlow installation can be checked by running the notebook 
+*/notebooks/documentation/tensorflow_installation_and_testing.py*. 
 
 <a name="files-and-folders-structure"></a>
 # Files and Folders Structure
