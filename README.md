@@ -7,7 +7,8 @@ Repository template for data science and machine learning projects.
 - [Introduction](#introduction)  
 - [Installation Windows](#installation-windows)
     - [Prerequisites](#prerequisites-windows)
-    - [Repository Set Up](#repository-set-up-windows)
+    - [Repository Set Up Step By Step](#repository-set-up-step-by-step-windows)
+    - [Fast Repository Set Up](#fast-repository-set-up-windows)
 - [Installation Linux](#installation-linux)  
     - [Prerequisites](#prerequisites-linux)
     - [Repository Set Up](#repository-set-up-linux) 
@@ -70,7 +71,7 @@ The installation with which the repository works is:
         - *C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2*
         - *C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\libnvvp*
     6. The compatible TenforFlow library is in *requirements.txt* and will be automatically installed during 
-       [*Repository Set Up*](#repository-set-up) chapter.
+       [*Repository Set Up Step By Step*](#repository-set-up-step-by-step-windows) chapter.
 
 - Installing cygwin to be able to run make commands on Windows operating system.
     - Follow the video */docs/2022-01-21_cygwin_make_set_up.mp4*.
@@ -78,8 +79,8 @@ The installation with which the repository works is:
         - Binutils: 2.37-1
         - Make: 4.2.1-2
 
-<a name="repository-set-up-windows"></a>
-## Repository Set Up
+<a name="repository-set-up-step-by-step-windows"></a>
+## Repository Set Up Step By Step
 [ToC](#table-of-content)  
 
 Clone the repository and do the following to set it up properly:
@@ -107,6 +108,23 @@ used for testing and development.
 9. The TensorFlow installation can be checked by running the notebook 
 */notebooks/documentation/tensorflow_installation_and_testing.py*.
 
+<a name="fast-repository-set-up-windows"></a>
+## Fast Repository Set Up
+[ToC](#table-of-content)  
+
+NOTE: For detailed information, please read the 
+[*Repository Set Up Step By Step*](#repository-set-up-step-by-step-windows) chapter. This version is for fast set up.
+
+1. Run Windows PowerShell as Administrator.
+2. Go to the repository folder.
+3. Run `install.ps1` PowerShell script. It creates all the necessary files.
+   - If you do not have a permission, set up temporal or user permission as written 
+   [here](https://www.easy365manager.com/script-ps1-cannot-be-loaded-because-running-scripts-is-disabled-on-this-system/).
+4. Run `make create-venv` in PowerShell console or in Anaconda prompt, if some error in PowerShell. (In general, 
+   make commands work in PowerShell, but some errors were encountered during the run.)
+
+NOTE: The TensorFlow installation can be checked by running the notebook 
+*/notebooks/documentation/tensorflow_installation_and_testing.py*.
 
 <a name="files-and-folders-structure"></a>
 # Files and Folders Structure
