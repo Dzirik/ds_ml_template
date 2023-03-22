@@ -159,9 +159,9 @@ Clone the repository, move to the main repository folder location, and do the fo
     - [Windows Repository Set Up](#repository-set-up-windows) for more information).
     - Copy */notebooks/template/template_notebook_repo.py* to  */notebooks/raw/playground_notebook.py*. This file is 
       excluded from sync with remote in *.gitignore*.
-2. Run `make hello` command to see a welcome and congratulation message.
-3. In the console, run `make` or `make help`; a help showing all possible make commands will display.
-4. In the console, activate the virtual environment `source .venv\bin\activate`.
+2. In the console, activate the virtual environment `source .venv\bin\activate`.
+3. Run `make hello` command to see a welcome and congratulation message.
+4. In the console, run `make` or `make help`; a help showing all possible make commands will display.
 5. Test the repository code running `make all -i`. All tests should run without any problem. 
 6. The TensorFlow installation can be checked by running the notebook 
 */notebooks/documentation/tensorflow_installation_and_testing.py*. 
