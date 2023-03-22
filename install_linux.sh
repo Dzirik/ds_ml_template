@@ -36,8 +36,3 @@ test -d .venv || virtualenv .venv
      . ./.venv/bin/activate;\
      pip install -r requirements_linux.txt;\
 )
-
-# run code quality checks
-make mypy-no-clear
-make lint-no-clear
-make test-no-clear
