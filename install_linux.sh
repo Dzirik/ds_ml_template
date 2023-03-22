@@ -5,6 +5,9 @@
 # - Creates linux installation requirements from "requirements.txt" by removing windows specific libraries.
 # - Creates virtual environment.
 #
+# Other commands that work:
+# - source .venv/bin/activate; # activates the virtual environment, but doesn't work inside ().
+# - make all -i; # tests the repository code base by running all tests, so make commands work
 ########################################################################################################################
 
 clear
@@ -33,3 +36,8 @@ test -d .venv || virtualenv .venv
      . ./.venv/bin/activate;\
      pip install -r requirements_linux.txt;\
 )
+
+# run code quality checks
+make mypy-no-clear
+make lint-no-clear
+make test-no-clear
