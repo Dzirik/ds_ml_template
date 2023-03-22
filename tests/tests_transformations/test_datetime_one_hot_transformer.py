@@ -14,8 +14,8 @@ from numpy import zeros, array_equal
 from numpy.random import randint, seed
 from pandas import DatetimeIndex
 
-from src.exceptions.development_exception import NoProperOptionInIf
 from src.constants.global_constants import FP, P
+from src.exceptions.development_exception import NoProperOptionInIf
 from src.transformations.datetime_one_hot_transformer import DatetimeOneHotEncoderTransformer
 from src.utils.envs import Envs
 from src.utils.leap_year import is_leap
@@ -321,3 +321,11 @@ def test_handle_unknown() -> None:
     transformer.fit(data, True, True, True, True, True)
     output = transformer.predict(unseen_data)
     assert array_equal(output, correct_output)
+
+
+def test_inverse() -> None:
+    """
+    Tests empty (returns None) inverse.
+    """
+    transformer = DatetimeOneHotEncoderTransformer()
+    assert transformer.inverse() is None

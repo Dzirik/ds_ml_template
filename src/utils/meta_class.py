@@ -6,6 +6,10 @@ from abc import ABC
 from typing import NamedTuple, List, Any, Optional
 
 TRANSFORMER_TYPE_NAME = "transformer"
+CONFIG_TYPE_NAME = "config"
+RULE_TYPE_NAME = "rule"
+PIPELINE_TYPE_NAME = "pipeline"
+ML_MODEL_TYPE_NAME = "ml_model"
 
 
 class TransformerDescription(NamedTuple):
@@ -18,6 +22,16 @@ class TransformerDescription(NamedTuple):
     output_elements_type: Optional[List[Any]]
 
 
+class MLModelDescription(NamedTuple):
+    """
+    Tuple for storing input and output data type.
+    - type_of_model: Optional[str]. Stats model, sk-learn, custom, ...
+    - type_of_task: Optional[str]. Regression, classification, ...
+    """
+    type_of_model: Optional[str]
+    type_of_task: Optional[str]
+
+
 class ClassInfo(NamedTuple):
     """
     Tuple for storing class general information.
@@ -25,6 +39,7 @@ class ClassInfo(NamedTuple):
     class_type: str  # transformer, ...
     class_name: str
     transformer_description: TransformerDescription
+    ml_model_description: MLModelDescription
 
 
 class MetaClass(ABC):
@@ -41,6 +56,10 @@ class MetaClass(ABC):
                 input_elements_type=None,
                 output_type=None,
                 output_elements_type=None
+            ),
+            ml_model_description=MLModelDescription(
+                type_of_model=None,
+                type_of_task=None
             )
         )
 
@@ -50,6 +69,13 @@ class MetaClass(ABC):
         :param transformer_description: TransformerDescription.
         """
         self._class_info = self._class_info._replace(transformer_description=transformer_description)
+
+    def set_ml_model_description(self, ml_model_description: MLModelDescription) -> None:
+        """
+        Sets the transformer description.
+        :param ml_model_description: MLModelDescription.
+        """
+        self._class_info = self._class_info._replace(ml_model_description=ml_model_description)
 
     def get_class_type(self) -> str:
         """

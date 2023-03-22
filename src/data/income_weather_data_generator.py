@@ -5,11 +5,14 @@ File for generating regression _data simulating income based on the date and wea
 The documentation can be found in notebook/documentation/income_weather_data_generator_documentation.py.
 """
 from datetime import datetime, timedelta
-from typing import List, Union, Tuple, Any
+from typing import Tuple, List
+from typing import Union, Any
 
-from numpy import random, array, ndarray, dtype
+from numpy import ndarray, dtype, array, zeros, arange
+from numpy import random
 from numpy import sum as summation
 from pandas import DataFrame, get_dummies
+from pandas import Series
 
 from src.transformations.time_series_windows import TimeSeriesWindowsNumpy
 
@@ -113,6 +116,7 @@ class IncomeWeatherDataGenerator:
         self._X_multi, _ = self._time_series_window_transformer.fit_predict(
             data=df.to_numpy(), input_window_len=input_window_len, output_window_len=0, shift=1
         )
+        random.seed(self._seed)
         self._weights_multi = random.randint(low=-20, high=100, size=self._X_multi[0, :, :].shape)
         # self._Y_multi = [nan] * (self._X_multi[0].shape[0] - 1)
         list_pom = []
@@ -122,6 +126,144 @@ class IncomeWeatherDataGenerator:
         n = len(list_pom)
         self._Y_multi = array(list_pom)
         self._Y_multi = self._Y_multi.reshape((n, 1))
+
+    @staticmethod
+    def _create_classes_for_multidim_ml_data(Y: Series, bin_mean: float, ter_25: float, ter_75: float) -> \
+            Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], \
+                  ndarray[Any, dtype[Any]]]:
+        """
+        Creates the binary output attribute above threshold Y_bin, dense tertiary attribute Y_ter and sparse
+        Y_ter_oh for the output variable.
+        :param Y: Series. Series of the output.
+        :param bin_mean: float. Mean for binary.
+        :param ter_25: float. Lower bound for tertiary.
+        :param ter_75: float. Upper bound for tertiary.
+        :return: Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], \
+                    ndarray[Any, dtype[Any]]]. (Y_bin, Y_ter, Y_ter_oh).
+        """
+        # regression
+        Y_reg: ndarray[Any, dtype[Any]] = Y
+
+        # binary
+        Y_bin: ndarray[Any, dtype[Any]] = array(Y_reg > bin_mean).astype(int)
+
+        # terciary
+        Y_ter: ndarray[Any, dtype[Any]] = array(Y_reg > ter_25).astype(int) + array(Y_reg > ter_75).astype(int)
+
+        p = 3
+        Y_ter_oh: ndarray[Any, dtype[Any]] = zeros((len(Y_bin), p))
+        Y_ter_oh[arange(Y_ter.shape[0]), Y_ter.reshape((Y_ter.shape[0],))] = 1
+
+        return Y_reg, Y_bin, Y_ter, Y_ter_oh
+
+    # pylint: disable=too-many-locals
+    def generate_multidim_ml_data(self) -> Tuple[Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]],
+                                                 Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]],
+                                                 Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]], \
+                                                 Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]],
+                                                 Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]]]:
+        """
+        :return: (train_X, test_X), (train_Y_reg, test_Y_reg), (train_Y_bin, test_Y_bin), (train_Y_ter, test_Y_ter), \
+               (train_Y_ter_oh, test_Y_ter_oh)
+        """
+        start_date = "2000-01-01"
+        n = 365 * 15 + 4
+        betas = [30., 2, 1, 4, 3, 6, -1, -3, 0, -10, 25, 10]
+        sigma = 10
+        _, _, train_X_multi, train_Y_multi = self.generate(start_date, betas, n, sigma)
+
+        start_date = "2016-01-01"
+        n = 365 * 5 + 2
+        betas = [30., 2, 1, 4, 3, 6, -1, -3, 0, -10, 25, 10]
+        sigma = 10
+        _, _, test_X_multi, test_Y_multi = self.generate(start_date, betas, n, sigma)
+
+        train_Y_reg, train_Y_bin, train_Y_ter, train_Y_ter_oh = self._create_classes_for_multidim_ml_data(
+            train_Y_multi, 19000., 17000., 21000.
+        )
+        test_Y_reg, test_Y_bin, test_Y_ter, test_Y_ter_oh = self._create_classes_for_multidim_ml_data(
+            test_Y_multi, 19000., 17000., 21000.
+        )
+
+        return (train_X_multi, test_X_multi), (train_Y_reg, test_Y_reg), (train_Y_bin, test_Y_bin), (
+            train_Y_ter, test_Y_ter), (train_Y_ter_oh, test_Y_ter_oh)
+
+    # pylint: enable=too-many-locals
+
+    @staticmethod
+    def _create_classes_for_basic_ml_data(Y: Series, bin_mean: float, ter_25: float, ter_75: float) -> \
+            Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], \
+                  ndarray[Any, dtype[Any]]]:
+        """
+        Creates the binary output attribute above threshold Y_bin, dense tertiary attribute Y_ter and sparse
+        Y_ter_oh for the output variable.
+        :param Y: Series. Series of the output.
+        :param bin_mean: float. Mean for binary.
+        :param ter_25: float. Lower bound for tertiary.
+        :param ter_75: float. Upper bound for tertiary.
+        :return: Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]], \
+                    ndarray[Any, dtype[Any]]]. (Y_reg, Y_bin, Y_ter, Y_ter_oh).
+        """
+        # regression
+        Y_reg: ndarray[Any, dtype[Any]] = array(Y).reshape((len(Y), 1))
+
+        # binary
+        Y_bin: ndarray[Any, dtype[Any]] = array([[1] if x else [0] for x in list(Y > bin_mean)])
+
+        # terciary
+        pom_1 = [1 if x else 0 for x in list(Y > ter_25)]
+        pom_2 = [1 if x else 0 for x in list(Y > ter_75)]
+        Y_ter: ndarray[Any, dtype[Any]] = array([x + y for x, y in zip(pom_1, pom_2)])
+
+        p = 3
+        Y_ter_oh: ndarray[Any, dtype[Any]] = zeros((len(Y_bin), p))
+        Y_ter_oh[arange(Y_ter.size), Y_ter] = 1
+
+        Y_ter = Y_ter.reshape((len(Y_ter), 1))
+
+        return Y_reg, Y_bin, Y_ter, Y_ter_oh
+
+    # pylint: disable=too-many-locals
+    def generate_basic_ml_data(self) -> Tuple[Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]],
+                                              Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]],
+                                              Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]], \
+                                              Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]],
+                                              Tuple[ndarray[Any, dtype[Any]], ndarray[Any, dtype[Any]]]]:
+        """
+        :return: (train_X, test_X), (train_Y_reg, test_Y_reg), (train_Y_bin, test_Y_bin), (train_Y_ter, test_Y_ter), \
+               (train_Y_ter_oh, test_Y_ter_oh)
+        """
+        start_date = "2000-01-01"
+        n = 365 * 15 + 4
+        betas = [30., 2, 1, 4, 3, 6, -1, -3, 0, -10, 25, 10]
+        sigma = 10
+        train_data, train_data_transformed, _, _ = self.generate(start_date, betas, n, sigma)
+
+        start_date = "2016-01-01"
+        n = 365 * 5 + 2
+        betas = [30., 2, 1, 4, 3, 6, -1, -3, 0, -10, 25, 10]
+        sigma = 10
+        test_data, test_data_transformed, _, _ = self.generate(start_date, betas, n, sigma)
+
+        train_Y_reg, train_Y_bin, train_Y_ter, train_Y_ter_oh = self._create_classes_for_basic_ml_data(
+            train_data[ATTR_OUTPUT], 700., 500., 900.
+        )
+        test_Y_reg, test_Y_bin, test_Y_ter, test_Y_ter_oh = self._create_classes_for_basic_ml_data(
+            test_data[ATTR_OUTPUT], 700., 500., 900.
+        )
+
+        train_data_transformed.drop(ATTR_RANDOM, axis=1, inplace=True)
+        train_data_transformed.drop(ATTR_OUTPUT, axis=1, inplace=True)
+        train_X: ndarray[Any, dtype[Any]] = train_data_transformed.to_numpy()
+
+        test_data_transformed.drop(ATTR_RANDOM, axis=1, inplace=True)
+        test_data_transformed.drop(ATTR_OUTPUT, axis=1, inplace=True)
+        test_X: ndarray[Any, dtype[Any]] = test_data_transformed.to_numpy()
+
+        return (train_X, test_X), (train_Y_reg, test_Y_reg), (train_Y_bin, test_Y_bin), (train_Y_ter, test_Y_ter), \
+               (train_Y_ter_oh, test_Y_ter_oh)
+
+    # pylint: enable=too-many-locals
 
     def generate(self, start_date: str, betas: List[Union[int, float]], n: int = 100, sigma: int = 10,
                  input_window_len: int = 20) -> Tuple[DataFrame, DataFrame, ndarray[Any, dtype[Any]], \
@@ -138,11 +280,13 @@ class IncomeWeatherDataGenerator:
                 Example: [30.1, 2, 1, 4, 3, 6, -1, -3, 0, -10, 25, 10]
         :param n: int. Number of days to be generated.
         :param sigma: Union[int, float]. Intercept coefficient.
-        :param input_window_len: int. Lenght of the historical data backwards for creating multidimensional
+        :param input_window_len: int. Length of the historical data backwards for creating multidimensional
             regression.
         :return: Tuple[DataFrame, DataFrame, List[ndarray[Any, dtype[Any]]], List[ndarray[Any, dtype[Any]]]].
                  Non-tranformed _data frame, transformed _data frame, array of multi dimensional regression X and Y.
         """
+        self._data = DataFrame()
+
         self._n = n
 
         # generate columns

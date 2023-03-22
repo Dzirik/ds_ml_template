@@ -7,7 +7,7 @@ File for storing global constants.
 ENV_DASH_DEBUG_MODE = "ENV_DASH_DEBUG_MODE"
 ENV_DASH_DOCKER = "ENV_DASH_DOCKER"
 ENV_CONFIG = "ENV_CONFIG"
-DEFAULT_CONFIG = "python_personal"  # "python_repo"
+DEFAULT_CONFIG = "python_local"  # "python_repo"
 ENV_LOGGER = "ENV_LOGGER"
 DEFAULT_LOGGER = "logger_file_console"
 ENV_RUNNING_UNIT_TESTS = "ENV_RUNNING_UNIT_TESTS"

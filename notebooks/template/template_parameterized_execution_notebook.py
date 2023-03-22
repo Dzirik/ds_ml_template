@@ -17,6 +17,24 @@
 
 # # Template Parameterized Execution Notebook
 
+# ### THERE WERE  ERRORS RUDING RUN
+# First One:
+# - Errors:
+#     - ImportError: DLL load failed while importing _sqlite3: The specified module could not be found.
+#     - papermill RuntimeError: Kernel died before replying to kernel_info.
+# - The solution is [here](https://stackoverflow.com/questions/54876404/unable-to-import-sqlite3-using-anaconda-python)
+#     - Download [sqlite3.dll](https://www.sqlite.org/download.html)
+#     - Copy into C:\Users\YOURUSER\Anaconda3\DLLs (or C:\ProgramData\Anaconda3\DLLs).  
+#
+# Error running final notebook:
+# - Error:
+#     - ImportError: DLL load failed while importing _ssl: The specified module could not be found.
+# - The solution: 
+#     - Comment out get_notebook_name().
+#     - Comment out its usage and replace with string.
+#
+# ### Usage
+#
 # There is a usage of the [papermill](https://github.com/nteract/papermill) library in the core of this functionality. Please see the page and read about the usage, it is well written and documented. Hints:
 # * First, turn on the tabs option in View/Cells Toolbar/Tags. <img src="..\..\assets\par_ntb_tag.png">.
 # * Second, add a *parameters* tag to the cell where the selected variables to be parameterized are. If not specified/tagged, the parameters will be added as a separate cell at the top of the notebook. <img src="..\..\assets\par_ntb_tag_add.png">  

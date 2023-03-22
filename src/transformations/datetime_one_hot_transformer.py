@@ -204,5 +204,11 @@ class DatetimeOneHotEncoderTransformer(BaseTransformer):  # type:ignore
         prediction: ndarray[Any, dtype[Any]]
         prediction = self._encoder.transform(numerical_attributes).toarray()
         return prediction
+
+    def inverse(self) -> None:
+        """
+        Does the inverse transformation.
+        """
+        return None
     # pylint: enable=arguments-differ
     # pylint: enable=arguments-renamed

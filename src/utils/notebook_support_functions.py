@@ -21,10 +21,16 @@ def get_notebook_name() -> str:
     for server in servers:
         response = get(f"{server['url']}api/sessions", params={'token': server.get('token', '')})
         for load in loads(response.text):
-            if load['kernel']['id'] == kernel_id:
-                relative_path = load['notebook']['path']
-                return str(relative_path.split("/")[-1])
-    return ""
+            # sometimes it is error getting the name
+            # pylint: disable=bare-except
+            try:
+                if load["kernel"]["id"] == kernel_id:
+                    relative_path = load["notebook"]["path"]
+                    return str(relative_path.split("/")[-1])
+            except:
+                pass
+            # pylint: disable=bare-except
+    return "NAME"
 
 
 def create_button() -> HTML:

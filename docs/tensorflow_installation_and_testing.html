@@ -14804,9 +14804,9 @@ Necessary libraries for notebook functionality:</p>
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>A: ../../configurations\logger_file_console.conf
-2022-05-19 20:28:01,233 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2022-05-19 20:28:01,237 - file_console - DEBUG - Logger was created on JIRI-A in branche 001_template_update.
-2022-05-19 20:28:01,238 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer started;
+2023-03-21 16:29:48,989 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
+2023-03-21 16:29:48,992 - file_console - DEBUG - Logger was created on WS-3000 in branche 005_cumulative_repository_update.
+2023-03-21 16:29:48,993 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer started;
 </pre>
 </div>
 </div>
@@ -14862,11 +14862,11 @@ Necessary libraries for notebook functionality:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2022-05-19 20:28:03,239 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
-2022-05-19 20:28:03,590 - h5py._conv - DEBUG - Creating converter from 7 to 5
-2022-05-19 20:28:03,591 - h5py._conv - DEBUG - Creating converter from 5 to 7
-2022-05-19 20:28:03,591 - h5py._conv - DEBUG - Creating converter from 7 to 5
-2022-05-19 20:28:03,592 - h5py._conv - DEBUG - Creating converter from 5 to 7
+<pre>2023-03-21 16:29:49,599 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
+2023-03-21 16:29:49,695 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2023-03-21 16:29:49,696 - h5py._conv - DEBUG - Creating converter from 5 to 7
+2023-03-21 16:29:49,696 - h5py._conv - DEBUG - Creating converter from 7 to 5
+2023-03-21 16:29:49,697 - h5py._conv - DEBUG - Creating converter from 5 to 7
 </pre>
 </div>
 </div>
@@ -15029,7 +15029,7 @@ Constants for the notebook.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15051,7 +15051,7 @@ Constants for the notebook.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2022-05-19 20:28:05,910 - file_console - DEBUG - Python config was created from python_local.conf file.
+<pre>2023-03-21 16:29:50,488 - file_console - DEBUG - Python config was created from python_local.conf file.
 </pre>
 </div>
 </div>
@@ -15138,7 +15138,7 @@ Device Description:
 
 
 Device Name: /device:GPU:0
-Device Description: device: 0, name: NVIDIA GeForce RTX 3080 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+Device Description: device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:0b:00.0, compute capability: 8.6
 
 
 </pre>
@@ -15195,7 +15195,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 3080 Laptop GPU, pci bus
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;NVIDIA GeForce RTX 3080 Laptop GPU&#39;]</pre>
+<pre>[&#39;NVIDIA GeForce RTX 3090&#39;]</pre>
 </div>
 
 </div>
@@ -15515,19 +15515,19 @@ device_type: &#34;CPU&#34;
 memory_limit: 268435456
 locality {
 }
-incarnation: 13406036370590854799
+incarnation: 2294148171231323547
 xla_global_id: -1
 ,
  name: &#34;/device:GPU:0&#34;
 device_type: &#34;GPU&#34;
-memory_limit: 14286848000
+memory_limit: 22722641920
 locality {
   bus_id: 1
   links {
   }
 }
-incarnation: 7333315078758486897
-physical_device_desc: &#34;device: 0, name: NVIDIA GeForce RTX 3080 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6&#34;
+incarnation: 13278383597210127592
+physical_device_desc: &#34;device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:0b:00.0, compute capability: 8.6&#34;
 xla_global_id: 416903419
 ]
 </pre>
@@ -15598,7 +15598,7 @@ xla_global_id: 416903419
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;NVIDIA GeForce RTX 3080 Laptop GPU&#39;]</pre>
+<pre>[&#39;NVIDIA GeForce RTX 3090&#39;]</pre>
 </div>
 
 </div>
@@ -15654,7 +15654,7 @@ xla_global_id: 416903419
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;NVIDIA GeForce RTX 3080 Laptop GPU&#39;]</pre>
+<pre>[&#39;NVIDIA GeForce RTX 3090&#39;]</pre>
 </div>
 
 </div>
@@ -15706,7 +15706,7 @@ xla_global_id: 416903419
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2022-05-19 20:28:09,005 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer ended; Process Duration [s]: 7.77; Process Duration [m]: 0.13
+<pre>2023-03-21 16:29:51,236 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer ended; Process Duration [s]: 2.24; Process Duration [m]: 0.04
 </pre>
 </div>
 </div>

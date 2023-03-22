@@ -95,6 +95,12 @@ class TimeSeriesWindowsDummy(BaseTransformer):  # type:ignore
                  list.
         """
         return self._transform(data, input_window_len, output_window_len, shift)
+
+    def inverse(self) -> None:
+        """
+        Does the inverse transformation.
+        """
+        return None
     # pylint: enable=arguments-differ
 
 
@@ -133,11 +139,13 @@ class TimeSeriesWindowsNumpy(BaseTransformer):  # type:ignore
         n = data.shape[0]
 
         array_for_indices: ndarray[Any, dtype[Any]]
-        if data.shape[1] > 1:
-            array_for_indices = array(list(range(n))).reshape(-1, 1)
-        else:
-            array_for_indices = data
-            data = array([])
+        array_for_indices = array(list(range(n))).reshape(-1, 1)
+        # second part of if wasn't even tested
+        # if data.shape[1] > 1:
+        #     array_for_indices = array(list(range(n))).reshape(-1, 1)
+        # else:
+        #     array_for_indices = data
+        #     data = array([])
 
         shape = (array_for_indices.size - window_width + 1, window_width)
         strides = (array_for_indices.itemsize, array_for_indices.itemsize)
@@ -145,10 +153,12 @@ class TimeSeriesWindowsNumpy(BaseTransformer):  # type:ignore
                                                                          strides=strides)
 
         output: List[ndarray[Any, dtype[Any]]]
-        if data is None:
-            output = hsplit(indices, (input_window_len, window_width))
-        else:
-            output = hsplit(data[indices,], (input_window_len, window_width))
+        output = hsplit(data[indices,], (input_window_len, window_width))
+        # first part of if wasn't even tested
+        # if data is None:
+        #     output = hsplit(indices, (input_window_len, window_width))
+        # else:
+        #     output = hsplit(data[indices,], (input_window_len, window_width))
 
         rows_to_take = list(range(0, n - window_width + 1, shift))
         return output[0][rows_to_take], output[1][rows_to_take]
@@ -189,6 +199,12 @@ class TimeSeriesWindowsNumpy(BaseTransformer):  # type:ignore
                  list.
         """
         return self._transform(data, input_window_len, output_window_len, shift)
+
+    def inverse(self) -> None:
+        """
+        Does the inverse transformation.
+        """
+        return None
     # pylint: enable=arguments-differ
 
 
@@ -274,4 +290,10 @@ class TimeSeriesWindowsPandas(BaseTransformer):  # type:ignore
                  list.
         """
         return self._transform(df, input_window_len, output_window_len, shift)
+
+    def inverse(self) -> None:
+        """
+        Does the inverse transformation.
+        """
+        return None
     # pylint: enable=arguments-differ

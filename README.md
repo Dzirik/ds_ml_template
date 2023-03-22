@@ -5,8 +5,13 @@ Repository template for data science and machine learning projects.
 <a name="table-of-content"></a>
 # Table of Content
 - [Introduction](#introduction)  
-- [Installation](#installation)  
-- [Repository Set Up](#repository-set-up)  
+- [Installation Windows](#installation-windows)
+    - [Prerequisites](#prerequisites-windows)
+    - [Repository Set Up Step By Step](#repository-set-up-step-by-step-windows)
+    - [Fast Repository Set Up](#fast-repository-set-up-windows)
+- [Installation Linux](#installation-linux)  
+    - [Prerequisites](#prerequisites-linux)
+    - [Repository Set Up](#repository-set-up-linux) 
 - [Files and Folders Structure](#files-and-folders-structure)  
 - [Code Quality](#code-quality)  
     - [Mypy](#mypy)
@@ -37,11 +42,15 @@ Repository template for data science and machine learning projects.
 This repository serves as a **template for Data Science and Machine Learning projects in Python 3.x ecosystem**. 
 It contains basic functionality and tools for easy and smooth work.
 
-<a name="installation"></a>
-# Installation
+<a name="installation-windows"></a>
+# Installation Windows
 [ToC](#table-of-content)  
 
-The installation with which the repository works is:
+<a name="prerequisites-windows"></a>
+## Prerequisites
+[ToC](#table-of-content) 
+
+Working set up:
 - Windows 10 operating system.
   
 - Installing Anaconda.
@@ -53,7 +62,7 @@ The installation with which the repository works is:
         - `conda --version`: 4.10.3
         - `python --version`: 3.9.7
 
-- Installing Tensorflow prerequisites.
+- Installing Tensorflow prerequisites for GPU usage.
     1. Install MS Visual studio version 2019.
     2. Install Cuda Toolking 11.2 (cuda_11.2.0_460.89_win10.exe).
     3. Install cuDNN compatible with 11.2, versn 8.1 was chose (cudnn-11.2-windows-x64-v8.1.0.77.zip) .
@@ -62,7 +71,7 @@ The installation with which the repository works is:
         - *C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2*
         - *C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.2\libnvvp*
     6. The compatible TenforFlow library is in *requirements.txt* and will be automatically installed during 
-       [*Repository Set Up*](#repository-set-up) chapter.
+       [*Repository Set Up Step By Step*](#repository-set-up-step-by-step-windows) chapter.
 
 - Installing cygwin to be able to run make commands on Windows operating system.
     - Follow the video */docs/2022-01-21_cygwin_make_set_up.mp4*.
@@ -70,11 +79,11 @@ The installation with which the repository works is:
         - Binutils: 2.37-1
         - Make: 4.2.1-2
 
-<a name="repository-set-up"></a>
-# Repository Set Up
+<a name="repository-set-up-step-by-step-windows"></a>
+## Repository Set Up Step By Step
 [ToC](#table-of-content)  
 
-Clone the repository and do the following to set it up properly:
+Clone the repository, move to the main repository folder location, and do the following to set it up properly:
 
 1. Make a copy of a file *make_config_template.mk* and give it a name *make_config.mk*.
 2. Open a console in the repository folder and put there `make hello` command. A welcome and congratulation message 
@@ -92,16 +101,74 @@ to set up global variables (not only) for configurations. A new configuration fi
    
     The default value of `DEFAULT_CONFIG` is set to `python_personal`. So for everything to work correctly, please create 
 */configurations/python_personal.conf* file.
-7. In the console, activate the virtual environment `.venv\Scripts\activate`.
-8. Test the repository code running `make all -i`. All tests should run without any problem.
-9. Create a playground notebook */notebooks/raw/playground_notebook.py*. This one is excluded from sync, so it can be 
+6. In the console, activate the virtual environment `.venv\Scripts\activate`.
+7. Test the repository code running `make all -i`. All tests should run without any problem.
+8. Create a playground notebook */notebooks/raw/playground_notebook.py*. This one is excluded from sync, so it can be 
 used for testing and development.
-10. The TensorFlow installation can be checked by running the notebook 
+9. The TensorFlow installation can be checked by running the notebook 
 */notebooks/documentation/tensorflow_installation_and_testing.py*.
+
+<a name="fast-repository-set-up-windows"></a>
+## Fast Repository Set Up
+[ToC](#table-of-content)  
+
+NOTE: For detailed information, please read the 
+[*Repository Set Up Step By Step*](#repository-set-up-step-by-step-windows) chapter. This version is for fast set up.
+
+1. Run Windows PowerShell as Administrator.
+2. Go to the repository folder.
+3. Run `.\install_win.ps1` PowerShell script. It creates all the necessary files.
+   - If you do not have a permission, set up temporal or user permission as written 
+   [here](https://www.easy365manager.com/script-ps1-cannot-be-loaded-because-running-scripts-is-disabled-on-this-system/).
+4. Run Anaconda prompt and move to the main repository folder.
+5. Run `make create-venv` to create a virtual environment.
+6. Activate the virtual environment `.venv\Scripts\activate`.
+7. Test the repository code quality by running `make all -i`. All tests should run without any problem.
+
+NOTE: The TensorFlow installation can be checked by running the notebook 
+*/notebooks/documentation/tensorflow_installation_and_testing.py*.
+
+<a name="installation-linux"></a>
+# Installation Linux
+[ToC](#table-of-content)  
+
+**NOTE: This part is not complete and not properly tested, because my main development environment is Windows. So 
+mainly some code snippets from testing on Ubuntu 22.04 without GPU.**
+
+<a name="prerequisites-linux"></a>
+## Prerequisites
+[ToC](#table-of-content) 
+
+Set Up:
+- Ubuntu 22.04
+- Anaconda of the same version as in [*Windows Installation*](installation-windows) section.
+- No GPU support was tested for TensorFlow.
+- Make installation: `sudo apt-get install make`.
+
+<a name="repository-set-up-linux"></a>
+## Repository Set Up
+[ToC](#table-of-content) 
+
+Clone the repository, move to the main repository folder location, and do the following to set it up properly:
+1. Run `sh install_linux.sh` to:
+    - Make a copy of a file *make_config_template.mk* and give it a name *make_config.mk*.
+    - Create *requirements_linux.txt* by removing windows specific libraries from *requirements.txt*. The
+      file is excluded from sync with remote in *.gitignore*.
+    - Install the virtual environment .venv.
+    - Copy default repository configuration to personal configuration (see 
+    - [Windows Repository Set Up](#repository-set-up-windows) for more information).
+    - Copy */notebooks/template/template_notebook_repo.py* to  */notebooks/raw/playground_notebook.py*. This file is 
+      excluded from sync with remote in *.gitignore*.
+2. In the console, activate the virtual environment `source .venv\bin\activate`.
+3. Run `make hello` command to see a welcome and congratulation message.
+4. In the console, run `make` or `make help`; a help showing all possible make commands will display.
+5. Test the repository code running `make all -i`. All tests should run without any problem. 
+6. The TensorFlow installation can be checked by running the notebook 
+*/notebooks/documentation/tensorflow_installation_and_testing.py*. 
 
 <a name="files-and-folders-structure"></a>
 # Files and Folders Structure
-[ToC](#table-of-content)  
+[ToC](#table-of-content)
 
 ## Folders
 [ToC](#table-of-content)  
@@ -122,6 +189,8 @@ used for testing and development.
         - Data from external sources (dictionaries, synonyms, ...).
     - *interim*
         - Intermediate data between raw and fully processed. Not raw and also not finalized yet.
+    - *logs*
+        - Folder for logs, mainly from TenforFlow.
     - *processed*
         - Final data after all the preprocessing, merging, cleaning, transformation, enrichment, feature engineering etc.
     - *raw*
@@ -170,6 +239,10 @@ used for testing and development.
         - Code for reading, formatting, and manipulating the data.
     - *exceptions*
         - Code for custom exceptions.
+    - *external*
+        - Code taken from external resources. **It is excluded from code quality check**.
+    - *jobs*
+        - Folder for code doing overall jobs tasks.
     - *models*
         - Code for models.
     - *pipelines*

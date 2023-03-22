@@ -139,7 +139,7 @@ CRY_CONFIG_NAME = "cry_basic"
 # # ANALYSIS
 # [ToC](#ToC)   
 
-config = Config().get()
+config = Config().get_data()
 
 # <a name="2-1"></a>
 # ## Overview of Devices Available
