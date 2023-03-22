@@ -117,11 +117,13 @@ NOTE: For detailed information, please read the
 
 1. Run Windows PowerShell as Administrator.
 2. Go to the repository folder.
-3. Run `install_win.ps1` PowerShell script. It creates all the necessary files.
+3. Run `.\install_win.ps1` PowerShell script. It creates all the necessary files.
    - If you do not have a permission, set up temporal or user permission as written 
    [here](https://www.easy365manager.com/script-ps1-cannot-be-loaded-because-running-scripts-is-disabled-on-this-system/).
-4. Run `make create-venv` in PowerShell console or in Anaconda prompt, if some error in PowerShell. (In general, 
-   make commands work in PowerShell, but some errors were encountered during the run.)
+4. Run Anaconda prompt and move to the main repository folder.
+5. Run `make create-venv` to create a virtual environment.
+6. Activate the virtual environment `.venv\Scripts\activate`.
+7. Test the repository code quality by running `make all -i`. All tests should run without any problem.
 
 NOTE: The TensorFlow installation can be checked by running the notebook 
 */notebooks/documentation/tensorflow_installation_and_testing.py*.
