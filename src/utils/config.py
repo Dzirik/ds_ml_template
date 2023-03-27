@@ -108,6 +108,7 @@ if __name__ == "__main__":
     print(c.get_data().name)
     print(c.get_data().path.external_data)
     print(c.get_data().path.logs_data)
+    print(c.get_data().path.models)
 
     print(c.get_data().dash.sidebar_config)
 

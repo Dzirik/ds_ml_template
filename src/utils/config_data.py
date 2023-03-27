@@ -15,6 +15,7 @@ class Path(NamedTuple):
     processed_data: str
     raw_data: str
     results_data: str
+    models: str
 
 
 class DatabaseCredentials(NamedTuple):
