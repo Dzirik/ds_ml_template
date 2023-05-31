@@ -19,7 +19,7 @@ from src.utils.timer import Timer
 # THESE PARAMETERS ARE IN CONFIG FILE
 DEFAULT_NTB_PATH = "../../notebooks/template/template_parameterized_execution_notebook.ipynb"
 DEFAULT_OUTPUT_FOLDER = "../../reports"
-DEFAULT_LIST_OF_PARAMS: List[Dict[str, Union[str, float]]] = [
+DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, float]]]] = [
     {"n": 10, "a": 1, "b": 1, "title": "Positive"},
     {"n": 15, "a": -1, "b": -1, "title": "Negative"},
     {"n": 20, "a": 0, "b": 2, "title": "Zero"}
@@ -42,21 +42,21 @@ class ParamNotebookExecutioner:
 
         self._ntb_path: str
         self._output_folder: str
-        self._list_of_params: List[Dict[str, Union[str, float]]]
+        self._list_of_params: List[Dict[str, Optional[Union[str, float]]]]
 
     def _set_up_params(self) -> None:
         """
         Sets up the params for run. If there is specified in config not to do it, it returns default values,
         otherwise it gets param from config.
         """
-        if self._config.get().param_ntb_execution.use_default:
+        if self._config.get_data().param_ntb_execution.use_default:
             self._ntb_path = DEFAULT_NTB_PATH
             self._output_folder = DEFAULT_OUTPUT_FOLDER
             self._list_of_params = DEFAULT_LIST_OF_PARAMS
         else:
-            self._ntb_path = self._config.get().param_ntb_execution.ntb_path
-            self._output_folder = self._config.get().param_ntb_execution.output_folder
-            self._list_of_params = self._config.get().param_ntb_execution.notebook_executioner_params
+            self._ntb_path = self._config.get_data().param_ntb_execution.ntb_path
+            self._output_folder = self._config.get_data().param_ntb_execution.output_folder
+            self._list_of_params = self._config.get_data().param_ntb_execution.notebook_executioner_params
 
     def execute(self, notebook_name: str = "notebook_", name_with_number: bool = False, convert_to_html: bool = True) \
             -> None:
