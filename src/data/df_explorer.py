@@ -179,3 +179,19 @@ class DFExplorer:
         for attr in attr_names_to_compare:
             print(f"Checking for Attribute: {attr}")
             self._print_comparison(sum(list(df_1[attr])), sum(list(df_2[attr])))
+
+    @staticmethod
+    def compute_min_max_indicators(df: DataFrame) -> DataFrame:
+        """
+        Computes min, max and its difference.
+        :param df: DataFrame.
+        :return: DataFrame. Output data frame.
+        """
+        df_out = DataFrame()
+        # series = df.max(axis=0) - df.min(axis=0)
+        df_out["ATTRS"] = df.columns
+        df_out["MIN"] = df.min(axis=0).to_numpy()
+        df_out["MAX"] = df.max(axis=0).to_numpy()
+        df_out["MAX-MIN"] = list(df.max(axis=0) - df.min(axis=0))
+
+        return df_out
