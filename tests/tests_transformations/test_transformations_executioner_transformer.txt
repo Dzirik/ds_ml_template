@@ -1,0 +1,63 @@
+>>> from src.data.anomaly_detection_sample_data import AnomalyDetectionSampleData, ATTRS, ATTR_DATE_TIME, ATTR_ID, plot_data_frame_series
+>>> from src.transformations.transformations_executioner_transformer import TransformationsExecutionerTransformer, TransformerConfiguration
+>>> df_data = AnomalyDetectionSampleData(abs_values=False, add_zeros=False).generate(n=5, seed_number=37896)
+>>> from tests.tests_transformations.test_transformations_executioner_transformer import C_DIFF, C_MM_SINGLE, C_SHIFT
+>>> df_data[ATTRS[0]] = [float(2**i) for i in range(1, 6)]
+>>> df_data[ATTRS[1]] = [float(i) for i in range(1, 6)]
+>>> df_data[ATTRS[2]] = [float(i*2) for i in range(1, 6)]
+>>> df_data[ATTRS[3]] = [float(i*20) for i in range(1, 6)]
+>>> df_data[ATTRS[4]] = [-100., -50., 0., 50., 100.]
+>>> print(ATTRS)
+['ATTR_1', 'ATTR_2', 'ATTR_3', 'ATTR_4', 'ATTR_5']
+>>> print(df_data)
+            DATE_TIME  ID  ATTR_1  ATTR_2  ATTR_3  ATTR_4  ATTR_5
+<BLANKLINE>
+1980-01-01 1980-01-01   0     2.0     1.0     2.0    20.0  -100.0
+1980-01-02 1980-01-02   1     4.0     2.0     4.0    40.0   -50.0
+1980-01-03 1980-01-03   2     8.0     3.0     6.0    60.0     0.0
+1980-01-04 1980-01-04   3    16.0     4.0     8.0    80.0    50.0
+1980-01-05 1980-01-05   4    32.0     5.0    10.0   100.0   100.0
+>>> print(C_DIFF)
+TransformerConfiguration(name='DifferenceTransformer', fit=True, params_for_fit={'periods': 1}, params_fitted={})
+>>> print(C_MM_SINGLE)
+TransformerConfiguration(name='MinMaxScalingTransformer', fit=True, params_for_fit={'single_columns': False}, params_fitted={})
+>>> print(C_SHIFT)
+TransformerConfiguration(name='ShiftByValueTransformer', fit=True, params_for_fit={'shift_value': -0.5}, params_fitted={})
+>>> transformer = TransformationsExecutionerTransformer()
+>>> df_out = transformer.fit_predict(df_data.copy(), [ATTRS[1]], [C_DIFF])
+>>> print(df_out)
+            DATE_TIME  ID  ATTR_1  ATTR_2  ATTR_3  ATTR_4  ATTR_5
+<BLANKLINE>
+1980-01-01 1980-01-01   0     2.0     0.0     2.0    20.0  -100.0
+1980-01-02 1980-01-02   1     4.0     1.0     4.0    40.0   -50.0
+1980-01-03 1980-01-03   2     8.0     1.0     6.0    60.0     0.0
+1980-01-04 1980-01-04   3    16.0     1.0     8.0    80.0    50.0
+1980-01-05 1980-01-05   4    32.0     1.0    10.0   100.0   100.0
+>>> df_out = transformer.fit_predict(df_data.copy(), ATTRS, [C_MM_SINGLE, C_SHIFT])
+>>> print(df_out)
+            DATE_TIME  ID  ATTR_1  ATTR_2  ATTR_3  ATTR_4  ATTR_5
+<BLANKLINE>
+1980-01-01 1980-01-01   0    0.01   0.005    0.01     0.1   -0.50
+1980-01-02 1980-01-02   1    0.02   0.010    0.02     0.2   -0.25
+1980-01-03 1980-01-03   2    0.04   0.015    0.03     0.3    0.00
+1980-01-04 1980-01-04   3    0.08   0.020    0.04     0.4    0.25
+1980-01-05 1980-01-05   4    0.16   0.025    0.05     0.5    0.50
+>>> print(transformer.inverse(df_out))
+            DATE_TIME  ID  ATTR_1  ATTR_2  ATTR_3  ATTR_4  ATTR_5
+<BLANKLINE>
+1980-01-01 1980-01-01   0     2.0     1.0     2.0    20.0  -100.0
+1980-01-02 1980-01-02   1     4.0     2.0     4.0    40.0   -50.0
+1980-01-03 1980-01-03   2     8.0     3.0     6.0    60.0     0.0
+1980-01-04 1980-01-04   3    16.0     4.0     8.0    80.0    50.0
+1980-01-05 1980-01-05   4    32.0     5.0    10.0   100.0   100.0
+>>> transformer_restored = TransformationsExecutionerTransformer()
+>>> transformer_restored.restore_from_params(transformer.get_params())
+>>> df_out_restored = transformer_restored.predict(df_data.copy())
+>>> print(df_out_restored)
+            DATE_TIME  ID  ATTR_1  ATTR_2  ATTR_3  ATTR_4  ATTR_5
+<BLANKLINE>
+1980-01-01 1980-01-01   0    0.01   0.005    0.01     0.1   -0.50
+1980-01-02 1980-01-02   1    0.02   0.010    0.02     0.2   -0.25
+1980-01-03 1980-01-03   2    0.04   0.015    0.03     0.3    0.00
+1980-01-04 1980-01-04   3    0.08   0.020    0.04     0.4    0.25
+1980-01-05 1980-01-05   4    0.16   0.025    0.05     0.5    0.50

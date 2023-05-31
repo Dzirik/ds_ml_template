@@ -285,6 +285,11 @@ good-names=i,
            X_data_list,
            Y_data_list,
            Y_hat,
+           df_train_X,
+           df_train_Y,
+           df_test_X,
+           df_test_Y,
+           X_df,
            _
 
 # Include a hint for the correct naming format with invalid-name.
