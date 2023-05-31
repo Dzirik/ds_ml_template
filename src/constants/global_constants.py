@@ -27,6 +27,7 @@ FOLDER_CONFIGURATIONS = "configurations"
 F = "f"  # fit function in transformers
 FP = "fp"  # fit_predict function in transformers
 P = "p"  # predict function in transformers
+I = "i"  # inverse function
 
 # Colors for visualizations
 COLORS = {
