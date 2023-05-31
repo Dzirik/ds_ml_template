@@ -825,6 +825,10 @@ The notebook is divided into four main parts.
 - ANALYSIS. The main code is supposed to be placed here. The code should be imported from files; no critical code should be placed in the notebook.
 - Final Timestamp. The notebook is marked with timestamps at the beginning and at the end. A summary is placed in this section.
 
+Final notebook versions:
+- v1.1
+  - Remove bugs while creating notebook for automatic run from the final notebook.
+
 <a name="parameterized-notebooks"></a>
 ## Parameterized Notebooks
 [ToC](#table-of-content)  
