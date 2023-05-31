@@ -1,0 +1,11 @@
+>>> from src.models.anomaly_detection_rules import NoAnomalyRule, FirstWecoRule, SecondWecoRule, ThirdWecoRule
+>>> from src.models.anomaly_detection_rules import FourthWecoRule
+>>> from numpy import array
+>>> FirstWecoRule().apply(residuals=array([10.]), std_est=2., side="both", alpha=1.)
+1
+>>> SecondWecoRule().apply(residuals=array([10., 1., 10.]), std_est=2., side="positive", alpha=2.)
+1
+>>> ThirdWecoRule().apply(residuals=array([-10., 1., -10., -9., -8.]), std_est=2., side="positive", alpha=2.)
+0
+>>> FourthWecoRule().apply(residuals=array([0.] + 7 * [1.]), std_est=1., side="positive", alpha=1.)
+0
