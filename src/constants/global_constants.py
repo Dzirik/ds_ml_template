@@ -38,3 +38,5 @@ COLORS = {
     "paper_background": {"color": "#000000", "opacity": 0},  # outside of the plot, black with 0 opacity
     "grid_background": {"color": "#858B97", "opacity": 0.4},
 }
+
+ATTR_TIME = "DATETIME"
