@@ -93,7 +93,7 @@ envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
 if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
     create_button()
-if SUPPORT_FUNCTIONS_READ and ADDAPT_WIDTH:
+if ADDAPT_WIDTH:
     display(HTML("<style>.container { width:100% !important; }</style>")) # notebook width
 
 # <a name="1-3"></a>
