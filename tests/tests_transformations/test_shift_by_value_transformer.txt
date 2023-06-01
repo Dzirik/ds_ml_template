@@ -1,0 +1,53 @@
+>>> from src.transformations.shift_by_value_transformer import ShiftByValueTransformer
+>>> from tests.tests_transformations.test_shift_by_value_transformer import ARRAY_BASES
+>>> from numpy import set_printoptions
+>>> set_printoptions(suppress=True)
+>>> print(ARRAY_BASES)
+[[   3.   30.  300.]
+ [  13.  130. 1300.]
+ [  23.  230. 2300.]
+ [  33.  330. 3300.]
+ [  43.  430. 4300.]
+ [  53.  530. 5300.]
+ [  63.  630. 6300.]
+ [  73.  730. 7300.]
+ [  83.  830. 8300.]
+ [  93.  930. 9300.]]
+>>> transformer = ShiftByValueTransformer()
+>>> output = transformer.fit_predict(data=ARRAY_BASES, shift_value=-3.)
+>>> print(output)
+[[   0.   27.  297.]
+ [  10.  127. 1297.]
+ [  20.  227. 2297.]
+ [  30.  327. 3297.]
+ [  40.  427. 4297.]
+ [  50.  527. 5297.]
+ [  60.  627. 6297.]
+ [  70.  727. 7297.]
+ [  80.  827. 8297.]
+ [  90.  927. 9297.]]
+>>> print(transformer.inverse(data=output))
+[[   3.   30.  300.]
+ [  13.  130. 1300.]
+ [  23.  230. 2300.]
+ [  33.  330. 3300.]
+ [  43.  430. 4300.]
+ [  53.  530. 5300.]
+ [  63.  630. 6300.]
+ [  73.  730. 7300.]
+ [  83.  830. 8300.]
+ [  93.  930. 9300.]]
+>>> transformer_2 = ShiftByValueTransformer()
+>>> transformer_2.restore_from_params(transformer.get_params())
+>>> print(transformer_2.predict(ARRAY_BASES))
+[[   0.   27.  297.]
+ [  10.  127. 1297.]
+ [  20.  227. 2297.]
+ [  30.  327. 3297.]
+ [  40.  427. 4297.]
+ [  50.  527. 5297.]
+ [  60.  627. 6297.]
+ [  70.  727. 7297.]
+ [  80.  827. 8297.]
+ [  90.  927. 9297.]]
+

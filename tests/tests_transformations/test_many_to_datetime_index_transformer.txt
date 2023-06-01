@@ -1,0 +1,58 @@
+>>> from pprint import pprint
+>>> from src.transformations.many_to_datetime_index_transformer import ManyToDatetimeIndexTransformer
+>>> from tests.tests_transformations.test_many_to_datetime_index_transformer import TS_DF, TS_SERIES, TS_LIST
+>>> TS_DF
+        TIME
+0 2018-02-05
+1 2018-03-11
+2 2018-06-06
+3 2018-07-01
+4 2018-07-29
+5 2019-01-03
+6 2019-05-19
+7 2019-07-04
+8 2019-07-11
+9 2019-12-04
+>>> TS_SERIES
+2018-02-05     3
+2018-03-11    72
+2018-06-06     1
+2018-07-01    41
+2018-07-29    77
+2019-01-03    99
+2019-05-19    62
+2019-07-04     5
+2019-07-11     7
+2019-12-04     6
+dtype: int64
+>>> pprint(TS_LIST)
+[Timestamp('2018-02-05 00:00:00'),
+ Timestamp('2018-03-11 00:00:00'),
+ Timestamp('2018-06-06 00:00:00'),
+ Timestamp('2018-07-01 00:00:00'),
+ Timestamp('2018-07-29 00:00:00'),
+ Timestamp('2019-01-03 00:00:00'),
+ Timestamp('2019-05-19 00:00:00'),
+ Timestamp('2019-07-04 00:00:00'),
+ Timestamp('2019-07-11 00:00:00'),
+ Timestamp('2019-12-04 00:00:00')]
+>>> transformer = ManyToDatetimeIndexTransforer()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'ManyToDatetimeIndexTransforer' is not defined
+>>> transformer = ManyToDatetimeIndexTransformer()
+>>> pprint(transformer.fit_predict(TS_DF))
+DatetimeIndex(['2018-02-05', '2018-03-11', '2018-06-06', '2018-07-01',
+               '2018-07-29', '2019-01-03', '2019-05-19', '2019-07-04',
+               '2019-07-11', '2019-12-04'],
+              dtype='datetime64[ns]', name='TIME', freq=None)
+>>> pprint(transformer.fit_predict(TS_SERIES))
+DatetimeIndex(['2018-02-05', '2018-03-11', '2018-06-06', '2018-07-01',
+               '2018-07-29', '2019-01-03', '2019-05-19', '2019-07-04',
+               '2019-07-11', '2019-12-04'],
+              dtype='datetime64[ns]', freq=None)
+>>> pprint(transformer.fit_predict(TS_LIST))
+DatetimeIndex(['2018-02-05', '2018-03-11', '2018-06-06', '2018-07-01',
+               '2018-07-29', '2019-01-03', '2019-05-19', '2019-07-04',
+               '2019-07-11', '2019-12-04'],
+              dtype='datetime64[ns]', freq=None)

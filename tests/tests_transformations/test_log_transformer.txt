@@ -1,0 +1,38 @@
+>>> from src.transformations.log_transformer import LogTransformer
+>>> from tests.tests_transformations.test_log_transformer import ARRAY_BASES
+>>> from numpy import set_printoptions
+>>> set_printoptions(suppress=True)
+>>> print(ARRAY_BASES)
+[[    0.             0.             0.             0.        ]
+ [    1.             1.71828183     5.             9.        ]
+ [    3.             6.3890561     35.            99.        ]
+ [    7.            19.08553692   215.           999.        ]
+ [   15.            53.59815003  1295.          9999.        ]
+ [   31.           147.4131591   7775.         99999.        ]]
+>>> transformer = LogTransformer()
+>>> output = transformer.fit_predict(data=ARRAY_BASES, base = 10.)
+>>> print(output)
+[[0.         0.         0.         0.        ]
+ [0.30103    0.43429448 0.77815125 1.        ]
+ [0.60205999 0.86858896 1.5563025  2.        ]
+ [0.90308999 1.30288345 2.33445375 3.        ]
+ [1.20411998 1.73717793 3.112605   4.        ]
+ [1.50514998 2.17147241 3.89075625 5.        ]]
+>>> print(transformer.inverse(data=output))
+[[    0.             0.             0.             0.        ]
+ [    1.             1.71828183     5.             9.        ]
+ [    3.             6.3890561     35.            99.        ]
+ [    7.            19.08553692   215.           999.        ]
+ [   15.            53.59815003  1295.          9999.        ]
+ [   31.           147.4131591   7775.         99999.        ]]
+>>> transformer.get_params()
+{'base': 10.0}
+>>> transformer_2 = LogTransformer()
+>>> transformer_2.restore_from_params(transformer.get_params())
+>>> print(transformer_2.predict(ARRAY_BASES))
+[[0.         0.         0.         0.        ]
+ [0.30103    0.43429448 0.77815125 1.        ]
+ [0.60205999 0.86858896 1.5563025  2.        ]
+ [0.90308999 1.30288345 2.33445375 3.        ]
+ [1.20411998 1.73717793 3.112605   4.        ]
+ [1.50514998 2.17147241 3.89075625 5.        ]]

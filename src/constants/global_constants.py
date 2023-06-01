@@ -27,6 +27,7 @@ FOLDER_CONFIGURATIONS = "configurations"
 F = "f"  # fit function in transformers
 FP = "fp"  # fit_predict function in transformers
 P = "p"  # predict function in transformers
+I = "i"  # inverse function
 
 # Colors for visualizations
 COLORS = {
@@ -37,3 +38,5 @@ COLORS = {
     "paper_background": {"color": "#000000", "opacity": 0},  # outside of the plot, black with 0 opacity
     "grid_background": {"color": "#858B97", "opacity": 0.4},
 }
+
+ATTR_TIME = "DATETIME"

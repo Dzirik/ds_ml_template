@@ -1,0 +1,21 @@
+>>> from numpy import array
+>>> from src.transformations.quantile_transformer import QuantileTransformer
+>>> test_array = array([5., 1., 3., 2., 4.]).reshape((5, 1))
+>>> test_array
+array([[5.],
+       [1.],
+       [3.],
+       [2.],
+       [4.]])
+>>> transformer = QuantileTransformer()
+>>> transformer.fit_predict(test_array)
+array([[1.  ],
+       [0.  ],
+       [0.5 ],
+       [0.25],
+       [0.75]])
+>>> dict_train, dict_pred = transformer.get_dicts()
+>>> dict_train
+{5.0: 1.0, 1.0: 0.0, 3.0: 0.5, 2.0: 0.25, 4.0: 0.75}
+>>> dict_pred
+{}

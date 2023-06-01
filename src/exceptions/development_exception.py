@@ -26,6 +26,39 @@ class NoProperOptionInIf(DevelopmentException):
         self._description = description
 
 
+class CheckFailed(DevelopmentException):
+    """
+    Exception for failing checking.
+    """
+
+    def __init__(self, description: str = "Check failed.") -> None:
+        DevelopmentException.__init__(self)
+        self._code = 302
+        self._description = description
+
+
+class NotValidOperation(DevelopmentException):
+    """
+    Exception for failing checking.
+    """
+
+    def __init__(self, description: str = "Not valid operation.") -> None:
+        DevelopmentException.__init__(self)
+        self._code = 303
+        self._description = description
+
+
+class NotReadyFunctionality(DevelopmentException):
+    """
+    Exception for calling functionality that is currently not ready.
+    """
+
+    def __init__(self, description: str = "Functionality not ready.") -> None:
+        DevelopmentException.__init__(self)
+        self._code = 304
+        self._description = description
+
+
 if __name__ == "__main__":
     print("Before exception")
     # possible usages:
