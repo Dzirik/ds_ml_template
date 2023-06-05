@@ -3,7 +3,7 @@ Timer
 """
 from datetime import datetime
 from time import sleep, time
-from typing import Union, List, Tuple
+from typing import Union, List, Tuple, Optional
 
 from pandas import DataFrame
 
@@ -35,9 +35,23 @@ class Timer:
         """
         self._print_results = print_results
 
-    def start(self) -> None:
+    def _evaluate_results_printing(self, print_results_local: Optional[bool]) -> bool:
+        """
+        Evaluates if print the results comparing both print_results_local and global setting.
+        :param print_results_local: bool. Local print information.
+        :return: bool. If to print results.
+        """
+        if print_results_local is None:
+            return self._print_results
+        return print_results_local
+
+    def start(self, print_results_local: Optional[bool] = None) -> None:
         """
         Starts global time measurement.
+        :param print_results_local: Optional[bool]. Except global results printing,
+                using this variable one can overwrite the global schema. If None, global setting is used. If not
+                None, this variable is used. This is not very smart solution, but a need of using this in more flexible
+                arose.
         """
         self._timer_start_time = time()
         self._timer_end_time = self._timer_start_time
@@ -47,7 +61,7 @@ class Timer:
         self._mean_time_cumulative_secs = []
         self._mean_times_labels = []
 
-        if self._print_results:
+        if self._evaluate_results_printing(print_results_local):
             print(f"Date and Time of Starting Execution: {self._as_date(self._timer_start_time).strftime('%d/%m/%Y')} "
                   f"{self._as_date(self._timer_start_time).strftime('%X')}")
 
@@ -67,14 +81,18 @@ class Timer:
 
         return round(diff, DEC_PLACES), round(diff / 60, DEC_PLACES)
 
-    def set_meantime(self, label: Union[str, None] = None) -> None:
+    def set_meantime(self, label: Union[str, None] = None, print_results_local: Optional[bool] = None) -> None:
         """
         Sets end of the mean time interval as time and (voluntary) label. Optionally prints results to the console.
         :param label: str. Label of interval that ended.
+        :param print_results_local: Optional[bool]. Except global results printing,
+                using this variable one can overwrite the global schema. If None, global setting is used. If not
+                None, this variable is used. This is not very smart solution, but a need of using this in more flexible
+                arose.
         """
         diff_s, diff_m = self.get_meantime(label)
 
-        if self._print_results:
+        if self._evaluate_results_printing(print_results_local):
             print(f"Duration of: {label} is {diff_s} s, {diff_m} mins.")
 
     def get_end(self, label: Union[str, None]) -> Tuple[float, float, float, float]:
@@ -94,14 +112,18 @@ class Timer:
         return round(diff, DEC_PLACES), round(diff / 60, DEC_PLACES), round(duration, DEC_PLACES), \
                round(duration / 60, DEC_PLACES)
 
-    def end(self, label: Union[str, None] = None) -> None:
+    def end(self, label: Union[str, None] = None, print_results_local: Optional[bool] = None) -> None:
         """
         Ends and saves the end time. Optionally prints results to the console.
         :param label: str. Label of last interval.
+        :param print_results_local: Optional[bool]. Except global results printing,
+                using this variable one can overwrite the global schema. If None, global setting is used. If not
+                None, this variable is used. This is not very smart solution, but a need of using this in more flexible
+                arose.
         """
         diff_s, diff_m, duration_s, duration_m = self.get_end(label)
 
-        if self._print_results:
+        if self._evaluate_results_printing(print_results_local):
             print(f"Duration of: {label} is {diff_s} s, {diff_m} mins.")
             print(f"Date and Time of Ending Execution: {self._as_date(self._timer_end_time).strftime('%d/%m/%Y')} "
                   f"{self._as_date(self._timer_end_time).strftime('%X')}")
