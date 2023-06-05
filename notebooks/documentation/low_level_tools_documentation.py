@@ -30,6 +30,8 @@
 #     - [Environmental Variables](#2-1)   
 #     - [Environment Configuration](#2-2)     
 #     - [Timer](#2-3)
+#         - [Overall Setting, Inputs, Outputs](#2-3-1)
+#         - [Local Print Overwrite](#2-3-2)
 #     - [Logger](#2-4)
 # - [Final Timestamp](#3)  
 
@@ -82,7 +84,7 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_local" # default
+PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
 NOTEBOOK_NAME = get_notebook_name()
@@ -135,7 +137,7 @@ if ADDAPT_WIDTH:
 # from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
-CRY_CONFIG_NAME = "cry_basic"
+DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 
 # #### Constants for Setting Automatic Run
 # [ToC](#ToC)  
@@ -195,6 +197,10 @@ config_data.path.raw_data
 # ## Timer
 # [ToC](#ToC) 
 
+# <a name="2-3-1"></a>
+# ### Overall Setting, Inputs, Outputs
+# [ToC](#ToC) 
+
 from src.utils.timer import Timer
 from time import sleep
 
@@ -231,6 +237,61 @@ print(MT_C)
 print(MT_L)
 
 df
+
+# <a name="2-3-2"></a>
+# ### Local Print Overwrite
+# [ToC](#ToC) 
+#
+# This functionality was added mainly because of better usage withing inside notebooks simulations.
+
+# +
+timer.set_results_printing(print_results=False)
+
+timer.start(print_results_local=True)
+
+sleep(1)
+timer.set_meantime(label="First meantime.", print_results_local=True)
+sleep(2)
+timer.set_meantime(label="Second meantime.", print_results_local=None)
+sleep(3)
+timer.set_meantime(label="Third meantime.", print_results_local=False)
+sleep(4)
+timer.end(label="Last interval.", print_results_local=False)
+
+print("End of Run")
+
+# +
+timer.set_results_printing(print_results=True)
+
+timer.start(print_results_local=True)
+
+sleep(1)
+timer.set_meantime(label="First meantime.", print_results_local=True)
+sleep(2)
+timer.set_meantime(label="Second meantime.", print_results_local=None)
+sleep(3)
+timer.set_meantime(label="Third meantime.", print_results_local=False)
+sleep(4)
+timer.end(label="Last interval.", print_results_local=False)
+
+print("End of Run")
+
+# +
+timer.set_results_printing(print_results=True)
+
+timer.start(print_results_local=None)
+
+sleep(1)
+timer.set_meantime(label="First meantime.", print_results_local=True)
+sleep(2)
+timer.set_meantime(label="Second meantime.", print_results_local=None)
+sleep(3)
+timer.set_meantime(label="Third meantime.", print_results_local=False)
+sleep(4)
+timer.end(label="Last interval.", print_results_local=None)
+
+print("End of Run")
+# -
 
 # <a name="2-4"></a>
 # ## Logger
