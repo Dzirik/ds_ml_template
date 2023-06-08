@@ -20,7 +20,7 @@ def get_path(file_name: str, where: str = "raw_data", extension: str = ".pkl") -
     :param extension: str. File extension. Default is .pkl.
     :return: str. Path as string.
     """
-    dir_path = getattr(Config().get().path, where)
+    dir_path = getattr(Config().get_data().path, where)
 
     return os.path.abspath(os.path.join(dir_path, file_name + extension))
 
