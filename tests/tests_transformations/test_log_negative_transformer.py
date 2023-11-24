@@ -53,8 +53,6 @@ def test_calculation(type_of_method: str, data: ndarray[Any, dtype[double]], bas
     :param correct_output: ndarray[Any, dtype[double]]. 2d array with observations in rows, attributes in columns.
     """
     data_out, _ = _do_transformation(type_of_method, data, base)
-    print(data_out)
-    print(OUTPUT_CORRECT)
     assert (data_out - correct_output).sum().sum() == 0
     # testing.assert_equal(data_out.round(4), correct_output.round(4))
 

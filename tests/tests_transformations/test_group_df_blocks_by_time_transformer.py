@@ -57,6 +57,7 @@ CORRECT_DF_3_MAX = [3, 30, 300]
 CORRECT_DF_3_MEAN = [2, 20, 74]
 CORRECT_DF_4_FIRST = [3, 10, 300]
 CORRECT_DF_4_LAST = [2, 30, 100]
+CORRECT_DF_4_COUNT = [3, 3, 3]
 CORRECT_DF_3_STD = [0.816496580927726, 8.16496580927726, 101.17641358867523]
 
 
@@ -111,7 +112,9 @@ def _do_transformation(type_of_method: str, df: DataFrame, attr_time: str, windo
                              (FP, DF_4, ATTR_TIME, "1d", "first", CORRECT_DF_4_FIRST),
                              (P, DF_4, ATTR_TIME, "1d", "first", CORRECT_DF_4_FIRST),
                              (FP, DF_4, ATTR_TIME, "1d", "last", CORRECT_DF_4_LAST),
-                             (P, DF_4, ATTR_TIME, "1d", "last", CORRECT_DF_4_LAST)
+                             (P, DF_4, ATTR_TIME, "1d", "last", CORRECT_DF_4_LAST),
+                             (FP, DF_4, ATTR_TIME, "1d", "count", CORRECT_DF_4_COUNT),
+                             (P, DF_4, ATTR_TIME, "1d", "count", CORRECT_DF_4_COUNT)
                          ])
 def test_transformation(type_of_method: str, df: DataFrame, attr_time: str, window_length: str, grouping_fun: str,
                         correct_list: List[float]) -> None:
