@@ -27,9 +27,10 @@
 #     - [Internal Code](#1-4)
 #     - [Constants](#1-5)   
 # - [Analysis](#2)   
-#     - [Overview of Devices Available](#2-1)   
-#     - [Another GPU Availability Tests](#2-2) 
-#     - [Get GPU Names](#2-3)  
+#     - [Overall Setting](#2-1)
+#     - [Overview of Devices Available](#2-2)   
+#     - [Another GPU Availability Tests](#2-3) 
+#     - [Get GPU Names](#2-4)  
 # - [Final Timestamp](#3)
 
 # <a name="0"></a>
@@ -75,7 +76,7 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_local" # default
+PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
 NOTEBOOK_NAME = get_notebook_name()
@@ -96,6 +97,8 @@ if ADDAPT_WIDTH:
 # [ToC](#ToC)   
 
 # +
+import os
+
 from pprint import pprint
 
 from tensorflow.config.experimental import list_physical_devices
@@ -123,7 +126,7 @@ from tensorflow.test import is_gpu_available
 # from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
-CRY_CONFIG_NAME = "cry_basic"
+DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 
 # #### Constants for Setting Automatic Run
 # [ToC](#ToC)   
@@ -139,9 +142,16 @@ CRY_CONFIG_NAME = "cry_basic"
 # # ANALYSIS
 # [ToC](#ToC)   
 
-config = Config().get_data()
+ config_data = Config().get_data()
 
 # <a name="2-1"></a>
+# ## Overall Setting
+# [ToC](#ToC)  
+
+os.environ["TF_FORCE_GPU_ALLOW_GROWTH"]="true"# "false" or # os.environ.setdefault("TF_FORCE_GPU_ALLOW_GROWTH", "true")
+# os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL","2")#ReportonlyTFerrorsbydefault
+
+# <a name="2-2"></a>
 # ## Overview of Devices Available
 # [ToC](#ToC)   
 #
@@ -199,7 +209,7 @@ get_gpu_devices()
 
 
 
-# <a name="2-2"></a>
+# <a name="2-3"></a>
 # ## Another GPU Availability Tests
 # [ToC](#ToC)   
 #
@@ -252,8 +262,8 @@ device_list = list_local_devices()
 pprint(device_list)
 
 
-# <a name="2-3"></a>
-# # Get GPU Names
+# <a name="2-4"></a>
+# ## Get GPU Names
 # [ToC](#ToC)  
 
 # +

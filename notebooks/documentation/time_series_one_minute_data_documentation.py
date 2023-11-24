@@ -142,6 +142,9 @@ df_explorer = DFExplorer()
 
 ts_data = TimeSeriesOneMinuteData()
 df = ts_data.get_data_frame()
+attrs = ts_data.get_attrs()
+
+attrs
 
 # <a name="2-2"></a>
 # ## Data Exploration

@@ -14,7 +14,7 @@
 # ---
 
 # # Anomaly Detection Rules
-# *Version:* `1.1` *(Jupytext, time measurements, logger, param notebook execution)*
+# *Version:* `1.0` *(Jupytext, time measurements, logger)*
 
 # <a name="ToC"></a>
 # # Table of Content
@@ -67,14 +67,7 @@ sys.path+=[os.path.join(os.getcwd(), ".."), os.path.join(os.getcwd(), "../..")] 
 # - Notebook data frame setting for better visibility.
 # - Initial timestamp setting and logging the start of the execution.
 
-try:
-    from src.utils.notebook_support_functions import create_button, get_notebook_name
-    NOTEBOOK_NAME = get_notebook_name()
-    SUPPORT_FUNCTIONS_READ = True
-except:
-    NOTEBOOK_NAME = "NO_NAME"
-    SUPPORT_FUNCTIONS_READ = False  
-
+from src.utils.notebook_support_functions import create_button, get_notebook_name
 from src.utils.logger import Logger
 from src.utils.envs import Envs
 from src.utils.config import Config
@@ -87,6 +80,7 @@ LOGGER_CONFIG_NAME = "logger_file_console" # default
 PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
+NOTEBOOK_NAME = get_notebook_name()
 
 options.display.max_rows = 500
 options.display.max_columns = 500
@@ -94,9 +88,9 @@ envs = Envs()
 envs.set_logger(LOGGER_CONFIG_NAME)
 envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
-if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
+if CREATE_BUTTON:
     create_button()
-if SUPPORT_FUNCTIONS_READ and ADDAPT_WIDTH:
+if ADDAPT_WIDTH:
     display(HTML("<style>.container { width:100% !important; }</style>")) # notebook width
 
 # <a name="1-3"></a>
