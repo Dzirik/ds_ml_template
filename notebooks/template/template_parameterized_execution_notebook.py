@@ -57,7 +57,7 @@
 # * First, turn on the tabs option in View/Cells Toolbar/Tags. <img src="..\..\assets\par_ntb_tag.png">.
 # * Second, add a *parameters* tag to the cell where the selected variables to be parameterized are and hit enter to add it. If not specified/tagged, the parameters will be added as a separate cell at the top of the notebook. <img src="..\..\assets\par_ntb_tag_add.png">  
 # * The added tab can be seen at the top of the cell. <img src="..\..\assets\par_ntb_tag_added.png"> 
-# * Run the script *src\utils\param_notebook_executioner.py*; tested from PyCharm and it worked. From console is a problem with the path.
+# * Run the script; tested from PyCharm and it worked. From console is a problem with the path.
 #
 # > **INSTALATION NOTE:** Problems with pywin32 library was encountered with Anaconda 3.8. Downgrade to pywin32==225 helped.
 
@@ -153,6 +153,8 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # [ToC](#ToC)  
 
 # + tags=["parameters"]
+ID = None # this is mandatory and servs for identification of the outputs of the notebook with the notebook.
+
 n = 20
 a = 1
 b = 0
@@ -183,7 +185,7 @@ Y = [a*x + b for x in X]
 
 
 plt.plot(X, Y, "y.")
-plt.title(title)
+plt.title(f"{ID}_{title}")
 
 # <a name="3"></a>
 # # Final Timestamp

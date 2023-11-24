@@ -32,7 +32,7 @@ from src.utils.config import Config
 from pandas import options
 from IPython.display import display, HTML
 
-LOGGER_CONFIG_NAME = "logger_file_console" # default
+LOGGER_CONFIG_NAME = "logger_file_limit_console" # default
 PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False

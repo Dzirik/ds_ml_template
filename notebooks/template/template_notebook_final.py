@@ -80,7 +80,7 @@ from IPython.display import display, HTML
 
 # > Constants for overall behaviour.
 
-LOGGER_CONFIG_NAME = "logger_file_console" # default
+LOGGER_CONFIG_NAME = "logger_file_limit_console" # default
 PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
@@ -130,14 +130,17 @@ if ADDAPT_WIDTH:
 # #### General Constants
 # [ToC](#ToC)  
 
-# from src.constants.global_constants import *  # Remember to import only the constants in use
+# from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
+DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 
 # #### Constants for Setting Automatic Run
 # [ToC](#ToC)  
 
+# + tags=["parameters"]
 
+# -
 
 # #### Notebook Specific Constants
 # [ToC](#ToC)  
