@@ -9,6 +9,7 @@ class Path(NamedTuple):
     Configuration tuple for paths to data files.
     """
     archive_data: str
+    auto_notebooks: str
     external_data: str
     interim_data: str
     logs_data: str
