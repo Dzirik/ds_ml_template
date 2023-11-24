@@ -9,8 +9,9 @@ Customize markers: https://plotly.com/python/marker-style/
 from typing import List, Any, Dict, Optional
 
 import plotly.graph_objs as go
-from pandas import Series
+from pandas import Series, DataFrame
 
+from src.data.cry_attributes import A
 from src.visualisations.plotly_base import PlotlyBase
 from src.visualisations.visualisation_functions import hex_to_rgb
 
@@ -165,4 +166,24 @@ class PlotlyTimeSeriesBase(PlotlyBase):  # type:ignore
                            line={"color": self._colors["error"][0]},
                            mode="markers",
                            marker=self._markers)
+        return [trace]
+
+    @staticmethod
+    def _create_candle_trace(df_market: DataFrame) -> List[Any]:
+        """
+        Creates candle plot.
+        :param df_market: DataFrame. Data frame with index datetimeindex and four columns ATTR_OPEN, ATTR_HIGH,
+                          ATTR_LOW, ATTR_CLOSE.
+        :return: List[Any]. List with one trace. It is list because of the compatibility with traces handling.
+        """
+        trace = go.Candlestick(
+            x=df_market.index,
+            open=df_market[A.open.name],
+            high=df_market[A.high.name],
+            low=df_market[A.low.name],
+            close=df_market[A.close.name],
+            name="Market Data",
+            opacity=0.5
+        )
+
         return [trace]
