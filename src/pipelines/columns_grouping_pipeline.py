@@ -31,7 +31,9 @@ class ColumnsGroupingPipeline(BasePipeline):  # type: ignore
         """
         for grp in self._config_data.columns_grouping:
             if grp.create:
-                df[grp.name] = self._column_transformer.fit_predict(df, grp.attrs, grp.fun)
+                df[grp.new_attr_name] = self._column_transformer.fit_predict(
+                    df, grp.attrs, grp.grouping_fun, grp.params
+                )
 
         return df
 

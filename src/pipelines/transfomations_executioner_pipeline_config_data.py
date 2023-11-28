@@ -19,4 +19,5 @@ class TransformationsExecutionerPipelineConfigData(NamedTuple):
     """
     Data structure for holding set up.
     """
+    name: str
     trans_executioners_confs: List[TransformationExecutionerConfiguration]

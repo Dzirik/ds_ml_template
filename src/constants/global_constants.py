@@ -39,4 +39,4 @@ COLORS = {
     "grid_background": {"color": "#858B97", "opacity": 0.4},
 }
 
-ATTR_TIME = "DATETIME"
+ATTR_DATE_TIME = "DATETIME"
