@@ -239,6 +239,7 @@ C_SHIFT = TransformerConfiguration(
 )
 
 config_data = TransformationsExecutionerPipelineConfigData(
+    name="test",
     trans_executioners_confs=[
         TransformationExecutionerConfiguration(
             create=True,
@@ -301,6 +302,7 @@ C_SHIFT = TransformerConfiguration(
 )
 
 config_data = TransformationsExecutionerPipelineConfigData(
+    name="test",
     trans_executioners_confs=[
         TransformationExecutionerConfiguration(
             create=True,
@@ -387,6 +389,7 @@ C_SHIFT_FITTED = TransformerConfiguration(
 )
 
 config_data_fitted = TransformationsExecutionerPipelineConfigData(
+    name="test",
     trans_executioners_confs=[
         TransformationExecutionerConfiguration(
             create=True,
@@ -468,6 +471,7 @@ C_SHIFT = TransformerConfiguration(
 )
 
 config_data = TransformationsExecutionerPipelineConfigData(
+    name="test",
     trans_executioners_confs=[
         TransformationExecutionerConfiguration(
             create=True,
@@ -582,6 +586,7 @@ C_SHIFT = TransformerConfiguration(
 )
 
 config_data = TransformationsExecutionerPipelineConfigData(
+    name="test",
     trans_executioners_confs=[
         TransformationExecutionerConfiguration(
             create=True,
@@ -655,6 +660,7 @@ C_SHIFT_FITTED = TransformerConfiguration(
 )
 
 config_data_fitted = TransformationsExecutionerPipelineConfigData(
+    name="test",
     trans_executioners_confs=[
         TransformationExecutionerConfiguration(
             create=True,

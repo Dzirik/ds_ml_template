@@ -182,14 +182,16 @@ config_data = ColumnsGroupingPipelineConfigData(
         ColumnsGrouping(
             create=True,
             attrs=["I", "-I"],
-            fun="mean",
-            name="I-I_MEAN"
+            grouping_fun="mean",
+            params={},
+            new_attr_name="I-I_MEAN"
         ),
         ColumnsGrouping(
             create=True,
             attrs=["1", "2", "I", "-I"],
-            fun="sum",
-            name="SUM_1_2_I_-I"
+            grouping_fun="sum",
+            params={},
+            new_attr_name="SUM_1_2_I_-I"
         )
     ]
 )

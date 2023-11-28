@@ -154,7 +154,7 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # #### Notebook Specific Constants
 # [ToC](#ToC)   
 
-from src.data.cry_attributes import ATTR_OPEN, ATTR_HIGH, ATTR_LOW, ATTR_CLOSE
+from src.data.attributes import ATTR_OPEN, ATTR_HIGH, ATTR_LOW, ATTR_CLOSE
 
 # <a name='2'></a>
 # # Visualizations Examples
