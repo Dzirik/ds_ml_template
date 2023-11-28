@@ -14801,7 +14801,7 @@ Necessary libraries for notebook functionality:</p>
 <span class="n">Logger</span><span class="p">()</span><span class="o">.</span><span class="n">start_timer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NOTEBOOK; Notebook name: </span><span class="si">{</span><span class="n">NOTEBOOK_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="ow">and</span> <span class="n">CREATE_BUTTON</span><span class="p">:</span>
     <span class="n">create_button</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">ADDAPT_WIDTH</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="ow">and</span> <span class="n">ADDAPT_WIDTH</span><span class="p">:</span>
     <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;style&gt;.container { width:100% !important; }&lt;/style&gt;&quot;</span><span class="p">))</span> <span class="c1"># notebook width</span>
 </pre></div>
 
@@ -14825,9 +14825,9 @@ Necessary libraries for notebook functionality:</p>
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>A: ../../configurations\logger_file_console.conf
-2023-06-05 15:07:21,294 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2023-06-05 15:07:21,297 - file_console - DEBUG - Logger was created on JIRI-A in branche 012_check_rerun_and_save_all_notebooks.
-2023-06-05 15:07:21,297 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: columns_grouping_pipeline_documentation.py; Timer started;
+2023-11-28 13:00:09,976 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
+2023-11-28 13:00:09,978 - file_console - DEBUG - Logger was created on WS-3000 in branche 014_update_repository.
+2023-11-28 13:00:09,979 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: columns_grouping_pipeline_documentation.py; Timer started;
 </pre>
 </div>
 </div>
@@ -15335,14 +15335,16 @@ Constants for the notebook.</p>
         <span class="n">ColumnsGrouping</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;-I&quot;</span><span class="p">],</span>
-            <span class="n">fun</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;I-I_MEAN&quot;</span>
+            <span class="n">grouping_fun</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">new_attr_name</span><span class="o">=</span><span class="s2">&quot;I-I_MEAN&quot;</span>
         <span class="p">),</span>
         <span class="n">ColumnsGrouping</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;-I&quot;</span><span class="p">],</span>
-            <span class="n">fun</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SUM_1_2_I_-I&quot;</span>
+            <span class="n">grouping_fun</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">new_attr_name</span><span class="o">=</span><span class="s2">&quot;SUM_1_2_I_-I&quot;</span>
         <span class="p">)</span>
     <span class="p">]</span>
 <span class="p">)</span>
@@ -15370,7 +15372,7 @@ Constants for the notebook.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>ColumnsGroupingPipelineConfigData(name=&#39;my&#39;, columns_grouping=[ColumnsGrouping(create=True, attrs=[&#39;I&#39;, &#39;-I&#39;], fun=&#39;mean&#39;, name=&#39;I-I_MEAN&#39;), ColumnsGrouping(create=True, attrs=[&#39;1&#39;, &#39;2&#39;, &#39;I&#39;, &#39;-I&#39;], fun=&#39;sum&#39;, name=&#39;SUM_1_2_I_-I&#39;)])</pre>
+<pre>ColumnsGroupingPipelineConfigData(name=&#39;my&#39;, columns_grouping=[ColumnsGrouping(create=True, attrs=[&#39;I&#39;, &#39;-I&#39;], grouping_fun=&#39;mean&#39;, params={}, new_attr_name=&#39;I-I_MEAN&#39;), ColumnsGrouping(create=True, attrs=[&#39;1&#39;, &#39;2&#39;, &#39;I&#39;, &#39;-I&#39;], grouping_fun=&#39;sum&#39;, params={}, new_attr_name=&#39;SUM_1_2_I_-I&#39;)])</pre>
 </div>
 
 </div>
@@ -15720,7 +15722,7 @@ Constants for the notebook.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-06-05 15:07:22,485 - file_console - DEBUG - &lt;bound method MetaClass.get_class_name of &lt;src.pipelines.columns_grouping_pipeline_config.ColumnsGroupingPipelineConfig object at 0x0000023638B579A0&gt;&gt; was created from pipeline_columns_grouping_documentation.conf file.
+<pre>2023-11-28 13:00:10,686 - file_console - DEBUG - &lt;bound method MetaClass.get_class_name of &lt;src.pipelines.columns_grouping_pipeline_config.ColumnsGroupingPipelineConfig object at 0x0000018226E402B0&gt;&gt; was created from pipeline_columns_grouping_documentation.conf file.
 </pre>
 </div>
 </div>
@@ -16077,7 +16079,7 @@ Constants for the notebook.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-06-05 15:07:22,549 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: columns_grouping_pipeline_documentation.py; Timer ended; Process Duration [s]: 1.25; Process Duration [m]: 0.02
+<pre>2023-11-28 13:00:10,752 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: columns_grouping_pipeline_documentation.py; Timer ended; Process Duration [s]: 0.77; Process Duration [m]: 0.01
 </pre>
 </div>
 </div>

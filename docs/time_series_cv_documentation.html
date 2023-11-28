@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>low_level_tools_documentation</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>time_series_cv_documentation</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14579,7 +14579,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Low-Level-Tools-Documentation">Low Level Tools Documentation<a class="anchor-link" href="#Low-Level-Tools-Documentation">&#182;</a></h1><p><em>Version:</em> <code>1.0</code> <em>(Jupytext, time measurements, logger)</em></p>
+<h1 id="Time-Series-Cross-Validation-Documentation">Time Series Cross Validation Documentation<a class="anchor-link" href="#Time-Series-Cross-Validation-Documentation">&#182;</a></h1><p><em>Version:</em> <code>1.0</code> <em>(Jupytext, time measurements, logger)</em></p>
 
 </div>
 </div>
@@ -14603,17 +14603,37 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </ul>
 </li>
 <li><a href="#2">Analysis</a>   <ul>
-<li><a href="#2-1">Environmental Variables</a>   </li>
-<li><a href="#2-2">Environment Configuration</a>     </li>
-<li><a href="#2-3">Timer</a><ul>
-<li><a href="#2-3-1">Overall Setting, Inputs, Outputs</a></li>
-<li><a href="#2-3-2">Local Print Overwrite</a></li>
+<li><a href="#2-1">Inputs</a> <ul>
+<li><a href="#2-1-1">Income Weather Data</a>  </li>
+<li><a href="#2-1-2">Sample Data</a>  </li>
+<li><a href="#2-1-3">Time (date_time)</a>    </li>
+<li><a href="#2-1-4">Split Dates (split_dates)</a>  </li>
+<li><a href="#2-1-5">Data (data)</a>  </li>
 </ul>
 </li>
-<li><a href="#2-4">Logger</a></li>
+<li><a href="#2-2">Basic Use Cases</a>  <ul>
+<li><a href="#2-2-1">No Split Date</a></li>
+<li><a href="#2-2-2">Split Dates</a> </li>
 </ul>
 </li>
-<li><a href="#3">Final Timestamp</a>  </li>
+<li><a href="#2-3">Types of Cross Validation</a><ul>
+<li><a href="#2-3-1">One Fold Only</a>  </li>
+<li><a href="#2-3-2">Train Test Split</a>  </li>
+<li><a href="#2-3-3">Train Dev Test Split</a> </li>
+<li><a href="#2-3-4">K-Fold Cross Validation</a>  </li>
+</ul>
+</li>
+<li><a href="#2-4">Shuffling</a>  <ul>
+<li><a href="#2-4-1">No Split</a>  </li>
+<li><a href="#2-4-2">Train Test Split</a>  </li>
+<li><a href="#2-4-3">K Fold Case</a>  </li>
+</ul>
+</li>
+<li><a href="#2-5">Extract Arrays from List of Data Frames</a></li>
+<li><a href="#2-6">Business and Production Testing</a>  </li>
+</ul>
+</li>
+<li><a href="#3">Final Timestamp</a></li>
 </ul>
 
 </div>
@@ -14639,14 +14659,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>This notebooks serves for documentation of low-level repository tools:</p>
-<ul>
-<li>Environment variables handling.</li>
-<li>Environment configuration.</li>
-<li>Timer.</li>
-<li>Logger.</li>
-</ul>
-<p>For general description, please see the <em>README.md</em> file.</p>
+<p>Notebook for documentation and testing of cross validation code for time series.</p>
 
 </div>
 </div>
@@ -14763,7 +14776,7 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">LOGGER_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;logger_file_console&quot;</span> <span class="c1"># default</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">LOGGER_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;logger_file&quot;</span> <span class="c1"># default: logger_file_console</span>
 <span class="n">PYTHON_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;python_personal&quot;</span> <span class="c1"># default</span>
 <span class="n">CREATE_BUTTON</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">ADDAPT_WIDTH</span> <span class="o">=</span> <span class="kc">False</span>
@@ -14814,10 +14827,7 @@ Necessary libraries for notebook functionality:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>A: ../../configurations\logger_file_console.conf
-2023-11-28 12:52:02,046 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2023-11-28 12:52:02,049 - file_console - DEBUG - Logger was created on WS-3000 in branche 014_update_repository.
-2023-11-28 12:52:02,050 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: low_level_tools_documentation.py; Timer started;
+<pre>A: ../../configurations\logger_file.conf
 </pre>
 </div>
 </div>
@@ -14847,14 +14857,13 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># import pandas as pd</span>
-<span class="c1"># import numpy as np</span>
-<span class="c1"># import matplotlib.pyplot as plt</span>
-
-<span class="c1"># from importlib import reload</span>
-
-<span class="c1"># %matplotlib notebook</span>
-<span class="c1"># %matplotlib inline</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DatetimeIndex</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">concatenate</span>
+<span class="kn">from</span> <span class="nn">pandas._libs.tslibs.timestamps</span> <span class="kn">import</span> <span class="n">Timestamp</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">shuffle</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
 </pre></div>
 
      </div>
@@ -14884,7 +14893,11 @@ Code, libraries, classes, functions from within the repository.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Space for importing my own code.</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.data.income_weather_data_generator</span> <span class="kn">import</span> <span class="n">IncomeWeatherDataGenerator</span><span class="p">,</span> <span class="n">ATTR_DATE</span><span class="p">,</span> <span class="n">ATTR_TEMPERATURE</span><span class="p">,</span> <span class="n">ATTR_RANDOM</span><span class="p">,</span> <span class="n">ATTR_OUTPUT</span>
+<span class="kn">from</span> <span class="nn">src.data.df_explorer</span> <span class="kn">import</span> <span class="n">DFExplorer</span>
+
+<span class="c1"># from src.transformations.time_series_windows import TimeSeriesWindowsNumpy</span>
+<span class="kn">from</span> <span class="nn">src.transformations.time_series_cv</span> <span class="kn">import</span> <span class="n">TimeSeriesCV</span><span class="p">,</span> <span class="n">create_weather_data</span><span class="p">,</span> <span class="n">create_sample_data</span>
 </pre></div>
 
      </div>
@@ -15008,19 +15021,6 @@ Constants for the notebook.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><a name="2-1"></a></p>
-<h2 id="Environmental-Variables">Environmental Variables<a class="anchor-link" href="#Environmental-Variables">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
-
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15029,7 +15029,7 @@ Constants for the notebook.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.envs</span> <span class="kn">import</span> <span class="n">Envs</span>
+<div class=" highlight hl-ipython3"><pre><span></span> <span class="n">config_data</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15037,6 +15037,46 @@ Constants for the notebook.</p>
 </div>
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-1"></a></p>
+<h2 id="Inputs">Inputs<a class="anchor-link" href="#Inputs">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+<p>This is a bit tricky part, because dealing with time. I tested multiple scenarios consistend with the main data format I use for time series - DatetimeIndex.</p>
+<p>Because it is part of ML, numpy, pipeline, the data has to be in array format. On the contrary, the timestamps of respective observations stay in the DatetimeIndex format and then in the format of EDA &amp; FE pipeline, pandas. This was the best idea I had how to do it, because:</p>
+<ul>
+<li>DatetimeIndex is the format I use for handling dates and times.</li>
+<li>For creating the window splits, the numpy solution is far most the fastest (please see the documentatino of <em>time_series_windows</em>).</li>
+</ul>
+<p>Short description:</p>
+<ul>
+<li>date_time: DatetimeIndex. Timestamp corresponding to the data points.</li>
+<li>split_dates. Union[datetime.datetime, pandas._libs.tslibs.timestamps.Timestamp]. Dates for splits in the date_time. EDGES ARE ADDED AUTOMATICALLY. This is not very good to mix format, but both work. So I keep them both in tests.</li>
+<li>data: array. At least two dimensional array. First dimension has to match the length of date_time variable.</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-1-1"></a></p>
+<h3 id="Income-Weather-Data">Income Weather Data<a class="anchor-link" href="#Income-Weather-Data">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<p>This is a sample data for my usage, please see the separate documentation notebook for that.</p>
+<p>It reflects my standard time formatting, so I have it here for testing.</p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15045,7 +15085,7 @@ Constants for the notebook.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">envs</span> <span class="o">=</span> <span class="n">Envs</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">w_date_time</span><span class="p">,</span> <span class="n">w_split_dates</span><span class="p">,</span> <span class="n">w_X_data</span><span class="p">,</span> <span class="n">w_Y_data</span> <span class="o">=</span> <span class="n">create_weather_data</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15060,12 +15100,14 @@ Constants for the notebook.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Getting the variables:</p>
+<p><a name="2-1-2"></a></p>
+<h3 id="Sample-Data">Sample Data<a class="anchor-link" href="#Sample-Data">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<p>Sample data set for tests.</p>
 
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15073,39 +15115,12 @@ Constants for the notebook.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current Environment Configuration File is: </span><span class="si">{</span><span class="n">envs</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current Logger Configuration File is: </span><span class="si">{</span><span class="n">envs</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current Unit Testing Setting is: </span><span class="si">{</span><span class="n">envs</span><span class="o">.</span><span class="n">get_running_unit_tests</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s_date_time</span><span class="p">,</span> <span class="n">s_split_dates</span><span class="p">,</span> <span class="n">s_X_data</span><span class="p">,</span> <span class="n">s_Y_data</span><span class="p">,</span> <span class="n">s_date_time_not_sorted</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="mi">31</span><span class="p">)</span>
 </pre></div>
 
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Current Environment Configuration File is: python_personal
-Current Logger Configuration File is: logger_file_console
-Current Unit Testing Setting is: False
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -15115,7 +15130,8 @@ Current Unit Testing Setting is: False
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Setting and getting the variables:</p>
+<p><a name="2-1-3"></a></p>
+<h3 id="Time-(date_time)">Time (date_time)<a class="anchor-link" href="#Time-(date_time)">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
 
 </div>
 </div>
@@ -15128,8 +15144,7 @@ Current Unit Testing Setting is: False
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">envs</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="s2">&quot;python_repo&quot;</span><span class="p">)</span>
-<span class="n">envs</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">w_date_time</span>
 </pre></div>
 
      </div>
@@ -15153,7 +15168,17 @@ Current Unit Testing Setting is: False
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;python_repo&#39;</pre>
+<pre>DatetimeIndex([&#39;2018-01-01&#39;, &#39;2018-01-02&#39;, &#39;2018-01-03&#39;, &#39;2018-01-04&#39;,
+               &#39;2018-01-05&#39;, &#39;2018-01-06&#39;, &#39;2018-01-07&#39;, &#39;2018-01-08&#39;,
+               &#39;2018-01-09&#39;, &#39;2018-01-10&#39;, &#39;2018-01-11&#39;, &#39;2018-01-12&#39;,
+               &#39;2018-01-13&#39;, &#39;2018-01-14&#39;, &#39;2018-01-15&#39;, &#39;2018-01-16&#39;,
+               &#39;2018-01-17&#39;, &#39;2018-01-18&#39;, &#39;2018-01-19&#39;, &#39;2018-01-20&#39;,
+               &#39;2018-01-21&#39;, &#39;2018-01-22&#39;, &#39;2018-01-23&#39;, &#39;2018-01-24&#39;,
+               &#39;2018-01-25&#39;, &#39;2018-01-26&#39;, &#39;2018-01-27&#39;, &#39;2018-01-28&#39;,
+               &#39;2018-01-29&#39;, &#39;2018-01-30&#39;, &#39;2018-01-31&#39;, &#39;2018-02-01&#39;,
+               &#39;2018-02-02&#39;, &#39;2018-02-03&#39;, &#39;2018-02-04&#39;, &#39;2018-02-05&#39;,
+               &#39;2018-02-06&#39;, &#39;2018-02-07&#39;, &#39;2018-02-08&#39;, &#39;2018-02-09&#39;],
+              dtype=&#39;datetime64[ns]&#39;, name=&#39;DATE&#39;, freq=None)</pre>
 </div>
 
 </div>
@@ -15162,20 +15187,7 @@ Current Unit Testing Setting is: False
 
 </div>
 
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><a name="2-2"></a></p>
-<h2 id="Environment-Configuration">Environment Configuration<a class="anchor-link" href="#Environment-Configuration">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15183,36 +15195,7 @@ Current Unit Testing Setting is: False
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.config</span> <span class="kn">import</span> <span class="n">Config</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>For setting the configuration file to be used, please see previous chapter.<br>
-Getting current config:</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s_date_time</span>
 </pre></div>
 
      </div>
@@ -15230,13 +15213,31 @@ Getting current config:</p>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-11-28 12:52:02,249 - file_console - DEBUG - Python config was created from python_repo.conf file.
-</pre>
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>DatetimeIndex([&#39;2000-01-01 01:01:01&#39;, &#39;2000-01-02 01:02:02&#39;,
+               &#39;2000-01-03 01:03:03&#39;, &#39;2000-01-04 01:04:04&#39;,
+               &#39;2000-01-05 01:05:05&#39;, &#39;2000-01-06 01:06:06&#39;,
+               &#39;2000-01-07 01:07:07&#39;, &#39;2000-01-08 01:08:08&#39;,
+               &#39;2000-01-09 01:09:09&#39;, &#39;2000-01-10 01:10:10&#39;,
+               &#39;2000-01-11 01:11:11&#39;, &#39;2000-01-12 01:12:12&#39;,
+               &#39;2000-01-13 01:13:13&#39;, &#39;2000-01-14 01:14:14&#39;,
+               &#39;2000-01-15 01:15:15&#39;, &#39;2000-01-16 01:16:16&#39;,
+               &#39;2000-01-17 01:17:17&#39;, &#39;2000-01-18 01:18:18&#39;,
+               &#39;2000-01-19 01:19:19&#39;, &#39;2000-01-20 01:20:20&#39;,
+               &#39;2000-01-21 01:21:21&#39;, &#39;2000-01-22 01:22:22&#39;,
+               &#39;2000-01-23 01:23:23&#39;, &#39;2000-01-24 01:24:24&#39;,
+               &#39;2000-01-25 01:25:25&#39;, &#39;2000-01-26 01:26:26&#39;,
+               &#39;2000-01-27 01:27:27&#39;, &#39;2000-01-28 01:28:28&#39;,
+               &#39;2000-01-29 01:29:29&#39;, &#39;2000-01-30 01:30:30&#39;,
+               &#39;2000-01-31 01:31:31&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=None)</pre>
 </div>
+
 </div>
 
 </div>
@@ -15248,10 +15249,80 @@ Getting current config:</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s_date_time_not_sorted</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>DatetimeIndex([&#39;2000-01-31 01:31:31&#39;, &#39;2000-01-30 01:30:30&#39;,
+               &#39;2000-01-29 01:29:29&#39;, &#39;2000-01-28 01:28:28&#39;,
+               &#39;2000-01-27 01:27:27&#39;, &#39;2000-01-26 01:26:26&#39;,
+               &#39;2000-01-25 01:25:25&#39;, &#39;2000-01-24 01:24:24&#39;,
+               &#39;2000-01-23 01:23:23&#39;, &#39;2000-01-22 01:22:22&#39;,
+               &#39;2000-01-21 01:21:21&#39;, &#39;2000-01-20 01:20:20&#39;,
+               &#39;2000-01-19 01:19:19&#39;, &#39;2000-01-18 01:18:18&#39;,
+               &#39;2000-01-17 01:17:17&#39;, &#39;2000-01-16 01:16:16&#39;,
+               &#39;2000-01-15 01:15:15&#39;, &#39;2000-01-14 01:14:14&#39;,
+               &#39;2000-01-13 01:13:13&#39;, &#39;2000-01-12 01:12:12&#39;,
+               &#39;2000-01-11 01:11:11&#39;, &#39;2000-01-10 01:10:10&#39;,
+               &#39;2000-01-09 01:09:09&#39;, &#39;2000-01-08 01:08:08&#39;,
+               &#39;2000-01-07 01:07:07&#39;, &#39;2000-01-06 01:06:06&#39;,
+               &#39;2000-01-05 01:05:05&#39;, &#39;2000-01-04 01:04:04&#39;,
+               &#39;2000-01-03 01:03:03&#39;, &#39;2000-01-02 01:02:02&#39;,
+               &#39;2000-01-01 01:01:01&#39;],
+              dtype=&#39;datetime64[ns]&#39;, freq=None)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-1-4"></a></p>
+<h3 id="Split-Dates-(split_dates)">Split Dates (split_dates)<a class="anchor-link" href="#Split-Dates-(split_dates)">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">w_split_dates</span>
 </pre></div>
 
      </div>
@@ -15275,7 +15346,7 @@ Getting current config:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>ConfigData(name=&#39;python_repo&#39;, path=Path(archive_data=&#39;../../data/archive&#39;, auto_notebooks=&#39;../../data/auto_notebooks_results&#39;, external_data=&#39;../../data/external&#39;, interim_data=&#39;../../data/interim&#39;, logs_data=&#39;../../data/logs&#39;, processed_data=&#39;../../data/processed&#39;, raw_data=&#39;../../data/raw&#39;, results_data=&#39;../../data/results&#39;, models=&#39;../../models&#39;), db_cred=DatabaseCredentials(provider=&#39;PostgreDBConnector&#39;, user=&#39;postgres&#39;, password=&#39;postgre_1234&#39;, host=&#39;localhost&#39;, port=5432, db_name=&#39;test&#39;), dash=Dash(sidebar_config=[[[&#39;page_main&#39;]], [[&#39;page_main&#39;, &#39;Demo&#39;], [&#39;page_button&#39;, &#39;Demo&#39;]], [[&#39;page_button&#39;, &#39;One Member List&#39;]], [[&#39;page_sample_tab&#39;]]], list_of_pages={&#39;page_button&#39;: [&#39;/PageButton&#39;, &#39;PageButton&#39;], &#39;page_main&#39;: [&#39;/&#39;, &#39;PageMain&#39;], &#39;page_sample_tab&#39;: [&#39;/PageSampleTab&#39;, &#39;PageSampleTab&#39;]}, sidebar_style={&#39;position&#39;: &#39;fixed&#39;, &#39;top&#39;: 0, &#39;left&#39;: 0, &#39;bottom&#39;: 0, &#39;width&#39;: &#39;16rem&#39;, &#39;padding&#39;: &#39;2rem 1rem&#39;, &#39;background-color&#39;: &#39;#f8f9fa&#39;}, content_style={&#39;margin-left&#39;: &#39;18rem&#39;, &#39;margin-right&#39;: &#39;2rem&#39;, &#39;padding&#39;: &#39;2rem 0rem&#39;}, sett=DashSettings(header_link_color=&#39;black&#39;, header_font_weight=&#39;bold&#39;, navbar_background_color=&#39;white&#39;, path_to_image=&#39;/assets/wolf.png&#39;)), param_ntb_execution=ParamNotebookExecution(use_default=True, convert_to_html=True, ntb_path=&#39;../../notebooks/template/template_parameterized_execution_notebook.ipynb&#39;, output_folder=&#39;../../reports&#39;, notebook_executioner_params=[{&#39;n&#39;: 10.0, &#39;a&#39;: 1.0, &#39;b&#39;: 1.0, &#39;title&#39;: &#39;Positive&#39;}, {&#39;n&#39;: 15.0, &#39;a&#39;: -1.0, &#39;b&#39;: -1.0, &#39;title&#39;: &#39;Negative&#39;}, {&#39;n&#39;: 20.0, &#39;a&#39;: 0.0, &#39;b&#39;: 2.0, &#39;title&#39;: &#39;Zero&#39;}]))</pre>
+<pre>[datetime.datetime(2018, 1, 22, 0, 0)]</pre>
 </div>
 
 </div>
@@ -15284,18 +15355,6 @@ Getting current config:</p>
 
 </div>
 
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Examples of access to the variables:</p>
-
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15304,7 +15363,7 @@ Getting current config:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span><span class="o">.</span><span class="n">name</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s_split_dates</span>
 </pre></div>
 
      </div>
@@ -15328,7 +15387,9 @@ Getting current config:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;python_repo&#39;</pre>
+<pre>[Timestamp(&#39;2000-01-07 01:07:07&#39;),
+ datetime.datetime(2000, 1, 15, 0, 0),
+ Timestamp(&#39;2000-01-22 00:00:00&#39;)]</pre>
 </div>
 
 </div>
@@ -15337,6 +15398,19 @@ Getting current config:</p>
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-1-5"></a></p>
+<h3 id="Data-(data)">Data (data)<a class="anchor-link" href="#Data-(data)">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15345,7 +15419,7 @@ Getting current config:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">raw_data</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">w_X_data</span>
 </pre></div>
 
      </div>
@@ -15369,9 +15443,1160 @@ Getting current config:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;../../data/raw&#39;</pre>
+<pre>array([[ 26.30123686,   8.42387195],
+       [ 12.53152482,  10.15623474],
+       [ 16.88287117,   5.37934559],
+       [ 23.36006694,  -7.97323233],
+       [ 17.66663471,   1.10374089],
+       [ 25.47780775,   9.57396932],
+       [ 18.54946332,   2.57076162],
+       [ 15.38873426, -10.90720137],
+       [ 17.81007228,   9.57394438],
+       [ 23.03349522, -12.455361  ],
+       [ 27.27151619,  -4.34301439],
+       [ 16.18792431,   3.68621572],
+       [ 15.22283418,  -3.15842204],
+       [ 19.13825404,  -8.03491056],
+       [ 30.65096906, -13.60260239],
+       [ 20.49227047,  -6.38054417],
+       [ 34.00006379,  -7.96685064],
+       [ 25.42992178,  -0.97627406],
+       [ 30.8360921 , -21.0868599 ],
+       [ 33.06156142,  -3.36931825],
+       [ 21.47013709,   5.15184627],
+       [ 24.02668922,   6.07918845],
+       [ 15.39401565,  -5.95819755],
+       [ 23.50469136,   0.22201236],
+       [ 18.47807257,   3.93486608],
+       [ 18.55626558,  -4.79676762],
+       [ 12.04882252,   7.83340742],
+       [ 11.50863167,   0.68208148],
+       [ 21.37962948,  -4.60997434],
+       [ 19.17529676,   2.31409694],
+       [ 22.58415832, -23.14964588],
+       [ 12.10969173, -11.31259399],
+       [ 10.05619274,   2.44200913],
+       [ 21.7525642 , -13.93094721],
+       [ 25.42941869, -12.20319885],
+       [ 32.25731669,  13.52481423],
+       [ 18.18294802,  12.22938927],
+       [ 14.19570662,   0.48954597],
+       [ 18.95360394,  -0.11450029],
+       [ 32.77240346,  -4.36004909]])</pre>
 </div>
 
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">w_Y_data</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([[ 807.5220264 ],
+       [ 392.42746879],
+       [ 526.36837277],
+       [ 715.23172941],
+       [ 523.33859192],
+       [ 755.8559743 ],
+       [ 546.9806568 ],
+       [ 490.26234509],
+       [ 558.78985548],
+       [ 709.0166328 ],
+       [ 826.79556598],
+       [ 499.62527241],
+       [ 437.98406312],
+       [ 577.46227729],
+       [ 915.00194487],
+       [ 617.96953338],
+       [1040.51086092],
+       [ 750.77932552],
+       [ 944.04707633],
+       [ 982.72001444],
+       [ 661.0473232 ],
+       [ 728.17607757],
+       [ 484.52991911],
+       [ 734.80688363],
+       [ 571.2491178 ],
+       [ 548.58906654],
+       [ 352.02382905],
+       [ 351.03583996],
+       [ 653.36328407],
+       [ 577.15006072],
+       [ 697.84451237],
+       [ 339.3800778 ],
+       [ 312.61905601],
+       [ 656.68503715],
+       [ 765.38170383],
+       [ 971.68731309],
+       [ 596.10463079],
+       [ 424.11776197],
+       [ 570.39319288],
+       [ 989.94876784]])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s_X_data</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([[  1,  10],
+       [  2,  20],
+       [  3,  30],
+       [  4,  40],
+       [  5,  50],
+       [  6,  60],
+       [  7,  70],
+       [  8,  80],
+       [  9,  90],
+       [ 10, 100],
+       [ 11, 110],
+       [ 12, 120],
+       [ 13, 130],
+       [ 14, 140],
+       [ 15, 150],
+       [ 16, 160],
+       [ 17, 170],
+       [ 18, 180],
+       [ 19, 190],
+       [ 20, 200],
+       [ 21, 210],
+       [ 22, 220],
+       [ 23, 230],
+       [ 24, 240],
+       [ 25, 250],
+       [ 26, 260],
+       [ 27, 270],
+       [ 28, 280],
+       [ 29, 290],
+       [ 30, 300],
+       [ 31, 310]])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s_Y_data</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([[ 100],
+       [ 200],
+       [ 300],
+       [ 400],
+       [ 500],
+       [ 600],
+       [ 700],
+       [ 800],
+       [ 900],
+       [1000],
+       [1100],
+       [1200],
+       [1300],
+       [1400],
+       [1500],
+       [1600],
+       [1700],
+       [1800],
+       [1900],
+       [2000],
+       [2100],
+       [2200],
+       [2300],
+       [2400],
+       [2500],
+       [2600],
+       [2700],
+       [2800],
+       [2900],
+       [3000],
+       [3100]])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-2"></a></p>
+<h2 id="Basic-Use-Cases">Basic Use Cases<a class="anchor-link" href="#Basic-Use-Cases">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+<p>The output format is <code>List[((X_train, Y_train), (X_test, Y_test))]</code></p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">transformer</span> <span class="o">=</span> <span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-2-1"></a></p>
+<h3 id="No-Split-Date">No Split Date<a class="anchor-link" href="#No-Split-Date">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<p>The basic use case is about not having any split of the data, so taking the data as one. In this case, <strong>no test data is created</strong>, only train data with windows depending on windows settings.</p>
+<p>There are more cases in this set up:</p>
+<ul>
+<li><code>X_data</code>, <code>Y_data</code><ul>
+<li>They are both equal. That it is simply splitting past (X) and future (Y).</li>
+<li>They are not equal. In this case, Y should be a subset of attributes of X. Then the past is full and the future is only from that subset.</li>
+</ul>
+</li>
+<li><code>Y_same_observation</code>: <ul>
+<li>If <code>True</code>, the first observation of Y is from the same date and time as the last observation of X.</li>
+<li>If <code>False</code>, the first observation of Y is time-wise the following to the X.</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="No-Split-Date">No Split Date<a class="anchor-link" href="#No-Split-Date">&#182;</a></h4><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[((array([[[  1,  10]],
+
+       [[  2,  20]],
+
+       [[  3,  30]],
+
+       [[  4,  40]],
+
+       [[  5,  50]],
+
+       [[  6,  60]],
+
+       [[  7,  70]],
+
+       [[  8,  80]],
+
+       [[  9,  90]],
+
+       [[ 10, 100]]]),
+   array([[[  1,  10]],
+
+       [[  2,  20]],
+
+       [[  3,  30]],
+
+       [[  4,  40]],
+
+       [[  5,  50]],
+
+       [[  6,  60]],
+
+       [[  7,  70]],
+
+       [[  8,  80]],
+
+       [[  9,  90]],
+
+       [[ 10, 100]]])),
+  (None, None))]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[((array([[[ 1, 10]],
+
+       [[ 2, 20]],
+
+       [[ 3, 30]],
+
+       [[ 4, 40]],
+
+       [[ 5, 50]],
+
+       [[ 6, 60]],
+
+       [[ 7, 70]],
+
+       [[ 8, 80]],
+
+       [[ 9, 90]]]),
+   array([[[  2,  20]],
+
+       [[  3,  30]],
+
+       [[  4,  40]],
+
+       [[  5,  50]],
+
+       [[  6,  60]],
+
+       [[  7,  70]],
+
+       [[  8,  80]],
+
+       [[  9,  90]],
+
+       [[ 10, 100]]])),
+  (None, None))]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[((array([[[ 1, 10]],
+
+       [[ 2, 20]],
+
+       [[ 3, 30]],
+
+       [[ 4, 40]],
+
+       [[ 5, 50]],
+
+       [[ 6, 60]],
+
+       [[ 7, 70]],
+
+       [[ 8, 80]],
+
+       [[ 9, 90]]]),
+   array([[[ 200.]],
+
+       [[ 300.]],
+
+       [[ 400.]],
+
+       [[ 500.]],
+
+       [[ 600.]],
+
+       [[ 700.]],
+
+       [[ 800.]],
+
+       [[ 900.]],
+
+       [[1000.]]])),
+  (None, None))]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-2-2"></a></p>
+<h3 id="Split-Dates">Split Dates<a class="anchor-link" href="#Split-Dates">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<p>Beginning and end of the interval is added automatically.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s_split_dates</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>[Timestamp(&#39;2000-01-07 01:07:07&#39;),
+ datetime.datetime(2000, 1, 15, 0, 0),
+ Timestamp(&#39;2000-01-22 00:00:00&#39;)]</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">date_time</span> <span class="o">=</span> <span class="n">s_date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="n">s_split_dates</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">s_X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">s_Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]],
+
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[ 400.],
+        [ 500.]],
+
+       [[ 500.],
+        [ 600.]],
+
+       [[1000.],
+        [1100.]],
+
+       [[1100.],
+        [1200.]],
+
+       [[1200.],
+        [1300.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[2000.],
+        [2100.]]])),
+  (array([[[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[2500.],
+        [2600.]],
+
+       [[2600.],
+        [2700.]],
+
+       [[2700.],
+        [2800.]],
+
+       [[2800.],
+        [2900.]],
+
+       [[2900.],
+        [3000.]],
+
+       [[3000.],
+        [3100.]]]))),
+ ((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]],
+
+       [[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[ 400.],
+        [ 500.]],
+
+       [[ 500.],
+        [ 600.]],
+
+       [[1000.],
+        [1100.]],
+
+       [[1100.],
+        [1200.]],
+
+       [[1200.],
+        [1300.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[2500.],
+        [2600.]],
+
+       [[2600.],
+        [2700.]],
+
+       [[2700.],
+        [2800.]],
+
+       [[2800.],
+        [2900.]],
+
+       [[2900.],
+        [3000.]],
+
+       [[3000.],
+        [3100.]]])),
+  (array([[[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[2000.],
+        [2100.]]]))),
+ ((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+
+       [[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[ 400.],
+        [ 500.]],
+
+       [[ 500.],
+        [ 600.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[2000.],
+        [2100.]],
+
+       [[2500.],
+        [2600.]],
+
+       [[2600.],
+        [2700.]],
+
+       [[2700.],
+        [2800.]],
+
+       [[2800.],
+        [2900.]],
+
+       [[2900.],
+        [3000.]],
+
+       [[3000.],
+        [3100.]]])),
+  (array([[[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]]]),
+   array([[[1000.],
+        [1100.]],
+
+       [[1100.],
+        [1200.]],
+
+       [[1200.],
+        [1300.]],
+
+       [[1300.],
+        [1400.]]]))),
+ ((array([[[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]],
+
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+
+       [[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[1000.],
+        [1100.]],
+
+       [[1100.],
+        [1200.]],
+
+       [[1200.],
+        [1300.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[2000.],
+        [2100.]],
+
+       [[2500.],
+        [2600.]],
+
+       [[2600.],
+        [2700.]],
+
+       [[2700.],
+        [2800.]],
+
+       [[2800.],
+        [2900.]],
+
+       [[2900.],
+        [3000.]],
+
+       [[3000.],
+        [3100.]]])),
+  (array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]]]),
+   array([[[400.],
+        [500.]],
+
+       [[500.],
+        [600.]]])))]
+</pre>
+</div>
 </div>
 
 </div>
@@ -15386,7 +16611,8 @@ Getting current config:</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a name="2-3"></a></p>
-<h2 id="Timer">Timer<a class="anchor-link" href="#Timer">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+<h2 id="Types-of-Cross-Validation">Types of Cross Validation<a class="anchor-link" href="#Types-of-Cross-Validation">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+<p>The code is designed to cover all main cases.</p>
 
 </div>
 </div>
@@ -15399,7 +16625,8 @@ Getting current config:</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a name="2-3-1"></a></p>
-<h3 id="Overall-Setting,-Inputs,-Outputs">Overall Setting, Inputs, Outputs<a class="anchor-link" href="#Overall-Setting,-Inputs,-Outputs">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<h3 id="One-Fold-Only">One Fold Only<a class="anchor-link" href="#One-Fold-Only">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<p>In this case all possible cases across the data are created.</p>
 
 </div>
 </div>
@@ -15409,11 +16636,15 @@ Getting current config:</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15421,71 +16652,30 @@ Getting current config:</p>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Set if print the results:</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timer</span><span class="o">.</span><span class="n">set_results_printing</span><span class="p">(</span><span class="n">print_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Starting the timer:</p>
-
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15507,66 +16697,54 @@ Getting current config:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Date and Time of Starting Execution: 28/11/2023 11:52:02
-</pre>
-</div>
-</div>
+<pre>[((array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
 
-</div>
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]],
 
-</div>
+       [[ 3, 30],
+        [ 4, 40],
+        [ 5, 50]],
 
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Adding several meantimes:</p>
+       [[ 4, 40],
+        [ 5, 50],
+        [ 6, 60]],
 
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;First meantime.&quot;</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Second meantime.&quot;</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Third meantime.&quot;</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-</pre></div>
+       [[ 5, 50],
+        [ 6, 60],
+        [ 7, 70]],
 
-     </div>
-</div>
-</div>
-</div>
+       [[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
 
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
+       [[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]]]),
+   array([[[ 300.],
+        [ 400.]],
 
+       [[ 400.],
+        [ 500.]],
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+       [[ 500.],
+        [ 600.]],
 
-<div class="jp-OutputArea-child">
+       [[ 600.],
+        [ 700.]],
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+       [[ 700.],
+        [ 800.]],
 
+       [[ 800.],
+        [ 900.]],
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Duration of: First meantime. is 1.03 s, 0.02 mins.
-Duration of: Second meantime. is 2.01 s, 0.03 mins.
-Duration of: Third meantime. is 3.01 s, 0.05 mins.
+       [[ 900.],
+        [1000.]]])),
+  (None, None))]
 </pre>
 </div>
 </div>
@@ -15582,20 +16760,72 @@ Duration of: Third meantime. is 3.01 s, 0.05 mins.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>End the timer:</p>
+<p><a name="2-3-2"></a></p>
+<h3 id="Train-Test-Split">Train Test Split<a class="anchor-link" href="#Train-Test-Split">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<ul>
+<li>Add one timestamp into split_dates in which the split should be made.</li>
+<li>Getting train, test split:<ul>
+<li>First possibility is to take only first element of resulted cv variable.</li>
+<li>Second possibility is to take only splits for respective intervals instead of cv variable.</li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timer</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Last interval.&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">6</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="p">((</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">))</span> <span class="o">=</span> <span class="n">cv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TRAIN ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TEST ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15617,9 +16847,39 @@ Duration of: Third meantime. is 3.01 s, 0.05 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Duration of: Last interval. is 4.02 s, 0.07 mins.
-Date and Time of Ending Execution: 28/11/2023 11:52:12
-Overall Duration is: 10.08 s, 0.17 mins.
+<pre>### TRAIN ###
+array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]],
+
+       [[ 3, 30],
+        [ 4, 40],
+        [ 5, 50]]])
+array([[[300.],
+        [400.]],
+
+       [[400.],
+        [500.]],
+
+       [[500.],
+        [600.]]])
+### TEST ###
+array([[[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]]])
+array([[[ 900.],
+        [1000.]],
+
+       [[1000.],
+        [1100.]]])
 </pre>
 </div>
 </div>
@@ -15633,10 +16893,15 @@ Overall Duration is: 10.08 s, 0.17 mins.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">MT</span><span class="p">,</span> <span class="n">MT_C</span><span class="p">,</span> <span class="n">MT_L</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15649,10 +16914,33 @@ Overall Duration is: 10.08 s, 0.17 mins.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">MT</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">6</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+
+<span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">],</span> <span class="p">[</span><span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">])</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">get_splits</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TRAIN ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TEST ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15674,7 +16962,39 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[1.0285251140594482, 2.0115010738372803, 3.0137174129486084, 4.023010492324829]
+<pre>### TRAIN ###
+array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]],
+
+       [[ 3, 30],
+        [ 4, 40],
+        [ 5, 50]]])
+array([[[300.],
+        [400.]],
+
+       [[400.],
+        [500.]],
+
+       [[500.],
+        [600.]]])
+### TEST ###
+array([[[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]]])
+array([[[ 900.],
+        [1000.]],
+
+       [[1000.],
+        [1100.]]])
 </pre>
 </div>
 </div>
@@ -15683,15 +17003,79 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-3-3"></a></p>
+<h3 id="Train-Dev-Test-Split">Train Dev Test Split<a class="anchor-link" href="#Train-Dev-Test-Split">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<ul>
+<li>Add two timestamps into split_dates in which the splits should be made.</li>
+<li>The train/dev/test splits are then taken out of get_splits() method.</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">MT_C</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">10</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+
+<span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_dev</span><span class="p">,</span> <span class="n">X_test</span><span class="p">],</span> <span class="p">[</span><span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_dev</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">])</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">get_splits</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TRAIN ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### DEV ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_dev</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_dev</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TEST ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15713,7 +17097,45 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[1.0285251140594482, 3.0400261878967285, 6.053743600845337, 10.076754093170166]
+<pre>### TRAIN ###
+array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]]])
+array([[[300.],
+        [400.]],
+
+       [[400.],
+        [500.]]])
+### DEV ###
+array([[[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+
+       [[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]]])
+array([[[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]]])
+### TEST ###
+array([[[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]])
+array([[[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]]])
 </pre>
 </div>
 </div>
@@ -15722,15 +17144,76 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-3-4"></a></p>
+<h3 id="K-Fold-Cross-Validation">K-Fold Cross Validation<a class="anchor-link" href="#K-Fold-Cross-Validation">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+<ul>
+<li>Add as many timestamps into split_dates in which the splits should be made as you want.</li>
+<li>The split is in cv variable in the structure <code>List[((X_rest, Y_rest), (X_last, Y_last)), ...]</code></li>
+</ul>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">MT_L</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">15</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+
+<span class="p">((</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">))</span> <span class="o">=</span> <span class="n">cv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TRAIN ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TEST ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15752,7 +17235,60 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[&#39;First meantime.&#39;, &#39;Second meantime.&#39;, &#39;Third meantime.&#39;, &#39;Last interval.&#39;]
+<pre>### TRAIN ###
+array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]])
+array([[[ 300.],
+        [ 400.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]]])
+### TEST ###
+array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]])
+array([[[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]]])
 </pre>
 </div>
 </div>
@@ -15766,10 +17302,10 @@ Overall Duration is: 10.08 s, 0.17 mins.
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15787,7 +17323,1110 @@ Overall Duration is: 10.08 s, 0.17 mins.
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[ 300.],
+        [ 400.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]]])),
+  (array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]]]))),
+ ((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[ 300.],
+        [ 400.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]]])),
+  (array([[[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]]]))),
+ ((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[ 300.],
+        [ 400.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]]])),
+  (array([[[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+
+       [[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]]]),
+   array([[[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]]]))),
+ ((array([[[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]]])),
+  (array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]]]),
+   array([[[300.],
+        [400.]],
+
+       [[400.],
+        [500.]]])))]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-4"></a></p>
+<h2 id="Shuffling">Shuffling<a class="anchor-link" href="#Shuffling">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-4-1"></a></p>
+<h3 id="No-Split">No Split<a class="anchor-link" href="#No-Split">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[((array([[[  7,  70]],
+
+       [[  5,  50]],
+
+       [[  9,  90]],
+
+       [[  2,  20]],
+
+       [[ 10, 100]],
+
+       [[  3,  30]],
+
+       [[  6,  60]],
+
+       [[  1,  10]],
+
+       [[  8,  80]],
+
+       [[  4,  40]]]),
+   array([[[  7,  70]],
+
+       [[  5,  50]],
+
+       [[  9,  90]],
+
+       [[  2,  20]],
+
+       [[ 10, 100]],
+
+       [[  3,  30]],
+
+       [[  6,  60]],
+
+       [[  1,  10]],
+
+       [[  8,  80]],
+
+       [[  4,  40]]])),
+  (None, None))]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-4-2"></a></p>
+<h3 id="Train-Test-Split">Train Test Split<a class="anchor-link" href="#Train-Test-Split">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">10</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+<span class="p">((</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">))</span> <span class="o">=</span> <span class="n">cv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TRAIN ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TEST ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>### TRAIN ###
+array([[[ 3, 30],
+        [ 4, 40],
+        [ 5, 50]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]],
+
+       [[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]],
+
+       [[ 4, 40],
+        [ 5, 50],
+        [ 6, 60]],
+
+       [[ 5, 50],
+        [ 6, 60],
+        [ 7, 70]],
+
+       [[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+
+       [[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]]])
+array([[[ 500.],
+        [ 600.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[ 900.],
+        [1000.]],
+
+       [[ 600.],
+        [ 700.]],
+
+       [[ 700.],
+        [ 800.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 300.],
+        [ 400.]]])
+### TEST ###
+array([[[ 13, 130],
+        [ 14, 140],
+        [ 15, 150]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+
+       [[ 14, 140],
+        [ 15, 150],
+        [ 16, 160]],
+
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]]])
+array([[[1500.],
+        [1600.]],
+
+       [[1400.],
+        [1500.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[1600.],
+        [1700.]],
+
+       [[1700.],
+        [1800.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1300.],
+        [1400.]]])
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">10</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+
+<span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">],</span> <span class="p">[</span><span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">])</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">get_splits</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TRAIN ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;### TEST ###&quot;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">Y_test</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>### TRAIN ###
+array([[[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]],
+
+       [[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+
+       [[ 5, 50],
+        [ 6, 60],
+        [ 7, 70]],
+
+       [[ 4, 40],
+        [ 5, 50],
+        [ 6, 60]],
+
+       [[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+
+       [[ 3, 30],
+        [ 4, 40],
+        [ 5, 50]]])
+array([[[ 900.],
+        [1000.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[ 300.],
+        [ 400.]],
+
+       [[ 700.],
+        [ 800.]],
+
+       [[ 600.],
+        [ 700.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 500.],
+        [ 600.]]])
+### TEST ###
+array([[[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+
+       [[ 14, 140],
+        [ 15, 150],
+        [ 16, 160]],
+
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 13, 130],
+        [ 14, 140],
+        [ 15, 150]]])
+array([[[1900.],
+        [2000.]],
+
+       [[1400.],
+        [1500.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1700.],
+        [1800.]],
+
+       [[1600.],
+        [1700.]],
+
+       [[1800.],
+        [1900.]],
+
+       [[1500.],
+        [1600.]]])
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-4-3"></a></p>
+<h3 id="K-Fold-Case">K Fold Case<a class="anchor-link" href="#K-Fold-Case">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">15</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[([array([[[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]]]),
+   array([[[1300.],
+        [1400.]],
+
+       [[ 300.],
+        [ 400.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[1400.],
+        [1500.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]]])],
+  [array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[1800.],
+        [1900.]],
+
+       [[1900.],
+        [2000.]]])]),
+ ([array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]]]),
+   array([[[1800.],
+        [1900.]],
+
+       [[ 300.],
+        [ 400.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]]])],
+  [array([[[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]]])]),
+ ([array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[1800.],
+        [1900.]],
+
+       [[ 300.],
+        [ 400.]],
+
+       [[ 400.],
+        [ 500.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]]])],
+  [array([[[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+
+       [[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]]]),
+   array([[[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]]])]),
+ ([array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[1800.],
+        [1900.]],
+
+       [[ 800.],
+        [ 900.]],
+
+       [[ 900.],
+        [1000.]],
+
+       [[1900.],
+        [2000.]],
+
+       [[1300.],
+        [1400.]],
+
+       [[1400.],
+        [1500.]]])],
+  [array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]]]),
+   array([[[300.],
+        [400.]],
+
+       [[400.],
+        [500.]]])])]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="2-5"></a></p>
+<h2 id="Extract-Arrays-from-List-of-Data-Frames">Extract Arrays from List of Data Frames<a class="anchor-link" href="#Extract-Arrays-from-List-of-Data-Frames">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+<p>In this case, a list of data frames is given for together with attributes for X variable and Y variable and the goal is to create windows for all single data frames and then concatete them into one.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.transformations.time_series_cv</span> <span class="kn">import</span> <span class="n">create_windows_from_list_of_data_frames</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">attr_date_time</span> <span class="o">=</span> <span class="s2">&quot;DATETIME&quot;</span>
+<span class="n">attrs_X</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="s2">&quot;A3&quot;</span><span class="p">]</span>
+<span class="n">attrs_Y</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;OUTPUT&quot;</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_1</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">df_1</span><span class="p">[</span><span class="n">attr_date_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">df_1</span><span class="p">[</span><span class="n">attrs_X</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">X_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df_1</span><span class="p">[</span><span class="n">attrs_X</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">X_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">df_1</span><span class="p">[</span><span class="n">attrs_X</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="n">df_1</span><span class="p">[</span><span class="n">attrs_Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Y_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df_1</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[49]:</div>
 
 
 
@@ -15810,35 +18449,93 @@ Overall Duration is: 10.08 s, 0.17 mins.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>LABEL</th>
-      <th>MEANTIMES [s]</th>
-      <th>CUMULATIVE TIME [s]</th>
+      <th>DATETIME</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A3</th>
+      <th>OUTPUT</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>First meantime.</td>
-      <td>1.028525</td>
-      <td>1.028525</td>
+      <td>2000-01-01 01:01:01</td>
+      <td>1</td>
+      <td>10</td>
+      <td>1.0</td>
+      <td>100</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>Second meantime.</td>
-      <td>2.011501</td>
-      <td>3.040026</td>
+      <td>2000-01-02 01:02:02</td>
+      <td>2</td>
+      <td>20</td>
+      <td>1.0</td>
+      <td>200</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Third meantime.</td>
-      <td>3.013717</td>
-      <td>6.053744</td>
+      <td>2000-01-03 01:03:03</td>
+      <td>3</td>
+      <td>30</td>
+      <td>1.0</td>
+      <td>300</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Last interval.</td>
-      <td>4.023010</td>
-      <td>10.076754</td>
+      <td>2000-01-04 01:04:04</td>
+      <td>4</td>
+      <td>40</td>
+      <td>1.0</td>
+      <td>400</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2000-01-05 01:05:05</td>
+      <td>5</td>
+      <td>50</td>
+      <td>1.0</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2000-01-06 01:06:06</td>
+      <td>6</td>
+      <td>60</td>
+      <td>1.0</td>
+      <td>600</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2000-01-07 01:07:07</td>
+      <td>7</td>
+      <td>70</td>
+      <td>1.0</td>
+      <td>700</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2000-01-08 01:08:08</td>
+      <td>8</td>
+      <td>80</td>
+      <td>1.0</td>
+      <td>800</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2000-01-09 01:09:09</td>
+      <td>9</td>
+      <td>90</td>
+      <td>1.0</td>
+      <td>900</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2000-01-10 01:10:10</td>
+      <td>10</td>
+      <td>100</td>
+      <td>1.0</td>
+      <td>1000</td>
     </tr>
   </tbody>
 </table>
@@ -15851,6 +18548,372 @@ Overall Duration is: 10.08 s, 0.17 mins.
 
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_2</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">df_2</span><span class="p">[</span><span class="n">attr_date_time</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span>
+<span class="n">df_2</span><span class="p">[</span><span class="n">attrs_X</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">X_data</span><span class="p">[</span><span class="mi">10</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df_2</span><span class="p">[</span><span class="n">attrs_X</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">X_data</span><span class="p">[</span><span class="mi">10</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df_2</span><span class="p">[</span><span class="n">attrs_X</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">10.</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="n">df_2</span><span class="p">[</span><span class="n">attrs_Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Y_data</span><span class="p">[</span><span class="mi">10</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df_2</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[50]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DATETIME</th>
+      <th>A1</th>
+      <th>A2</th>
+      <th>A3</th>
+      <th>OUTPUT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2000-01-11 01:11:11</td>
+      <td>11</td>
+      <td>11</td>
+      <td>10.0</td>
+      <td>1100</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2000-01-12 01:12:12</td>
+      <td>12</td>
+      <td>12</td>
+      <td>10.0</td>
+      <td>1200</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2000-01-13 01:13:13</td>
+      <td>13</td>
+      <td>13</td>
+      <td>10.0</td>
+      <td>1300</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2000-01-14 01:14:14</td>
+      <td>14</td>
+      <td>14</td>
+      <td>10.0</td>
+      <td>1400</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2000-01-15 01:15:15</td>
+      <td>15</td>
+      <td>15</td>
+      <td>10.0</td>
+      <td>1500</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2000-01-16 01:16:16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>10.0</td>
+      <td>1600</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2000-01-17 01:17:17</td>
+      <td>17</td>
+      <td>17</td>
+      <td>10.0</td>
+      <td>1700</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2000-01-18 01:18:18</td>
+      <td>18</td>
+      <td>18</td>
+      <td>10.0</td>
+      <td>1800</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2000-01-19 01:19:19</td>
+      <td>19</td>
+      <td>19</td>
+      <td>10.0</td>
+      <td>1900</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2000-01-20 01:20:20</td>
+      <td>20</td>
+      <td>20</td>
+      <td>10.0</td>
+      <td>2000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">create_windows_from_list_of_data_frames</span><span class="p">(</span>
+    <span class="n">dfs</span><span class="o">=</span><span class="p">[</span><span class="n">df_1</span><span class="p">,</span> <span class="n">df_2</span><span class="p">],</span> 
+    <span class="n">attr_date_time</span><span class="o">=</span><span class="n">attr_date_time</span><span class="p">,</span> 
+    <span class="n">attrs_X</span><span class="o">=</span><span class="n">attrs_X</span><span class="p">,</span> 
+    <span class="n">attrs_Y</span><span class="o">=</span><span class="n">attrs_Y</span><span class="p">,</span> 
+    <span class="n">y_same_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">input_window_len</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">output_window_len</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">shift</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">shuffle_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">shuffle_seed</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>(6, 8, 3)
+(6, 1, 1)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[53]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([[[  1.,  10.,   1.],
+        [  2.,  20.,   1.],
+        [  3.,  30.,   1.],
+        [  4.,  40.,   1.],
+        [  5.,  50.,   1.],
+        [  6.,  60.,   1.],
+        [  7.,  70.,   1.],
+        [  8.,  80.,   1.]],
+
+       [[  2.,  20.,   1.],
+        [  3.,  30.,   1.],
+        [  4.,  40.,   1.],
+        [  5.,  50.,   1.],
+        [  6.,  60.,   1.],
+        [  7.,  70.,   1.],
+        [  8.,  80.,   1.],
+        [  9.,  90.,   1.]],
+
+       [[  3.,  30.,   1.],
+        [  4.,  40.,   1.],
+        [  5.,  50.,   1.],
+        [  6.,  60.,   1.],
+        [  7.,  70.,   1.],
+        [  8.,  80.,   1.],
+        [  9.,  90.,   1.],
+        [ 10., 100.,   1.]],
+
+       [[ 11.,  11.,  10.],
+        [ 12.,  12.,  10.],
+        [ 13.,  13.,  10.],
+        [ 14.,  14.,  10.],
+        [ 15.,  15.,  10.],
+        [ 16.,  16.,  10.],
+        [ 17.,  17.,  10.],
+        [ 18.,  18.,  10.]],
+
+       [[ 12.,  12.,  10.],
+        [ 13.,  13.,  10.],
+        [ 14.,  14.,  10.],
+        [ 15.,  15.,  10.],
+        [ 16.,  16.,  10.],
+        [ 17.,  17.,  10.],
+        [ 18.,  18.,  10.],
+        [ 19.,  19.,  10.]],
+
+       [[ 13.,  13.,  10.],
+        [ 14.,  14.,  10.],
+        [ 15.,  15.,  10.],
+        [ 16.,  16.,  10.],
+        [ 17.,  17.,  10.],
+        [ 18.,  18.,  10.],
+        [ 19.,  19.,  10.],
+        [ 20.,  20.,  10.]]], dtype=float32)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Y</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[54]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([[[ 800.]],
+
+       [[ 900.]],
+
+       [[1000.]],
+
+       [[1800.]],
+
+       [[1900.]],
+
+       [[2000.]]])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15858,189 +18921,9 @@ Overall Duration is: 10.08 s, 0.17 mins.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><a name="2-3-2"></a></p>
-<h3 id="Local-Print-Overwrite">Local Print Overwrite<a class="anchor-link" href="#Local-Print-Overwrite">&#182;</a></h3><p><a href="#ToC">ToC</a></p>
-<p>This functionality was added mainly because of better usage withing inside notebooks simulations.</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timer</span><span class="o">.</span><span class="n">set_results_printing</span><span class="p">(</span><span class="n">print_results</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">print_results_local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;First meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Second meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Third meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Last interval.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End of Run&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Date and Time of Starting Execution: 28/11/2023 11:52:12
-Duration of: First meantime. is 1.01 s, 0.02 mins.
-End of Run
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timer</span><span class="o">.</span><span class="n">set_results_printing</span><span class="p">(</span><span class="n">print_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">print_results_local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;First meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Second meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Third meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Last interval.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End of Run&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Date and Time of Starting Execution: 28/11/2023 11:52:22
-Duration of: First meantime. is 1.01 s, 0.02 mins.
-Duration of: Second meantime. is 2.01 s, 0.03 mins.
-End of Run
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">timer</span><span class="o">.</span><span class="n">set_results_printing</span><span class="p">(</span><span class="n">print_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">print_results_local</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-
-<span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;First meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Second meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Third meantime.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">timer</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Last interval.&quot;</span><span class="p">,</span> <span class="n">print_results_local</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End of Run&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Date and Time of Starting Execution: 28/11/2023 11:52:32
-Duration of: First meantime. is 1.0 s, 0.02 mins.
-Duration of: Second meantime. is 2.0 s, 0.03 mins.
-Duration of: Last interval. is 4.01 s, 0.07 mins.
-Date and Time of Ending Execution: 28/11/2023 11:52:42
-Overall Duration is: 10.02 s, 0.17 mins.
-End of Run
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><a name="2-4"></a></p>
-<h2 id="Logger">Logger<a class="anchor-link" href="#Logger">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+<p><a name="2-6"></a></p>
+<h2 id="Business-and-Production-Testing">Business and Production Testing<a class="anchor-link" href="#Business-and-Production-Testing">&#182;</a></h2><p><a href="#ToC">ToC</a></p>
+<p>For business and production testing, splits with chronological windows are needed too. For given split dates, the <code>get_splits()</code> method is used.</p>
 
 </div>
 </div>
@@ -16050,10 +18933,15 @@ End of Run
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">src.transformations.time_series_cv</span> <span class="k">as</span> <span class="nn">T</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
+
+<span class="n">reload</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">TimeSeriesCV</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -16061,28 +18949,31 @@ End of Run
 </div>
 </div>
 
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Setting only console logger to see the output here in Jupyter notebook.</p>
-
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">NON_DEFAULT_LOGGER_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;logger_console&quot;</span>
-<span class="n">envs</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="n">NON_DEFAULT_LOGGER_CONFIG_NAME</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">create_sample_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">date_time</span> <span class="o">=</span> <span class="n">date_time</span>
+<span class="n">split_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_time</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">date_time</span><span class="p">[</span><span class="mi">15</span><span class="p">]]</span>
+<span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span>
+<span class="n">Y_data</span> <span class="o">=</span> <span class="n">Y_data</span>
+<span class="n">Y_same_observation</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">input_window_len</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">output_window_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">shuffle_data</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">date_time</span><span class="p">,</span> <span class="n">split_dates</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">Y_same_observation</span><span class="p">,</span> <span class="n">input_window_len</span><span class="p">,</span> 
+                             <span class="n">output_window_len</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="n">shuffle_data</span><span class="p">)</span>
+
+<span class="n">X_splits</span><span class="p">,</span> <span class="n">Y_splits</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">get_splits</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -16090,59 +18981,19 @@ End of Run
 </div>
 </div>
 
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Taking the logger:</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Log all the events:</p>
-
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X_splits</span><span class="p">,</span> <span class="n">Y_splits</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16164,70 +19015,66 @@ End of Run
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-11-28 12:52:42,700 - file_console - DEBUG - debug
-2023-11-28 12:52:42,700 - file_console - INFO - info
-2023-11-28 12:52:42,701 - file_console - WARNING - warning
-2023-11-28 12:52:42,701 - file_console - ERROR - error
-2023-11-28 12:52:42,701 - file_console - CRITICAL - error
-</pre>
-</div>
-</div>
+<pre>Split 0
+[[[ 1 10]
+  [ 2 20]
+  [ 3 30]]
 
-</div>
+ [[ 2 20]
+  [ 3 30]
+  [ 4 40]]]
+[[[300.]
+  [400.]]
 
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Time measurements:</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">start_timer</span><span class="p">(</span><span class="s2">&quot;Simple timer test&quot;</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="s2">&quot;First interval&quot;</span><span class="p">)</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">set_meantime</span><span class="p">(</span><span class="s2">&quot;Second interval&quot;</span><span class="p">)</span>
-<span class="n">logger</span><span class="o">.</span><span class="n">end_timer</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
+ [[400.]
+  [500.]]]
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
+Split 1
+[[[ 6 60]
+  [ 7 70]
+  [ 8 80]]
 
-<div class="jp-OutputArea-child">
+ [[ 7 70]
+  [ 8 80]
+  [ 9 90]]]
+[[[ 800.]
+  [ 900.]]
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+ [[ 900.]
+  [1000.]]]
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-11-28 12:52:42,715 - file_console - DEBUG - Process: Simple timer test; Timer started;
-2023-11-28 12:52:42,821 - file_console - DEBUG - Process: Simple timer test; Timer meantime; Meantime of: First interval; Duration [s]: 0.11; Duration [m]: 0.0
-2023-11-28 12:52:43,023 - file_console - DEBUG - Process: Simple timer test; Timer meantime; Meantime of: Second interval; Duration [s]: 0.2; Duration [m]: 0.0
-2023-11-28 12:52:43,023 - file_console - DEBUG - Process: Simple timer test; Timer ended; Process Duration [s]: 0.31; Process Duration [m]: 0.01
+Split 2
+[[[ 11 110]
+  [ 12 120]
+  [ 13 130]]
+
+ [[ 12 120]
+  [ 13 130]
+  [ 14 140]]]
+[[[1300.]
+  [1400.]]
+
+ [[1400.]
+  [1500.]]]
+
+
+Split 3
+[[[ 16 160]
+  [ 17 170]
+  [ 18 180]]
+
+ [[ 17 170]
+  [ 18 180]
+  [ 19 190]]]
+[[[1800.]
+  [1900.]]
+
+ [[1900.]
+  [2000.]]]
+
+
 </pre>
 </div>
 </div>
@@ -16249,12 +19096,12 @@ End of Run
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Logger</span><span class="p">()</span><span class="o">.</span><span class="n">end_timer</span><span class="p">()</span>
@@ -16263,29 +19110,6 @@ End of Run
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-11-28 12:52:43,041 - file_console - DEBUG - Process: ; Timer ended; Process Duration [s]: 0.33; Process Duration [m]: 0.01
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
