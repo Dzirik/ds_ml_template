@@ -11,7 +11,7 @@ from typing import List, Any, Dict, Optional
 import plotly.graph_objs as go
 from pandas import Series, DataFrame
 
-from src.data.cry_attributes import A
+from src.data.attributes import A
 from src.visualisations.plotly_base import PlotlyBase
 from src.visualisations.visualisation_functions import hex_to_rgb
 
