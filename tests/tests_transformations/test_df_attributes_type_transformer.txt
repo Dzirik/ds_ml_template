@@ -1,0 +1,39 @@
+>>> from pandas import DataFrame
+>>> from numpy import NaN
+>>> from datetime import datetime
+>>> from pprint import pprint
+>>> from src.transformations.df_attributes_type_transformer import DFAttributesTypeTransformer
+>>> from src.data.df_explorer import DFExplorer
+>>> dfe = DFExplorer()
+>>> transformer = DFAttributesTypeTransformer()
+>>> from tests.tests_transformations.test_df_attributes_type_transformer import _create_data_frame, ATTR_AND_DTYPES
+>>> DF = _create_data_frame()
+>>> pprint(DF)
+  FLOAT    STR  INT CATEGORICAL   DATETIME  OBJECT
+0   2.3  Hello  1.0       cat_1 2020-04-05  Object
+1   2.4    Bye    3       cat_2 2020-04-06  Object
+2  10.4     Hi    1       cat_2 2020-04-07  Object
+3     1    Ola    2       cat_1 2020-04-08  Object
+4     8   Ahoj   10       cat_1 2020-04-09  Object
+>>> pprint(dfe.get_df_types(DF))
+{'CATEGORICAL': 'object',
+ 'DATETIME': 'datetime64[ns]',
+ 'FLOAT': 'object',
+ 'INT': 'object',
+ 'OBJECT': 'object',
+ 'STR': 'object'}
+>>> pprint(ATTR_AND_DTYPES)
+{'CATEGORICAL': 'category',
+ 'DATETIME': 'datetime64[ns]',
+ 'FLOAT': 'float64',
+ 'INT': 'int64',
+ 'OBJECT': 'object',
+ 'STR': 'object'}
+>>> DF_TRANSFORMED = transformer.fit_predict(DF, ATTR_AND_DTYPES)
+>>> pprint(dfe.get_df_types(DF_TRANSFORMED))
+{'CATEGORICAL': 'category',
+ 'DATETIME': 'datetime64[ns]',
+ 'FLOAT': 'float64',
+ 'INT': 'int64',
+ 'OBJECT': 'object',
+ 'STR': 'object'}
