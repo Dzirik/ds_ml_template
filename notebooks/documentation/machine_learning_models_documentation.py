@@ -240,6 +240,12 @@ plot_histograms_and_residuals(train_residuals, test_residuals)
 # <a name="2-2-2"></a>
 # ### Linear Regression
 # [ToC](#ToC) 
+#
+# [Parameters Explanation](https://medium.com/swlh/interpreting-linear-regression-through-statsmodels-summary-4796d359035a)
+# - Omnibus value: 0 means perfect normalty  .
+# - Prob(Omnibus): probability of residuals being normally distributed.
+# - Durbin Watson: ideal is in between 1-2.
+# - Prob(JB): The same as omnibus.
 
 
 model = StatsLinRegModel()
@@ -264,6 +270,9 @@ plot_histograms_and_residuals(train_residuals, test_residuals)
 # <a name="2-2-2-1"></a>
 # #### Normality of Residuals
 # [ToC](#ToC) 
+#
+# Omnibus value: 0 means perfect normalty  
+# Prob(Omnibus) probability of residuals being normally distributed.
 #
 # [Shapiro-Wilk Test](https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test)
 # - Null hypothesis: x1, ..., xn is from a normally distributed population
