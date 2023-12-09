@@ -212,7 +212,6 @@ df_out.tail()
 
 config_file_name = CONFIG_FILE_NAME
 pipeline = ColumnsGroupingPipeline(config_file_name)
-pipeline.set_config_data(config_data)
 df_out_from_file = pipeline.execute(df)
 
 df_out_from_file.head()

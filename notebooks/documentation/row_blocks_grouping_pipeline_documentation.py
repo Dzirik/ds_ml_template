@@ -233,7 +233,6 @@ df_out.tail()
 
 config_file_name = CONFIG_FILE_NAME
 pipeline = RowBlocksGroupingPipeline(config_file_name, ATTR_DATE_TIME)
-pipeline.set_config_data(config_data)
 df_out_from_file = pipeline.execute(df)
 
 df_out_from_file.head()
