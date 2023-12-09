@@ -14579,7 +14579,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Anomaly-Detection-Rules">Anomaly Detection Rules<a class="anchor-link" href="#Anomaly-Detection-Rules">&#182;</a></h1><p><em>Version:</em> <code>1.1</code> <em>(Jupytext, time measurements, logger, param notebook execution)</em></p>
+<h1 id="Anomaly-Detection-Rules">Anomaly Detection Rules<a class="anchor-link" href="#Anomaly-Detection-Rules">&#182;</a></h1><p><em>Version:</em> <code>1.0</code> <em>(Jupytext, time measurements, logger)</em></p>
 
 </div>
 </div>
@@ -14722,29 +14722,8 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">src.utils.notebook_support_functions</span> <span class="kn">import</span> <span class="n">create_button</span><span class="p">,</span> <span class="n">get_notebook_name</span>
-    <span class="n">NOTEBOOK_NAME</span> <span class="o">=</span> <span class="n">get_notebook_name</span><span class="p">()</span>
-    <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="n">NOTEBOOK_NAME</span> <span class="o">=</span> <span class="s2">&quot;NO_NAME&quot;</span>
-    <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="o">=</span> <span class="kc">False</span>  
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.notebook_support_functions</span> <span class="kn">import</span> <span class="n">create_button</span><span class="p">,</span> <span class="n">get_notebook_name</span>
+<span class="kn">from</span> <span class="nn">src.utils.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
 <span class="kn">from</span> <span class="nn">src.utils.envs</span> <span class="kn">import</span> <span class="n">Envs</span>
 <span class="kn">from</span> <span class="nn">src.utils.config</span> <span class="kn">import</span> <span class="n">Config</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">options</span>
@@ -14774,13 +14753,14 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">LOGGER_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;logger_file_console&quot;</span> <span class="c1"># default</span>
 <span class="n">PYTHON_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;python_personal&quot;</span> <span class="c1"># default</span>
 <span class="n">CREATE_BUTTON</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">ADDAPT_WIDTH</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">NOTEBOOK_NAME</span> <span class="o">=</span> <span class="n">get_notebook_name</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14793,7 +14773,7 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_rows</span> <span class="o">=</span> <span class="mi">500</span>
@@ -14802,9 +14782,9 @@ Necessary libraries for notebook functionality:</p>
 <span class="n">envs</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="n">LOGGER_CONFIG_NAME</span><span class="p">)</span>
 <span class="n">envs</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">PYTHON_CONFIG_NAME</span><span class="p">)</span>
 <span class="n">Logger</span><span class="p">()</span><span class="o">.</span><span class="n">start_timer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NOTEBOOK; Notebook name: </span><span class="si">{</span><span class="n">NOTEBOOK_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="ow">and</span> <span class="n">CREATE_BUTTON</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">CREATE_BUTTON</span><span class="p">:</span>
     <span class="n">create_button</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="ow">and</span> <span class="n">ADDAPT_WIDTH</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">ADDAPT_WIDTH</span><span class="p">:</span>
     <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;style&gt;.container { width:100% !important; }&lt;/style&gt;&quot;</span><span class="p">))</span> <span class="c1"># notebook width</span>
 </pre></div>
 
@@ -14828,9 +14808,9 @@ Necessary libraries for notebook functionality:</p>
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>A: ../../configurations\logger_file_console.conf
-2023-06-05 15:07:13,777 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2023-06-05 15:07:13,780 - file_console - DEBUG - Logger was created on JIRI-A in branche 012_check_rerun_and_save_all_notebooks.
-2023-06-05 15:07:13,780 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: anomaly_detection_rules_01_rules.py; Timer started;
+2023-11-28 12:51:46,089 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
+2023-11-28 12:51:46,092 - file_console - DEBUG - Logger was created on WS-3000 in branche 014_update_repository.
+2023-11-28 12:51:46,092 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: anomaly_detection_rules_01_rules.py; Timer started;
 </pre>
 </div>
 </div>
@@ -14857,7 +14837,7 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">apply_along_axis</span>
@@ -14887,7 +14867,7 @@ Code, libraries, classes, functions from within the repository.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.models.anomaly_detection_rules</span> <span class="kn">import</span> <span class="n">FirstWecoRule</span><span class="p">,</span> <span class="n">SecondWecoRule</span><span class="p">,</span> <span class="n">ThirdWecoRule</span><span class="p">,</span> <span class="n">FourthWecoRule</span>
@@ -14931,7 +14911,7 @@ Constants for the notebook.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from src.global_constants import *  # Remember to import only the constants in use</span>
@@ -14990,7 +14970,7 @@ Constants for the notebook.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">std_est</span> <span class="o">=</span> <span class="mf">1.</span>
@@ -15045,7 +15025,7 @@ Constants for the notebook.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span>
@@ -15067,7 +15047,7 @@ Constants for the notebook.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">FirstWecoRule</span><span class="p">()</span>
@@ -15083,7 +15063,7 @@ Constants for the notebook.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
@@ -15117,6 +15097,53 @@ Constants for the notebook.</p>
 <pre>For Residuals: [9.] the output is: 1
 For Residuals: [9.] the output is: 1
 For Residuals: [9.] the output is: 0
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">is_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,],</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For Residuals: </span><span class="si">{</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span><span class="si">}</span><span class="s2"> the output is: </span><span class="si">{</span><span class="n">is_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">is_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,],</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;positive&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For Residuals: </span><span class="si">{</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span><span class="si">}</span><span class="s2"> the output is: </span><span class="si">{</span><span class="n">is_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">is_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,],</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;negative&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For Residuals: </span><span class="si">{</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span><span class="si">}</span><span class="s2"> the output is: </span><span class="si">{</span><span class="n">is_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>For Residuals: [0.] the output is: 0
+For Residuals: [0.] the output is: 0
+For Residuals: [0.] the output is: 0
 </pre>
 </div>
 </div>
@@ -15180,53 +15207,6 @@ For Residuals: [0.] the output is: 0
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">is_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,],</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For Residuals: </span><span class="si">{</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span><span class="si">}</span><span class="s2"> the output is: </span><span class="si">{</span><span class="n">is_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">is_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,],</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;positive&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For Residuals: </span><span class="si">{</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span><span class="si">}</span><span class="s2"> the output is: </span><span class="si">{</span><span class="n">is_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">is_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,],</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;negative&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For Residuals: </span><span class="si">{</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span><span class="si">}</span><span class="s2"> the output is: </span><span class="si">{</span><span class="n">is_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>For Residuals: [0.] the output is: 0
-For Residuals: [0.] the output is: 0
-For Residuals: [0.] the output is: 0
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">is_rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">residuals</span><span class="o">=</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,],</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For Residuals: </span><span class="si">{</span><span class="n">residuals</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span><span class="si">}</span><span class="s2"> the output is: </span><span class="si">{</span><span class="n">is_rule</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -15271,7 +15251,7 @@ For Residuals: [-9.] the output is: 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func1d</span><span class="o">=</span><span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">arr</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
@@ -15292,7 +15272,7 @@ For Residuals: [-9.] the output is: 1
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
 
 
 
@@ -15325,7 +15305,7 @@ For Residuals: [-9.] the output is: 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span>
@@ -15347,7 +15327,7 @@ For Residuals: [-9.] the output is: 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">SecondWecoRule</span><span class="p">()</span>
@@ -15363,7 +15343,7 @@ For Residuals: [-9.] the output is: 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
@@ -15410,7 +15390,7 @@ For Residuals: [3. 1. 9.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
@@ -15457,7 +15437,7 @@ For Residuals: [4. 0. 4.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">2</span>
@@ -15504,7 +15484,7 @@ For Residuals: [-4. -1. -8.] the output is: 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">3</span>
@@ -15551,7 +15531,7 @@ For Residuals: [0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func1d</span><span class="o">=</span><span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">arr</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
@@ -15572,7 +15552,7 @@ For Residuals: [0. 0. 0.] the output is: 0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 
 
 
@@ -15605,7 +15585,7 @@ For Residuals: [0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span>
@@ -15625,7 +15605,7 @@ For Residuals: [0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">ThirdWecoRule</span><span class="p">()</span>
@@ -15641,7 +15621,7 @@ For Residuals: [0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
@@ -15688,7 +15668,7 @@ For Residuals: [2. 2. 2. 2. 2.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
@@ -15735,7 +15715,7 @@ For Residuals: [-2. -2. -2. -2. -2.] the output is: 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">2</span>
@@ -15782,7 +15762,7 @@ For Residuals: [0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func1d</span><span class="o">=</span><span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">arr</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
@@ -15803,7 +15783,7 @@ For Residuals: [0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
 
 
 
@@ -15836,7 +15816,7 @@ For Residuals: [0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span>
@@ -15856,7 +15836,7 @@ For Residuals: [0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">FourthWecoRule</span><span class="p">()</span>
@@ -15872,7 +15852,7 @@ For Residuals: [0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
@@ -15919,7 +15899,7 @@ For Residuals: [0.2 0.2 0.2 0.2 0.2 0.2 0.2 0.2] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
@@ -15966,7 +15946,7 @@ For Residuals: [-0.2 -0.2 -0.2 -0.2 -0.2 -0.2 -0.2 -0.2] the output is: 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="mi">2</span>
@@ -16013,7 +15993,7 @@ For Residuals: [0. 0. 0. 0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func1d</span><span class="o">=</span><span class="n">rule</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">arr</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span> <span class="n">std_est</span><span class="o">=</span><span class="n">std_est</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
@@ -16034,7 +16014,7 @@ For Residuals: [0. 0. 0. 0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[34]:</div>
 
 
 
@@ -16067,7 +16047,7 @@ For Residuals: [0. 0. 0. 0. 0. 0. 0. 0.] the output is: 0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Logger</span><span class="p">()</span><span class="o">.</span><span class="n">end_timer</span><span class="p">()</span>
@@ -16092,7 +16072,7 @@ For Residuals: [0. 0. 0. 0. 0. 0. 0. 0.] the output is: 0
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-06-05 15:07:14,262 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: anomaly_detection_rules_01_rules.py; Timer ended; Process Duration [s]: 0.48; Process Duration [m]: 0.01
+<pre>2023-11-28 12:51:46,608 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: anomaly_detection_rules_01_rules.py; Timer ended; Process Duration [s]: 0.52; Process Duration [m]: 0.01
 </pre>
 </div>
 </div>

@@ -28,7 +28,8 @@
 #     - [Constants](#1-5)   
 # - [Analysis](#2)   
 #     - [Data Generation](#2-1)   
-#     - [Data Plotting](#2-2)     
+#     - [Data Plotting](#2-2)  
+#     - [Data Saving](#2-3)
 # - [Final Timestamp](#3)  
 
 # <a name="0"></a>
@@ -50,6 +51,12 @@
 # - The solution: 
 #     - Comment out import of get_notebook_name() and create_button().
 #     - Comment out its usage and replace with string.
+#     
+# ### Parameters Tag
+# **Parameters tag can be assigned to only one cells; if assigned to multiple cells, it works only for the first one.**
+#
+# ### Python Config
+# It is diffence between script config (the notebooks are saved based on this one) and notebook config (the results are saved based on paths in notebook config, not script config; of course in case if they are not identical).
 #
 # ### Usage
 #
@@ -57,7 +64,7 @@
 # * First, turn on the tabs option in View/Cells Toolbar/Tags. <img src="..\..\assets\par_ntb_tag.png">.
 # * Second, add a *parameters* tag to the cell where the selected variables to be parameterized are and hit enter to add it. If not specified/tagged, the parameters will be added as a separate cell at the top of the notebook. <img src="..\..\assets\par_ntb_tag_add.png">  
 # * The added tab can be seen at the top of the cell. <img src="..\..\assets\par_ntb_tag_added.png"> 
-# * Run the script *src\utils\param_notebook_executioner.py*; tested from PyCharm and it worked. From console is a problem with the path.
+# * Run the script; tested from PyCharm and it worked. From console is a problem with the path.
 #
 # > **INSTALATION NOTE:** Problems with pywin32 library was encountered with Anaconda 3.8. Downgrade to pywin32==225 helped.
 
@@ -105,7 +112,6 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file"
-PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
 
@@ -113,7 +119,6 @@ options.display.max_rows = 500
 options.display.max_columns = 500
 envs = Envs()
 envs.set_logger(LOGGER_CONFIG_NAME)
-envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
 if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
     create_button()
@@ -124,15 +129,21 @@ if ADDAPT_WIDTH:
 # ### External Libraries
 # [ToC](#ToC)  
 
+# +
+from datetime import datetime
+from pandas import DataFrame
+
 import matplotlib.pyplot as plt
 # %matplotlib inline
+# -
 
 # <a name="1-4"></a>
 # ### Internal Code
 # [ToC](#ToC)  
 # Code, libraries, classes, functions from within the repository.
 
-
+from src.data.saver_and_loader import SaverAndLoader
+from src.utils.date_time_functions import create_datetime_id
 
 # <a name="1-5"></a>
 # ### Constants
@@ -153,11 +164,18 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # [ToC](#ToC)  
 
 # + tags=["parameters"]
+# MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION #########################################
+PYTHON_CONFIG_NAME = "python_personal"
+ID = create_datetime_id(now=datetime.now(), add_micro=False)
+# (END) MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION ###################################
+
 n = 20
 a = 1
 b = 0
 title = "Title"
 # -
+
+envs.set_config(PYTHON_CONFIG_NAME)
 
 # #### Notebook Specific Constants
 # [ToC](#ToC)  
@@ -167,6 +185,11 @@ title = "Title"
 # <a name="2"></a>
 # # ANALYSIS
 # [ToC](#ToC)  
+
+# +
+
+saver_and_loader = SaverAndLoader()
+# -
 
 # <a name="2-1"></a>
 # ## Data Generation
@@ -183,7 +206,20 @@ Y = [a*x + b for x in X]
 
 
 plt.plot(X, Y, "y.")
-plt.title(title)
+plt.title(f"{ID}_{title}")
+
+# <a name="2-3"></a>
+# ## Data Saving
+# [ToC](#ToC) 
+
+print(PYTHON_CONFIG_NAME)
+print(Config().get_data().path.processed_data)
+print(ID)
+
+df = DataFrame(data=[[1, 2], [3, 4]], columns=["ONE", "TWO"])
+df
+
+saver_and_loader.save_dataframe_to_pickle(df=df, file_name=f"{ID}", where="processed_data")
 
 # <a name="3"></a>
 # # Final Timestamp

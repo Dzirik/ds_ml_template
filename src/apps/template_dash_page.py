@@ -46,7 +46,7 @@ class TemplateDashPage:
                 BlockSidebar().create(),
                 Div(
                     self.create_content_list()
-                    , style=Config().get().dash.content_style
+                    , style=Config().get_data().dash.content_style
                 )
             ])
         ])

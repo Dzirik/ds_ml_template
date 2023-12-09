@@ -110,6 +110,8 @@ if ADDAPT_WIDTH:
 # Code, libraries, classes, functions from within the repository.
 
 # +
+from src.constants.global_constants import ATTR_DATE_TIME
+
 from src.data.time_series_one_minute_data import TimeSeriesOneMinuteData
 
 from src.data.df_explorer import DFExplorer
@@ -205,13 +207,19 @@ config_data = RowBlocksGroupingPipelineConfigData(
             attrs=["DATETIME", "5*I", "10*I"],
             fun="mean",
             rename={"mean": "MEAN_5*I_10*I"}        
+        ),
+        RowBlocksGrouping(
+            create=True,
+            attrs=["DATETIME", "2*I"],
+            fun="count",
+            rename={"COUNT": "COUNT_1"}
         )
     ]
 )
 config_data
 
 config_file_name = None
-pipeline = RowBlocksGroupingPipeline(config_file_name)
+pipeline = RowBlocksGroupingPipeline(config_file_name, ATTR_DATE_TIME)
 pipeline.set_config_data(config_data)
 df_out = pipeline.execute(df)
 
@@ -224,7 +232,7 @@ df_out.tail()
 # [ToC](#ToC)  
 
 config_file_name = CONFIG_FILE_NAME
-pipeline = RowBlocksGroupingPipeline(config_file_name)
+pipeline = RowBlocksGroupingPipeline(config_file_name, ATTR_DATE_TIME)
 pipeline.set_config_data(config_data)
 df_out_from_file = pipeline.execute(df)
 

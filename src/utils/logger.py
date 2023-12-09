@@ -43,11 +43,9 @@ class Logger(metaclass=Singleton):
                 profile_file_path = join(getcwd(), FOLDER_CONFIGURATIONS, profile_file_name)
 
                 if not exists(profile_file_path):
-                    print("hello")
                     self._log_bad_file()
                     raise ValueError("Logger profile does not exit in the selected path.")
 
-            print(f"A: {profile_file_path}")
             logging.config.fileConfig(fname=profile_file_path, disable_existing_loggers=False)
 
             self._logger = logging.getLogger(self._env.get_logger().replace("logger_", ""))
@@ -59,7 +57,7 @@ class Logger(metaclass=Singleton):
             except:
                 branch_name = "ERROR"
             # pylint: enable=bare-except
-            self._logger.debug("Logger was created on %s in branche %s.", platform.node(), branch_name)
+            self._logger.info("Logger was created on %s in branche %s.", platform.node(), branch_name)
 
     @staticmethod
     def _log_bad_file() -> None:
@@ -82,7 +80,7 @@ class Logger(metaclass=Singleton):
         self._process_name = process_name
         self._timer.set_results_printing(False)
         self._timer.start()
-        self._logger.debug("Process: %s; Timer started;", self._process_name)
+        self._logger.info("Process: %s; Timer started;", self._process_name)
 
     def set_meantime(self, message: str) -> None:
         """
@@ -90,7 +88,7 @@ class Logger(metaclass=Singleton):
         :param message: str. Log message.
         """
         diff_s, diff_m = self._timer.get_meantime(message)
-        self._logger.debug("Process: %s; Timer meantime; Meantime of: %s; Duration [s]: %s; Duration [m]: %s",
+        self._logger.info("Process: %s; Timer meantime; Meantime of: %s; Duration [s]: %s; Duration [m]: %s",
                            self._process_name, message, diff_s, diff_m)
 
     def end_timer(self) -> None:
@@ -99,7 +97,7 @@ class Logger(metaclass=Singleton):
         :param message: str. Log message.
         """
         _, _, duration_s, duration_m = self._timer.get_end("Process ended")
-        self._logger.debug("Process: %s; Timer ended; Process Duration [s]: %s; Process Duration [m]: %s",
+        self._logger.info("Process: %s; Timer ended; Process Duration [s]: %s; Process Duration [m]: %s",
                            self._process_name, duration_s, duration_m)
         self._process_name = ""
 

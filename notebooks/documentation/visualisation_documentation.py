@@ -41,6 +41,11 @@
 #         - [Time Series Events](#2-3-3)
 #             - [Simple Plot](#2-3-3-1)
 #             - [Full Plot](#2-3-3-2)
+#         - [Candle Plot](#2-3-4)
+#             - [Candle Plot](#2-3-4-1)
+#             - [Candle Plot with Series](#2-3-4-2)
+#             - [Candle Plot with Series and Events](#2-3-4-3)
+#             - [Candle Plot with Series and Events and Vertical Lines](#2-3-4-4)  
 #     - [Multi Histogram - Distplot](#2-4)
 #     - [Multi Histogram](#2-5)
 #     - [Line Plot](#2-6)
@@ -149,7 +154,7 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # #### Notebook Specific Constants
 # [ToC](#ToC)   
 
-
+from src.data.attributes import ATTR_OPEN, ATTR_HIGH, ATTR_LOW, ATTR_CLOSE
 
 # <a name='2'></a>
 # # Visualizations Examples
@@ -490,6 +495,122 @@ ts_visu.plot(
     events=[buys, sells],
     event_names=["Buys", "Sells"],
     event_obs_names=[buy_names, sell_names],
+    plot_title=plot_title, 
+    y_title=y_title
+)
+# -
+
+# <a name='2-3-4'></a>
+# ### Candle Plot
+# [ToC](#ToC) 
+
+df_1 = DataFrame(create_time_series(seed_number=11, x_multiplier=0.3))
+df_1.rename(columns={0: ATTR_OPEN.name}, inplace=True)
+df_1[ATTR_HIGH.name] = create_time_series(seed_number=7651, x_multiplier=0.2)
+df_1[ATTR_LOW.name] = create_time_series(seed_number=751, x_multiplier=0.4)
+df_1[ATTR_CLOSE.name] = create_time_series(seed_number=76, x_multiplier=0.1)
+df_1.head(2)
+
+ts_1 = create_time_series(seed_number=11, x_multiplier=0.3)
+ts_1_names = [f"Amazing Data {i}" for i in range(1, len(ts_1)+1)]
+ts_2 = create_time_series(seed_number=32, x_multiplier=1.1)
+ts_2_names = [f"Random Data {i}" for i in range(1, len(ts_2)+1)]
+
+buy_series = df_1["CLOSE"][[1, 27]]
+buy_series_names = ["Good Buy", "Bad Buy"]
+sell_series = df_1["CLOSE"][[6, 16]]
+sell_series_names = ["So So Sell", "Wooow Sell"]
+third_series = df_1["HIGH"][[10, 20]]
+third_series_names = ["Test", "Next Test"]
+
+plot_title = "Awesome Random Time Series Plot"
+y_title = "Awesome Random Data"
+
+# <a name='2-3-4-1'></a>
+# #### Candle Plot
+# [ToC](#ToC) 
+
+# +
+import src.visualisations.plotly_candle as PC
+
+reload(PC)
+
+candle_visu = PC.PlotlyCandle()
+
+candle_visu.plot(
+    df_market=df_1, 
+    plot_title=plot_title, 
+    y_title=y_title
+)
+# -
+
+# <a name='2-3-4-2'></a>
+# #### Candle Plot with Series
+# [ToC](#ToC) 
+
+# +
+import src.visualisations.plotly_candle as PC
+
+reload(PC)
+
+candle_visu = PC.PlotlyCandle()
+
+candle_visu.plot(
+    df_market=df_1,
+    series=[ts_1, ts_2], 
+    series_names=["MA_long", "MA_short"],
+    series_obs_names=[ts_1_names, ts_2_names],
+    plot_title=plot_title, 
+    y_title=y_title
+)
+# -
+
+# <a name='2-3-4-3'></a>
+# #### Candle Plot with Series and Events
+# [ToC](#ToC) 
+
+# +
+import src.visualisations.plotly_candle as PC
+
+reload(PC)
+
+candle_visu = PC.PlotlyCandle()
+
+candle_visu.plot(
+    df_market=df_1,
+    series=[ts_1, ts_2], 
+    series_names=["MA_long", "MA_short"],
+    series_obs_names=[ts_1_names, ts_2_names],
+    events=[buy_series, sell_series, third_series],
+    event_names=["Buy", "Sell", "Third"],
+    event_obs_names=[buy_series_names, sell_series_names, third_series_names],
+    plot_title=plot_title, 
+    y_title=y_title
+)
+# -
+
+# <a name='2-3-4-4'></a>
+# #### Candle Plot with Series and Events and Vertical Lines
+# [ToC](#ToC) 
+
+datetime(2020, 1, 12)
+
+# +
+import src.visualisations.plotly_candle as PC
+
+reload(PC)
+
+candle_visu = PC.PlotlyCandle()
+
+candle_visu.plot(
+    df_market=df_1,
+    series=[ts_1, ts_2], 
+    series_names=["MA_long", "MA_short"],
+    series_obs_names=[ts_1_names, ts_2_names],
+    events=[buy_series, sell_series, third_series],
+    event_names=["Buy", "Sell", "Third"],
+    event_obs_names=[buy_series_names, sell_series_names, third_series_names],
+    vertical_lines_positions=[df_1.index[10], datetime(2020, 1, 15)],
     plot_title=plot_title, 
     y_title=y_title
 )

@@ -14867,9 +14867,9 @@ Necessary libraries for notebook functionality:</p>
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>A: ../../configurations\logger_file_console.conf
-2023-06-05 15:07:44,972 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2023-06-05 15:07:44,976 - file_console - DEBUG - Logger was created on JIRI-A in branche 012_check_rerun_and_save_all_notebooks.
-2023-06-05 15:07:44,977 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: transfomations_executioner_pipeline_documentation.py; Timer started;
+2023-11-28 13:09:44,257 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
+2023-11-28 13:09:44,260 - file_console - DEBUG - Logger was created on WS-3000 in branche 014_update_repository.
+2023-11-28 13:09:44,260 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: transfomations_executioner_pipeline_documentation.py; Timer started;
 </pre>
 </div>
 </div>
@@ -15254,6 +15254,7 @@ C_SHIFT = TransformerConfiguration(
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span> <span class="o">=</span> <span class="n">TransformationsExecutionerPipelineConfigData</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">trans_executioners_confs</span><span class="o">=</span><span class="p">[</span>
         <span class="n">TransformationExecutionerConfiguration</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -15610,6 +15611,7 @@ C_SHIFT = TransformerConfiguration(
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span> <span class="o">=</span> <span class="n">TransformationsExecutionerPipelineConfigData</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">trans_executioners_confs</span><span class="o">=</span><span class="p">[</span>
         <span class="n">TransformationExecutionerConfiguration</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -16047,6 +16049,7 @@ C_SHIFT = TransformerConfiguration(
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data_fitted</span> <span class="o">=</span> <span class="n">TransformationsExecutionerPipelineConfigData</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">trans_executioners_confs</span><span class="o">=</span><span class="p">[</span>
         <span class="n">TransformationExecutionerConfiguration</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -16450,6 +16453,7 @@ C_SHIFT = TransformerConfiguration(
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span> <span class="o">=</span> <span class="n">TransformationsExecutionerPipelineConfigData</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">trans_executioners_confs</span><span class="o">=</span><span class="p">[</span>
         <span class="n">TransformationExecutionerConfiguration</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -16737,7 +16741,7 @@ C_SHIFT = TransformerConfiguration(
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>TransformationsExecutionerPipelineConfigData(trans_executioners_confs=[TransformationExecutionerConfiguration(create=True, attrs=[&#39;ATTR_1&#39;, &#39;ATTR_2&#39;], configurations=[TransformerConfiguration(name=&#39;MinMaxScalingTransformer&#39;, fit=True, params_for_fit={&#39;single_columns&#39;: False}, params_fitted={&#39;main_params&#39;: {&#39;clip&#39;: False, &#39;copy&#39;: True, &#39;feature_range&#39;: (0.0, 1.0)}, &#39;min_&#39;: array([0., 0.]), &#39;scale_&#39;: array([0.21979294, 0.21979294]), &#39;data_min_&#39;: array([0., 0.]), &#39;data_max_&#39;: array([4.5497367, 4.5497367])}), TransformerConfiguration(name=&#39;ShiftByValueTransformer&#39;, fit=True, params_for_fit={&#39;shift_value&#39;: -0.5}, params_fitted={&#39;shift_value&#39;: -0.5})]), TransformationExecutionerConfiguration(create=True, attrs=[&#39;ATTR_3&#39;], configurations=[TransformerConfiguration(name=&#39;ShiftByValueTransformer&#39;, fit=True, params_for_fit={&#39;shift_value&#39;: -0.5}, params_fitted={&#39;shift_value&#39;: -0.5})]), TransformationExecutionerConfiguration(create=True, attrs=[&#39;ATTR_4&#39;, &#39;ATTR_5&#39;], configurations=[TransformerConfiguration(name=&#39;LogTransformer&#39;, fit=True, params_for_fit={&#39;base&#39;: 10.0}, params_fitted={&#39;base&#39;: 10.0})])])</pre>
+<pre>TransformationsExecutionerPipelineConfigData(name=&#39;test&#39;, trans_executioners_confs=[TransformationExecutionerConfiguration(create=True, attrs=[&#39;ATTR_1&#39;, &#39;ATTR_2&#39;], configurations=[TransformerConfiguration(name=&#39;MinMaxScalingTransformer&#39;, fit=True, params_for_fit={&#39;single_columns&#39;: False}, params_fitted={&#39;main_params&#39;: {&#39;clip&#39;: False, &#39;copy&#39;: True, &#39;feature_range&#39;: (0.0, 1.0)}, &#39;min_&#39;: array([0., 0.]), &#39;scale_&#39;: array([0.21979294, 0.21979294]), &#39;data_min_&#39;: array([0., 0.]), &#39;data_max_&#39;: array([4.5497367, 4.5497367])}), TransformerConfiguration(name=&#39;ShiftByValueTransformer&#39;, fit=True, params_for_fit={&#39;shift_value&#39;: -0.5}, params_fitted={&#39;shift_value&#39;: -0.5})]), TransformationExecutionerConfiguration(create=True, attrs=[&#39;ATTR_3&#39;], configurations=[TransformerConfiguration(name=&#39;ShiftByValueTransformer&#39;, fit=True, params_for_fit={&#39;shift_value&#39;: -0.5}, params_fitted={&#39;shift_value&#39;: -0.5})]), TransformationExecutionerConfiguration(create=True, attrs=[&#39;ATTR_4&#39;, &#39;ATTR_5&#39;], configurations=[TransformerConfiguration(name=&#39;LogTransformer&#39;, fit=True, params_for_fit={&#39;base&#39;: 10.0}, params_fitted={&#39;base&#39;: 10.0})])])</pre>
 </div>
 
 </div>
@@ -17143,6 +17147,7 @@ C_SHIFT = TransformerConfiguration(
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data</span> <span class="o">=</span> <span class="n">TransformationsExecutionerPipelineConfigData</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">trans_executioners_confs</span><span class="o">=</span><span class="p">[</span>
         <span class="n">TransformationExecutionerConfiguration</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -17346,6 +17351,7 @@ C_SHIFT = TransformerConfiguration(
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_data_fitted</span> <span class="o">=</span> <span class="n">TransformationsExecutionerPipelineConfigData</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">trans_executioners_confs</span><span class="o">=</span><span class="p">[</span>
         <span class="n">TransformationExecutionerConfiguration</span><span class="p">(</span>
             <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -17512,7 +17518,7 @@ C_SHIFT = TransformerConfiguration(
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-06-05 15:07:46,284 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: transfomations_executioner_pipeline_documentation.py; Timer ended; Process Duration [s]: 1.31; Process Duration [m]: 0.02
+<pre>2023-11-28 13:09:45,368 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: transfomations_executioner_pipeline_documentation.py; Timer ended; Process Duration [s]: 1.11; Process Duration [m]: 0.02
 </pre>
 </div>
 </div>

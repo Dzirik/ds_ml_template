@@ -95,7 +95,7 @@ envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
 if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
     create_button()
-if ADDAPT_WIDTH:
+if SUPPORT_FUNCTIONS_READ and ADDAPT_WIDTH:
     display(HTML("<style>.container { width:100% !important; }</style>")) # notebook width
 
 # <a name="1-3"></a>
@@ -182,14 +182,16 @@ config_data = ColumnsGroupingPipelineConfigData(
         ColumnsGrouping(
             create=True,
             attrs=["I", "-I"],
-            fun="mean",
-            name="I-I_MEAN"
+            grouping_fun="mean",
+            params={},
+            new_attr_name="I-I_MEAN"
         ),
         ColumnsGrouping(
             create=True,
             attrs=["1", "2", "I", "-I"],
-            fun="sum",
-            name="SUM_1_2_I_-I"
+            grouping_fun="sum",
+            params={},
+            new_attr_name="SUM_1_2_I_-I"
         )
     ]
 )

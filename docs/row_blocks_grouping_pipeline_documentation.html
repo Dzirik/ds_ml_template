@@ -14825,9 +14825,9 @@ Necessary libraries for notebook functionality:</p>
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>A: ../../configurations\logger_file_console.conf
-2023-06-06 08:39:05,706 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2023-06-06 08:39:05,709 - file_console - DEBUG - Logger was created on JIRI-A in branche 012_check_rerun_and_save_all_notebooks.
-2023-06-06 08:39:05,709 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: row_blocks_grouping_pipeline_documentation.py; Timer started;
+2023-11-28 12:52:10,726 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
+2023-11-28 12:52:10,729 - file_console - DEBUG - Logger was created on WS-3000 in branche 014_update_repository.
+2023-11-28 12:52:10,729 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: row_blocks_grouping_pipeline_documentation.py; Timer started;
 </pre>
 </div>
 </div>
@@ -14887,7 +14887,9 @@ Code, libraries, classes, functions from within the repository.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.data.time_series_one_minute_data</span> <span class="kn">import</span> <span class="n">TimeSeriesOneMinuteData</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.constants.global_constants</span> <span class="kn">import</span> <span class="n">ATTR_DATE_TIME</span>
+
+<span class="kn">from</span> <span class="nn">src.data.time_series_one_minute_data</span> <span class="kn">import</span> <span class="n">TimeSeriesOneMinuteData</span>
 
 <span class="kn">from</span> <span class="nn">src.data.df_explorer</span> <span class="kn">import</span> <span class="n">DFExplorer</span>
 
@@ -15372,6 +15374,12 @@ Constants for the notebook.</p>
             <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DATETIME&quot;</span><span class="p">,</span> <span class="s2">&quot;5*I&quot;</span><span class="p">,</span> <span class="s2">&quot;10*I&quot;</span><span class="p">],</span>
             <span class="n">fun</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span>
             <span class="n">rename</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="s2">&quot;MEAN_5*I_10*I&quot;</span><span class="p">}</span>        
+        <span class="p">),</span>
+        <span class="n">RowBlocksGrouping</span><span class="p">(</span>
+            <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DATETIME&quot;</span><span class="p">,</span> <span class="s2">&quot;2*I&quot;</span><span class="p">],</span>
+            <span class="n">fun</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+            <span class="n">rename</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;COUNT&quot;</span><span class="p">:</span> <span class="s2">&quot;COUNT_1&quot;</span><span class="p">}</span>
         <span class="p">)</span>
     <span class="p">]</span>
 <span class="p">)</span>
@@ -15399,7 +15407,7 @@ Constants for the notebook.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>RowBlocksGroupingPipelineConfigData(name=&#39;my&#39;, grouping_window_len=&#39;30min&#39;, row_blocks_grouping=[RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;1&#39;], fun=&#39;sum&#39;, rename={&#39;SUM&#39;: &#39;SUM_1&#39;}), RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;1&#39;, &#39;2&#39;], fun=&#39;sum&#39;, rename={&#39;SUM&#39;: &#39;SUM_1_2&#39;}), RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;I&#39;, &#39;-I&#39;], fun=&#39;sum&#39;, rename={&#39;SUM&#39;: &#39;SUM_I-I&#39;}), RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;5*I&#39;, &#39;10*I&#39;], fun=&#39;mean&#39;, rename={&#39;mean&#39;: &#39;MEAN_5*I_10*I&#39;})])</pre>
+<pre>RowBlocksGroupingPipelineConfigData(name=&#39;my&#39;, grouping_window_len=&#39;30min&#39;, row_blocks_grouping=[RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;1&#39;], fun=&#39;sum&#39;, rename={&#39;SUM&#39;: &#39;SUM_1&#39;}), RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;1&#39;, &#39;2&#39;], fun=&#39;sum&#39;, rename={&#39;SUM&#39;: &#39;SUM_1_2&#39;}), RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;I&#39;, &#39;-I&#39;], fun=&#39;sum&#39;, rename={&#39;SUM&#39;: &#39;SUM_I-I&#39;}), RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;5*I&#39;, &#39;10*I&#39;], fun=&#39;mean&#39;, rename={&#39;mean&#39;: &#39;MEAN_5*I_10*I&#39;}), RowBlocksGrouping(create=True, attrs=[&#39;DATETIME&#39;, &#39;2*I&#39;], fun=&#39;count&#39;, rename={&#39;COUNT&#39;: &#39;COUNT_1&#39;})])</pre>
 </div>
 
 </div>
@@ -15417,7 +15425,7 @@ Constants for the notebook.</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_file_name</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">pipeline</span> <span class="o">=</span> <span class="n">RowBlocksGroupingPipeline</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">)</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">RowBlocksGroupingPipeline</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">,</span> <span class="n">ATTR_DATE_TIME</span><span class="p">)</span>
 <span class="n">pipeline</span><span class="o">.</span><span class="n">set_config_data</span><span class="p">(</span><span class="n">config_data</span><span class="p">)</span>
 <span class="n">df_out</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
@@ -15481,8 +15489,10 @@ Constants for the notebook.</p>
       <th>SUM_1_2</th>
       <th>SUM_I-I</th>
       <th>MEAN</th>
+      <th>COUNT_1</th>
     </tr>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -15499,6 +15509,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>108.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 00:30:00</th>
@@ -15507,6 +15518,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>333.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 01:00:00</th>
@@ -15515,6 +15527,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>558.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 01:30:00</th>
@@ -15523,6 +15536,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>783.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 02:00:00</th>
@@ -15531,6 +15545,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>1008.75</td>
+      <td>30</td>
     </tr>
   </tbody>
 </table>
@@ -15597,8 +15612,10 @@ Constants for the notebook.</p>
       <th>SUM_1_2</th>
       <th>SUM_I-I</th>
       <th>MEAN</th>
+      <th>COUNT_1</th>
     </tr>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -15615,6 +15632,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>333783.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 22:00:00</th>
@@ -15623,6 +15641,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334008.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 22:30:00</th>
@@ -15631,6 +15650,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334233.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 23:00:00</th>
@@ -15639,6 +15659,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334458.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 23:30:00</th>
@@ -15647,6 +15668,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334683.75</td>
+      <td>30</td>
     </tr>
   </tbody>
 </table>
@@ -15681,7 +15703,7 @@ Constants for the notebook.</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">config_file_name</span> <span class="o">=</span> <span class="n">CONFIG_FILE_NAME</span>
-<span class="n">pipeline</span> <span class="o">=</span> <span class="n">RowBlocksGroupingPipeline</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">)</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">RowBlocksGroupingPipeline</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">,</span> <span class="n">ATTR_DATE_TIME</span><span class="p">)</span>
 <span class="n">pipeline</span><span class="o">.</span><span class="n">set_config_data</span><span class="p">(</span><span class="n">config_data</span><span class="p">)</span>
 <span class="n">df_out_from_file</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
@@ -15705,7 +15727,7 @@ Constants for the notebook.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-06-06 08:39:10,964 - file_console - DEBUG - &lt;bound method MetaClass.get_class_name of &lt;src.pipelines.row_blocks_grouping_pipeline_config.RowBlocksGroupingPipelineConfig object at 0x0000021DCFEDE880&gt;&gt; was created from pipeline_row_blocks_grouping_documentation.conf file.
+<pre>2023-11-28 12:52:15,644 - file_console - DEBUG - &lt;bound method MetaClass.get_class_name of &lt;src.pipelines.row_blocks_grouping_pipeline_config.RowBlocksGroupingPipelineConfig object at 0x0000021430CA8EB0&gt;&gt; was created from pipeline_row_blocks_grouping_documentation.conf file.
 </pre>
 </div>
 </div>
@@ -15768,8 +15790,10 @@ Constants for the notebook.</p>
       <th>SUM_1_2</th>
       <th>SUM_I-I</th>
       <th>MEAN</th>
+      <th>COUNT_1</th>
     </tr>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -15786,6 +15810,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>108.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 00:30:00</th>
@@ -15794,6 +15819,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>333.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 01:00:00</th>
@@ -15802,6 +15828,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>558.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 01:30:00</th>
@@ -15810,6 +15837,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>783.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-01 02:00:00</th>
@@ -15818,6 +15846,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>1008.75</td>
+      <td>30</td>
     </tr>
   </tbody>
 </table>
@@ -15884,8 +15913,10 @@ Constants for the notebook.</p>
       <th>SUM_1_2</th>
       <th>SUM_I-I</th>
       <th>MEAN</th>
+      <th>COUNT_1</th>
     </tr>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -15902,6 +15933,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>333783.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 22:00:00</th>
@@ -15910,6 +15942,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334008.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 22:30:00</th>
@@ -15918,6 +15951,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334233.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 23:00:00</th>
@@ -15926,6 +15960,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334458.75</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>2000-01-31 23:30:00</th>
@@ -15934,6 +15969,7 @@ Constants for the notebook.</p>
       <td>90</td>
       <td>0</td>
       <td>334683.75</td>
+      <td>30</td>
     </tr>
   </tbody>
 </table>
@@ -16018,7 +16054,7 @@ Constants for the notebook.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-06-06 08:39:14,779 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: row_blocks_grouping_pipeline_documentation.py; Timer ended; Process Duration [s]: 9.07; Process Duration [m]: 0.15
+<pre>2023-11-28 12:52:19,952 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: row_blocks_grouping_pipeline_documentation.py; Timer ended; Process Duration [s]: 9.22; Process Duration [m]: 0.15
 </pre>
 </div>
 </div>

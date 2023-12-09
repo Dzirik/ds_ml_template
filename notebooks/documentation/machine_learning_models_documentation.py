@@ -31,6 +31,8 @@
 #     - [Regression](#2-2)
 #         - [Mean Model](#2-2-1)
 #         - [Linear Regression](#2-2-2)
+#             - [Normality of Residuals](#2-2-2-1)
+#             - [Evaluation](#2-2-2-2)
 #     - [Classification](#2-3)     
 #         - [Max Entropy Classification Random Model](#2-3-1)
 #             - [Not One Hot Encoding](#2-3-1-1)
@@ -86,8 +88,7 @@ LOGGER_CONFIG_NAME = "logger_file_console" # default
 PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
-# NOTEBOOK_NAME = get_notebook_name()
-NOTEBOOK_NAME = "a"
+NOTEBOOK_NAME = get_notebook_name()
 
 options.display.max_rows = 500
 options.display.max_columns = 500
@@ -116,6 +117,7 @@ from pandas import Series
 
 # +
 from src.data.income_weather_data_generator import IncomeWeatherDataGenerator
+from src.data.splitter import Splitter
 
 from src.models.ml_r_mean_model import MeanModel
 from src.models.ml_r_stats_lin_reg_model import StatsLinRegModel
@@ -158,10 +160,14 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # # ANALYSIS
 # [ToC](#ToC)  
 
+# +
+splitter = Splitter()
+
 line_chart = PlotlyLineChart()
 hist = PlotlyHistogram()
 hist_multi = PlotlyHistogram()
 bar_chart = PlotlyBarChart()
+# -
 
 # <a name="2-1"></a>
 # ## Data
@@ -235,7 +241,14 @@ plot_histograms_and_residuals(train_residuals, test_residuals)
 # ### Linear Regression
 # [ToC](#ToC) 
 #
-# Results interpetation can be found [here](https://medium.com/swlh/interpreting-linear-regression-through-statsmodels-summary-4796d359035a).
+# [Parameters Explanation](https://medium.com/swlh/interpreting-linear-regression-through-statsmodels-summary-4796d359035a)
+# - Omnibus value: 0 means perfect normalty  .
+# - Prob(Omnibus): probability of residuals being normally distributed.
+# - Durbin Watson: ideal is in between 1-2.
+# - Prob(JB): The same as omnibus.
+#
+#
+# Durbin Watson Critical Values: [tables](https://www3.nd.edu/~wevans1/econ30331/Durbin_Watson_tables.pdf)
 
 
 model = StatsLinRegModel()
@@ -257,12 +270,52 @@ print(f"Test R2 score: {model.get_r2_score(X=X_test, Y=Y_test_reg)}")
 plot_histograms_and_residuals(train_residuals, test_residuals)
 # -
 
+# <a name="2-2-2-1"></a>
+# #### Normality of Residuals
+# [ToC](#ToC) 
+#
+# Omnibus value: 0 means perfect normalty  
+# Prob(Omnibus) probability of residuals being normally distributed.
+#
+# [Shapiro-Wilk Test](https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test)
+# - Null hypothesis: x1, ..., xn is from a normally distributed population
+# - [scipy.stats.shapiro](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html)
+#
+#
+# [Kolmogorov Smirnov Test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+# - Null hypothesis: Disstribution is drawn from the tested distrubution.
+# - [scipy.stats.kstest](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html)
+# - p > alpha - failed to reject H0, they are identical
+# - p < alpha - rejecting H0, they are not identical
+
+print(f"Stat, p-value: {model.do_normality_test_for_residuals(X_train, Y_train_reg, 'ks')}")
+print(f"Stat, p-value: {model.do_normality_test_for_residuals(X_test, Y_test_reg, 'ks')}")
+
+print(f"Stat, p-value: {model.do_normality_test_for_residuals(X_train, Y_train_reg, 'sw')}")
+print(f"Stat, p-value: {model.do_normality_test_for_residuals(X_test, Y_test_reg, 'sw')}")
+
+# <a name="2-2-2-2"></a>
+# #### Evaluation
+# [ToC](#ToC) 
+#
+# Results interpetation can be found [here](https://medium.com/swlh/interpreting-linear-regression-through-statsmodels-summary-4796d359035a).
+
 lr_model = model.get_model()
 model_stats = lr_model.params
 
 model_stats
 
 lr_model.summary()
+
+summary = lr_model.summary()
+
+summary.tables[0]
+
+summary.tables[0].data
+
+summary.tables[1]
+
+summary.tables[2]
 
 print(lr_model.summary())
 

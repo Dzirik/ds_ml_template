@@ -6,11 +6,13 @@ Parent class for machine learning models of different origin:
 """
 
 from abc import abstractmethod
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 from numpy import ndarray, dtype, double
+from scipy.stats import kstest, shapiro
 from sklearn.metrics import r2_score
 
+from src.exceptions.development_exception import NoProperOptionInIf
 from src.utils.meta_class import MetaClass, ML_MODEL_TYPE_NAME, MLModelDescription
 
 
@@ -85,3 +87,25 @@ class BaseMLModel(MetaClass):  # type:ignore
         :return: Any. Model
         """
         return self._model
+
+    def do_normality_test_for_residuals(self, X: ndarray[Any, dtype[double]], Y: ndarray[Any, dtype[double]], \
+                                        test_type: str = "ks") -> Tuple[float, float]:
+        """
+        Computes residuals and performs selected normality test for them.
+        - H0: Residuals are drawn from a normal distribution. (p_value >= alpha - failing to reject H0).
+        - H1: Rejecting H0, residuals are not drawn from a normal distribution (p_value < alpha).
+        :param X: ndarray[Any, dtype[double]]. Independent variable matrix, n x p numpy array.
+        :param Y: ndarray[Any, dtype[double]]. Dependent variable matrix, n x 1 numpy array.
+        :param test_type: str. Type of the test
+            - "ks" - Kolmogorov-Smirnov
+            - "sw" - Shapiro Wilk.
+        :return: Tuple[float, float]. <stat, p_value>.
+        """
+        residuals: ndarray[Any, dtype[double]] = self.get_residuals(X, Y).reshape(-1).astype(float)
+        if test_type == "ks":
+            stat, p_value = kstest(residuals, "norm")
+        elif test_type == "sw":
+            stat, p_value = shapiro(residuals)
+        else:
+            raise NoProperOptionInIf
+        return stat, p_value

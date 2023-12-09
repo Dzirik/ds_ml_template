@@ -22,14 +22,14 @@ class BasePipeline(MetaClass):  # type:ignore
     """
 
     def __init__(self, class_name: str, config_file_name: Optional[str], \
-                 config_class: Union[RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
-                                     TransformationsExecutionerPipelineConfig]) -> None:
+                 config_class: Union[TransformationsExecutionerPipelineConfig, RowBlocksGroupingPipelineConfig,
+                                     ColumnsGroupingPipelineConfig]) -> None:
         MetaClass.__init__(self, class_type=PIPELINE_TYPE_NAME, class_name=class_name)
 
         self._config_data: Union[
+            TransformationsExecutionerPipelineConfigData,
             RowBlocksGroupingPipelineConfigData,
-            ColumnsGroupingPipelineConfigData,
-            TransformationsExecutionerPipelineConfigData
+            ColumnsGroupingPipelineConfigData
         ]
         self.read_config_data(config_file_name, config_class)
 
@@ -40,31 +40,33 @@ class BasePipeline(MetaClass):  # type:ignore
         """
 
     def read_config_data(self, config_file_name: Optional[str], config_class: \
-            Union[RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
-                  TransformationsExecutionerPipelineConfig]) \
-            -> None:
+            Union[TransformationsExecutionerPipelineConfig, RowBlocksGroupingPipelineConfig,
+                                     ColumnsGroupingPipelineConfig]) -> None:
         """
         Reads the config data.
         :param config_file_name: Optional[str].
-        :param config_class: Union[].
+        :param config_class: Union[TransformationsExecutionerPipelineConfig, RowBlocksGroupingPipelineConfig,
+                                     ColumnsGroupingPipelineConfig].
         """
         if config_file_name is not None:
             self._config_data = config_class(config_file_name).get_data()
 
-    def set_config_data(self, config_data: Union[RowBlocksGroupingPipelineConfigData, ColumnsGroupingPipelineConfigData,
-                                                 TransformationsExecutionerPipelineConfigData]) -> None:
+    def set_config_data(self, config_data: Union[TransformationsExecutionerPipelineConfigData,
+                                                 RowBlocksGroupingPipelineConfigData,
+                                                 ColumnsGroupingPipelineConfigData]) -> None:
         """
         Sets the config data.
-        :param config_data: Union[RowBlocksGroupingPipelineConfigData, ColumnsGroupingPipelineConfigData,
-                                                 TransformationsExecutionerPipelineConfigData].
+        :param config_data: Union[TransformationsExecutionerPipelineConfigData, RowBlocksGroupingPipelineConfigData,
+                                  ColumnsGroupingPipelineConfigData].
         """
         self._config_data = config_data
 
-    def get_config_data(self) -> Union[RowBlocksGroupingPipelineConfigData, ColumnsGroupingPipelineConfigData,
-                                       TransformationsExecutionerPipelineConfigData]:
+    def get_config_data(self) -> Union[TransformationsExecutionerPipelineConfigData,
+                                                 RowBlocksGroupingPipelineConfigData,
+                                                 ColumnsGroupingPipelineConfigData]:
         """
         Gets the config data.
-        :return: Union[RowBlocksGroupingPipelineConfigData, ColumnsGroupingPipelineConfigData,
-                                                 TransformationsExecutionerPipelineConfigData].
+        :return: Union[TransformationsExecutionerPipelineConfigData, RowBlocksGroupingPipelineConfigData,
+                       ColumnsGroupingPipelineConfigData].
         """
         return self._config_data

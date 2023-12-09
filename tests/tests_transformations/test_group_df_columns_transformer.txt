@@ -9,37 +9,37 @@
 2       1.0       1.0       1.0
 3      10.0      10.0      10.0
 >>> transformer = GroupDFColumnsTransformer()
->>> transformer.fit_predict(DF_1, ATTRS_1, "mean")
+>>> transformer.fit_predict(DF_1, ATTRS_1, "mean", {})
 0     2.0
 1    20.0
 2     1.0
 3    10.0
 dtype: float64
->>> transformer.fit_predict(DF_1, ATTRS_1, "std")
+>>> transformer.fit_predict(DF_1, ATTRS_1, "std", {})
 0     1.0
 1    10.0
 2     0.0
 3     0.0
 dtype: float64
->>> transformer.fit_predict(DF_1, ATTRS_1, "sum")
+>>> transformer.fit_predict(DF_1, ATTRS_1, "sum", {})
 0     6.0
 1    60.0
 2     3.0
 3    30.0
 dtype: float64
->>> transformer.fit_predict(DF_1, [ATTRS_1[0]], "sum")
+>>> transformer.fit_predict(DF_1, [ATTRS_1[0]], "sum", {})
 0     1.0
 1    10.0
 2     1.0
 3    10.0
 dtype: float64
->>> transformer.fit_predict(DF_1, ["NUMBER_2"], "shift_past", 1)
+>>> transformer.fit_predict(DF_1, ["NUMBER_2"], "shift_past", {"shift": 1})
 0     2.0
 1     2.0
 2    20.0
 3     1.0
 dtype: float64
->>> transformer.fit_predict(DF_1, ["NUMBER_2"], "shift_future", 1)
+>>> transformer.fit_predict(DF_1, ["NUMBER_2"], "shift_future", {"shift": 1})
 0    20.0
 1     1.0
 2    10.0

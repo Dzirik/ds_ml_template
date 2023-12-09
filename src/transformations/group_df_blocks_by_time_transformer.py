@@ -78,6 +78,8 @@ class GroupDFBlocksByTimeTransformer(BaseTransformer):  # type:ignore
                 value = grp.get_group(key).values[-1][0]
             elif grouping_fun == "sum":
                 value = grp.get_group(key).values.sum()
+            elif grouping_fun == "count":
+                value = grp.get_group(key).values.shape[0]
             else:
                 ExceptionExecutioner(NoProperOptionInIf).log_and_raise(description=self._class_info.class_type + " " +
                                                                                    self._class_info.class_name)

@@ -1,0 +1,1062 @@
+>>> from pprint import pprint
+>>> from src.transformations.time_series_cv import TimeSeriesCV, create_weather_data, create_sample_data
+>>> transformer = TimeSeriesCV()
+>>> n = 10
+>>> date_time, split_dates, X_data, Y_data, _ = create_sample_data(n)
+>>> date_time = date_time
+>>> split_dates = []
+>>> X_data = X_data
+>>> Y_data = X_data
+>>> Y_same_observation = True
+>>> input_window_len = 1
+>>> output_window_len = 1
+>>> shift = 1
+>>> shuffle_data = False
+>>> cv = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len, output_window_len, shift, shuffle_data)
+>>> pprint(cv[0])
+((array([[[  1,  10]],
+<BLANKLINE>
+       [[  2,  20]],
+<BLANKLINE>
+       [[  3,  30]],
+<BLANKLINE>
+       [[  4,  40]],
+<BLANKLINE>
+       [[  5,  50]],
+<BLANKLINE>
+       [[  6,  60]],
+<BLANKLINE>
+       [[  7,  70]],
+<BLANKLINE>
+       [[  8,  80]],
+<BLANKLINE>
+       [[  9,  90]],
+<BLANKLINE>
+       [[ 10, 100]]]),
+  array([[[  1,  10]],
+<BLANKLINE>
+       [[  2,  20]],
+<BLANKLINE>
+       [[  3,  30]],
+<BLANKLINE>
+       [[  4,  40]],
+<BLANKLINE>
+       [[  5,  50]],
+<BLANKLINE>
+       [[  6,  60]],
+<BLANKLINE>
+       [[  7,  70]],
+<BLANKLINE>
+       [[  8,  80]],
+<BLANKLINE>
+       [[  9,  90]],
+<BLANKLINE>
+       [[ 10, 100]]])),
+ (None, None))
+>>> n = 10
+>>> date_time, split_dates, X_data, Y_data, _ = create_sample_data(n)
+>>> date_time = date_time
+>>> split_dates = []
+>>> X_data = X_data
+>>> Y_data = X_data
+>>> Y_same_observation = False
+>>> input_window_len = 1
+>>> output_window_len = 1
+>>> shift = 1
+>>> shuffle_data = False
+>>> cv = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len,output_window_len, shift, shuffle_data)
+>>> pprint(cv[0])
+((array([[[ 1, 10]],
+<BLANKLINE>
+       [[ 2, 20]],
+<BLANKLINE>
+       [[ 3, 30]],
+<BLANKLINE>
+       [[ 4, 40]],
+<BLANKLINE>
+       [[ 5, 50]],
+<BLANKLINE>
+       [[ 6, 60]],
+<BLANKLINE>
+       [[ 7, 70]],
+<BLANKLINE>
+       [[ 8, 80]],
+<BLANKLINE>
+       [[ 9, 90]]]),
+  array([[[  2,  20]],
+<BLANKLINE>
+       [[  3,  30]],
+<BLANKLINE>
+       [[  4,  40]],
+<BLANKLINE>
+       [[  5,  50]],
+<BLANKLINE>
+       [[  6,  60]],
+<BLANKLINE>
+       [[  7,  70]],
+<BLANKLINE>
+       [[  8,  80]],
+<BLANKLINE>
+       [[  9,  90]],
+<BLANKLINE>
+       [[ 10, 100]]])),
+ (None, None))
+>>> n = 10
+>>> date_time, split_dates, X_data, Y_data, _ = create_sample_data(n)
+>>> date_time = date_time
+>>> split_dates = []
+>>> X_data = X_data
+>>> Y_data = Y_data
+>>> Y_same_observation = False
+>>> input_window_len = 1
+>>> output_window_len = 1
+>>> shift = 1
+>>> shuffle_data = False
+>>> cv = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len, output_window_len, shift, shuffle_data)
+>>> pprint(cv[0])
+((array([[[ 1, 10]],
+<BLANKLINE>
+       [[ 2, 20]],
+<BLANKLINE>
+       [[ 3, 30]],
+<BLANKLINE>
+       [[ 4, 40]],
+<BLANKLINE>
+       [[ 5, 50]],
+<BLANKLINE>
+       [[ 6, 60]],
+<BLANKLINE>
+       [[ 7, 70]],
+<BLANKLINE>
+       [[ 8, 80]],
+<BLANKLINE>
+       [[ 9, 90]]]),
+  array([[[ 200.]],
+<BLANKLINE>
+       [[ 300.]],
+<BLANKLINE>
+       [[ 400.]],
+<BLANKLINE>
+       [[ 500.]],
+<BLANKLINE>
+       [[ 600.]],
+<BLANKLINE>
+       [[ 700.]],
+<BLANKLINE>
+       [[ 800.]],
+<BLANKLINE>
+       [[ 900.]],
+<BLANKLINE>
+       [[1000.]]])),
+ (None, None))
+>>> s_date_time, s_split_dates, s_X_data, s_Y_data, s_date_time_not_sorted = create_sample_data(31)
+>>> date_time = s_date_time
+>>> split_dates = s_split_dates
+>>> X_data = s_X_data
+>>> Y_data = s_Y_data
+>>> Y_same_observation = False
+>>> input_window_len = 3
+>>> output_window_len = 2
+>>> shift = 1
+>>> shuffle_data = False
+>>> cv = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len, output_window_len, shift, shuffle_data)
+>>> pprint(cv)
+[((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+<BLANKLINE>
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+<BLANKLINE>
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+<BLANKLINE>
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+<BLANKLINE>
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+<BLANKLINE>
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]],
+<BLANKLINE>
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+<BLANKLINE>
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[ 500.],
+        [ 600.]],
+<BLANKLINE>
+       [[1000.],
+        [1100.]],
+<BLANKLINE>
+       [[1100.],
+        [1200.]],
+<BLANKLINE>
+       [[1200.],
+        [1300.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[2000.],
+        [2100.]]])),
+  (array([[[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+<BLANKLINE>
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+<BLANKLINE>
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+<BLANKLINE>
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+<BLANKLINE>
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+<BLANKLINE>
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[2500.],
+        [2600.]],
+<BLANKLINE>
+       [[2600.],
+        [2700.]],
+<BLANKLINE>
+       [[2700.],
+        [2800.]],
+<BLANKLINE>
+       [[2800.],
+        [2900.]],
+<BLANKLINE>
+       [[2900.],
+        [3000.]],
+<BLANKLINE>
+       [[3000.],
+        [3100.]]]))),
+ ((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+<BLANKLINE>
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+<BLANKLINE>
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+<BLANKLINE>
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+<BLANKLINE>
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+<BLANKLINE>
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]],
+<BLANKLINE>
+       [[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+<BLANKLINE>
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+<BLANKLINE>
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+<BLANKLINE>
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+<BLANKLINE>
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+<BLANKLINE>
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[ 500.],
+        [ 600.]],
+<BLANKLINE>
+       [[1000.],
+        [1100.]],
+<BLANKLINE>
+       [[1100.],
+        [1200.]],
+<BLANKLINE>
+       [[1200.],
+        [1300.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[2500.],
+        [2600.]],
+<BLANKLINE>
+       [[2600.],
+        [2700.]],
+<BLANKLINE>
+       [[2700.],
+        [2800.]],
+<BLANKLINE>
+       [[2800.],
+        [2900.]],
+<BLANKLINE>
+       [[2900.],
+        [3000.]],
+<BLANKLINE>
+       [[3000.],
+        [3100.]]])),
+  (array([[[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+<BLANKLINE>
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[2000.],
+        [2100.]]]))),
+ ((array([[[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+<BLANKLINE>
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+<BLANKLINE>
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+<BLANKLINE>
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+<BLANKLINE>
+       [[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+<BLANKLINE>
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+<BLANKLINE>
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+<BLANKLINE>
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+<BLANKLINE>
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+<BLANKLINE>
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[ 500.],
+        [ 600.]],
+<BLANKLINE>
+       [[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[2000.],
+        [2100.]],
+<BLANKLINE>
+       [[2500.],
+        [2600.]],
+<BLANKLINE>
+       [[2600.],
+        [2700.]],
+<BLANKLINE>
+       [[2700.],
+        [2800.]],
+<BLANKLINE>
+       [[2800.],
+        [2900.]],
+<BLANKLINE>
+       [[2900.],
+        [3000.]],
+<BLANKLINE>
+       [[3000.],
+        [3100.]]])),
+  (array([[[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+<BLANKLINE>
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+<BLANKLINE>
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+<BLANKLINE>
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]]]),
+   array([[[1000.],
+        [1100.]],
+<BLANKLINE>
+       [[1100.],
+        [1200.]],
+<BLANKLINE>
+       [[1200.],
+        [1300.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]]]))),
+ ((array([[[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+<BLANKLINE>
+       [[  8,  80],
+        [  9,  90],
+        [ 10, 100]],
+<BLANKLINE>
+       [[  9,  90],
+        [ 10, 100],
+        [ 11, 110]],
+<BLANKLINE>
+       [[ 10, 100],
+        [ 11, 110],
+        [ 12, 120]],
+<BLANKLINE>
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+<BLANKLINE>
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+<BLANKLINE>
+       [[ 22, 220],
+        [ 23, 230],
+        [ 24, 240]],
+<BLANKLINE>
+       [[ 23, 230],
+        [ 24, 240],
+        [ 25, 250]],
+<BLANKLINE>
+       [[ 24, 240],
+        [ 25, 250],
+        [ 26, 260]],
+<BLANKLINE>
+       [[ 25, 250],
+        [ 26, 260],
+        [ 27, 270]],
+<BLANKLINE>
+       [[ 26, 260],
+        [ 27, 270],
+        [ 28, 280]],
+<BLANKLINE>
+       [[ 27, 270],
+        [ 28, 280],
+        [ 29, 290]]]),
+   array([[[1000.],
+        [1100.]],
+<BLANKLINE>
+       [[1100.],
+        [1200.]],
+<BLANKLINE>
+       [[1200.],
+        [1300.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[2000.],
+        [2100.]],
+<BLANKLINE>
+       [[2500.],
+        [2600.]],
+<BLANKLINE>
+       [[2600.],
+        [2700.]],
+<BLANKLINE>
+       [[2700.],
+        [2800.]],
+<BLANKLINE>
+       [[2800.],
+        [2900.]],
+<BLANKLINE>
+       [[2900.],
+        [3000.]],
+<BLANKLINE>
+       [[3000.],
+        [3100.]]])),
+  (array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+<BLANKLINE>
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]]]),
+   array([[[400.],
+        [500.]],
+<BLANKLINE>
+       [[500.],
+        [600.]]])))]
+>>> n = 10
+>>> date_time, split_dates, X_data, Y_data, _ = create_sample_data(n)
+>>> date_time = date_time
+>>> split_dates = []
+>>> X_data = X_data
+>>> Y_data = X_data
+>>> Y_same_observation = True
+>>> input_window_len = 1
+>>> output_window_len = 1
+>>> shift = 1
+>>> shuffle_data = True
+>>> cv = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len, output_window_len, shift, shuffle_data)
+>>> pprint(cv)
+[((array([[[  7,  70]],
+<BLANKLINE>
+       [[  5,  50]],
+<BLANKLINE>
+       [[  9,  90]],
+<BLANKLINE>
+       [[  2,  20]],
+<BLANKLINE>
+       [[ 10, 100]],
+<BLANKLINE>
+       [[  3,  30]],
+<BLANKLINE>
+       [[  6,  60]],
+<BLANKLINE>
+       [[  1,  10]],
+<BLANKLINE>
+       [[  8,  80]],
+<BLANKLINE>
+       [[  4,  40]]]),
+   array([[[  7,  70]],
+<BLANKLINE>
+       [[  5,  50]],
+<BLANKLINE>
+       [[  9,  90]],
+<BLANKLINE>
+       [[  2,  20]],
+<BLANKLINE>
+       [[ 10, 100]],
+<BLANKLINE>
+       [[  3,  30]],
+<BLANKLINE>
+       [[  6,  60]],
+<BLANKLINE>
+       [[  1,  10]],
+<BLANKLINE>
+       [[  8,  80]],
+<BLANKLINE>
+       [[  4,  40]]])),
+  (None, None))]
+>>> n = 20
+>>> date_time, split_dates, X_data, Y_data, _ = create_sample_data(n)
+>>> date_time = date_time
+>>> split_dates = [date_time[10]]
+>>> X_data = X_data
+>>> Y_data = Y_data
+>>> Y_same_observation = True
+>>> input_window_len = 3
+>>> output_window_len = 2
+>>> shift = 1
+>>> shuffle_data = True
+>>> cv = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len, output_window_len, shift, shuffle_data)
+>>> ((X_train, Y_train), (X_test, Y_test)) = cv[0]
+>>> pprint(X_train)
+array([[[ 3, 30],
+        [ 4, 40],
+        [ 5, 50]],
+<BLANKLINE>
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]],
+<BLANKLINE>
+       [[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]],
+<BLANKLINE>
+       [[ 4, 40],
+        [ 5, 50],
+        [ 6, 60]],
+<BLANKLINE>
+       [[ 5, 50],
+        [ 6, 60],
+        [ 7, 70]],
+<BLANKLINE>
+       [[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+<BLANKLINE>
+       [[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]]])
+>>> pprint(Y_train)
+array([[[ 500.],
+        [ 600.]],
+<BLANKLINE>
+       [[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[ 900.],
+        [1000.]],
+<BLANKLINE>
+       [[ 600.],
+        [ 700.]],
+<BLANKLINE>
+       [[ 700.],
+        [ 800.]],
+<BLANKLINE>
+       [[ 800.],
+        [ 900.]],
+<BLANKLINE>
+       [[ 300.],
+        [ 400.]]])
+>>> pprint(X_test)
+array([[[ 13, 130],
+        [ 14, 140],
+        [ 15, 150]],
+<BLANKLINE>
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+<BLANKLINE>
+       [[ 14, 140],
+        [ 15, 150],
+        [ 16, 160]],
+<BLANKLINE>
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+<BLANKLINE>
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]]])
+>>> pprint(Y_test)
+array([[[1500.],
+        [1600.]],
+<BLANKLINE>
+       [[1400.],
+        [1500.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[1600.],
+        [1700.]],
+<BLANKLINE>
+       [[1700.],
+        [1800.]],
+<BLANKLINE>
+       [[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]]])
+>>> n = 20
+>>> date_time, split_dates, X_data, Y_data, _ = create_sample_data(n)
+>>> date_time = date_time
+>>> split_dates = [date_time[10]]
+>>> X_data = X_data
+>>> Y_data = Y_data
+>>> Y_same_observation = True
+>>> input_window_len = 3
+>>> output_window_len = 2
+>>> shift = 1
+>>> shuffle_data = True
+>>> _ = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len, output_window_len, shift, shuffle_data)
+>>> ([X_train, X_test], [Y_train, Y_test]) = transformer.get_splits()
+>>> pprint(X_train)
+array([[[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]],
+<BLANKLINE>
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]],
+<BLANKLINE>
+       [[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+<BLANKLINE>
+       [[ 5, 50],
+        [ 6, 60],
+        [ 7, 70]],
+<BLANKLINE>
+       [[ 4, 40],
+        [ 5, 50],
+        [ 6, 60]],
+<BLANKLINE>
+       [[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+<BLANKLINE>
+       [[ 3, 30],
+        [ 4, 40],
+        [ 5, 50]]])
+>>> pprint(Y_train)
+array([[[ 900.],
+        [1000.]],
+<BLANKLINE>
+       [[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[ 300.],
+        [ 400.]],
+<BLANKLINE>
+       [[ 700.],
+        [ 800.]],
+<BLANKLINE>
+       [[ 600.],
+        [ 700.]],
+<BLANKLINE>
+       [[ 800.],
+        [ 900.]],
+<BLANKLINE>
+       [[ 500.],
+        [ 600.]]])
+>>> pprint(X_test)
+array([[[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+<BLANKLINE>
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+<BLANKLINE>
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+<BLANKLINE>
+       [[ 15, 150],
+        [ 16, 160],
+        [ 17, 170]],
+<BLANKLINE>
+       [[ 14, 140],
+        [ 15, 150],
+        [ 16, 160]],
+<BLANKLINE>
+       [[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[ 13, 130],
+        [ 14, 140],
+        [ 15, 150]]])
+>>> pprint(Y_test)
+array([[[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[1400.],
+        [1500.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[1700.],
+        [1800.]],
+<BLANKLINE>
+       [[1600.],
+        [1700.]],
+<BLANKLINE>
+       [[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[1500.],
+        [1600.]]])
+>>> n = 20
+>>> date_time, split_dates, X_data, Y_data, _ = create_sample_data(n)
+>>> date_time = date_time
+>>> split_dates = [date_time[5], date_time[10], date_time[15]]
+>>> X_data = X_data
+>>> Y_data = Y_data
+>>> Y_same_observation = True
+>>> input_window_len = 3
+>>> output_window_len = 2
+>>> shift = 1
+>>> shuffle_data = True
+>>> cv = transformer.fit_predict(date_time, split_dates, X_data, Y_data, Y_same_observation, input_window_len, output_window_len, shift, shuffle_data)
+>>> pprint(cv)
+[([array([[[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+<BLANKLINE>
+       [[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+<BLANKLINE>
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+<BLANKLINE>
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]],
+<BLANKLINE>
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+<BLANKLINE>
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]]]),
+   array([[[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[ 300.],
+        [ 400.]],
+<BLANKLINE>
+       [[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[1400.],
+        [1500.]],
+<BLANKLINE>
+       [[ 800.],
+        [ 900.]],
+<BLANKLINE>
+       [[ 900.],
+        [1000.]]])],
+  [array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]]]),
+   array([[[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]]])]),
+ ([array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+<BLANKLINE>
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+<BLANKLINE>
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+<BLANKLINE>
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]]]),
+   array([[[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[ 300.],
+        [ 400.]],
+<BLANKLINE>
+       [[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[ 800.],
+        [ 900.]],
+<BLANKLINE>
+       [[ 900.],
+        [1000.]]])],
+  [array([[[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+<BLANKLINE>
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[1400.],
+        [1500.]]])]),
+ ([array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[  1,  10],
+        [  2,  20],
+        [  3,  30]],
+<BLANKLINE>
+       [[  2,  20],
+        [  3,  30],
+        [  4,  40]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+<BLANKLINE>
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+<BLANKLINE>
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[ 300.],
+        [ 400.]],
+<BLANKLINE>
+       [[ 400.],
+        [ 500.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[1400.],
+        [1500.]]])],
+  [array([[[ 6, 60],
+        [ 7, 70],
+        [ 8, 80]],
+<BLANKLINE>
+       [[ 7, 70],
+        [ 8, 80],
+        [ 9, 90]]]),
+   array([[[ 800.],
+        [ 900.]],
+<BLANKLINE>
+       [[ 900.],
+        [1000.]]])]),
+ ([array([[[ 16, 160],
+        [ 17, 170],
+        [ 18, 180]],
+<BLANKLINE>
+       [[  6,  60],
+        [  7,  70],
+        [  8,  80]],
+<BLANKLINE>
+       [[  7,  70],
+        [  8,  80],
+        [  9,  90]],
+<BLANKLINE>
+       [[ 17, 170],
+        [ 18, 180],
+        [ 19, 190]],
+<BLANKLINE>
+       [[ 11, 110],
+        [ 12, 120],
+        [ 13, 130]],
+<BLANKLINE>
+       [[ 12, 120],
+        [ 13, 130],
+        [ 14, 140]]]),
+   array([[[1800.],
+        [1900.]],
+<BLANKLINE>
+       [[ 800.],
+        [ 900.]],
+<BLANKLINE>
+       [[ 900.],
+        [1000.]],
+<BLANKLINE>
+       [[1900.],
+        [2000.]],
+<BLANKLINE>
+       [[1300.],
+        [1400.]],
+<BLANKLINE>
+       [[1400.],
+        [1500.]]])],
+  [array([[[ 1, 10],
+        [ 2, 20],
+        [ 3, 30]],
+<BLANKLINE>
+       [[ 2, 20],
+        [ 3, 30],
+        [ 4, 40]]]),
+   array([[[300.],
+        [400.]],
+<BLANKLINE>
+       [[400.],
+        [500.]]])])]

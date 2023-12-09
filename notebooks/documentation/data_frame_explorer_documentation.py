@@ -80,7 +80,7 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_local" # default
+PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
 NOTEBOOK_NAME = get_notebook_name()
@@ -139,7 +139,7 @@ FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
 # # ANALYSIS
 # [ToC](#ToC)   
 
-config = Config().get_data()
+ config_data = Config().get_data()
 
 # <a name="2-1"></a>
 # ## Data Frame

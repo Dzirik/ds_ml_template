@@ -9,7 +9,7 @@ ENV_DASH_DOCKER = "ENV_DASH_DOCKER"
 ENV_CONFIG = "ENV_CONFIG"
 DEFAULT_CONFIG = "python_local"  # "python_repo"
 ENV_LOGGER = "ENV_LOGGER"
-DEFAULT_LOGGER = "logger_file_console"
+DEFAULT_LOGGER = "logger_file_limit_console"
 ENV_RUNNING_UNIT_TESTS = "ENV_RUNNING_UNIT_TESTS"
 DEFAULT_RUNNING_UNIT_TESTS = "False"
 
@@ -18,7 +18,7 @@ DEFAULT_RUNNING_UNIT_TESTS = "False"
 # When a bad logger config file is put into logger reading, then a special logger
 # is created and the message is added to the following file.
 # The file name should be the same as in config files for logger!
-SPECIAL_LOGGER_FILE_NAME = "../../reports/python_log.log"
+SPECIAL_LOGGER_FILE_NAME = "../../logs/logger_file_limit_console.log"
 
 # Folders widely used in repository
 
@@ -39,4 +39,4 @@ COLORS = {
     "grid_background": {"color": "#858B97", "opacity": 0.4},
 }
 
-ATTR_TIME = "DATETIME"
+ATTR_DATE_TIME = "DATETIME"
