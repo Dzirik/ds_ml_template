@@ -19,12 +19,13 @@ from src.utils.envs import Envs
 from src.utils.timer import Timer
 
 # THESE PARAMETERS ARE IN CONFIG FILE
+PYTHON_CONFIG_NAME = "python_repo" # None
 DEFAULT_NTB_PATH = "../../notebooks/template/template_parameterized_execution_notebook.ipynb"
 DEFAULT_OUTPUT_FOLDER = "../../reports"
 DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, float]]]] = [
-    {"ID": None, "n": 10, "a": 1, "b": 1, "title": "Positive"},
-    {"ID": None, "n": 15, "a": -1, "b": -1, "title": "Negative"},
-    {"ID": None, "n": 20, "a": 0, "b": 2, "title": "Zero"}
+    {"n": 10, "a": 1, "b": 1, "title": "Positive", "PYTHON_CONFIG_NAME": "python_local"},
+    {"n": 15, "a": -1, "b": -1, "title": "Negative", "PYTHON_CONFIG_NAME": "python_local"},
+    {"n": 20, "a": 0, "b": 2, "title": "Zero", "PYTHON_CONFIG_NAME": "python_repo"}
 ]
 
 
@@ -120,7 +121,7 @@ if __name__ == "__main__":
     CONVERT_TO_HTML = True
     # RUN DEFINITION ---------------------------------------------------------------------------------------------------
 
-    CONFIG_NAME = None  # None
+    CONFIG_NAME = PYTHON_CONFIG_NAME
     EXECUTIONER = ParamNotebookExecutioner(CONFIG_NAME)
 
     OUTPUT_FOLDER = Config().get_data().path.auto_notebooks

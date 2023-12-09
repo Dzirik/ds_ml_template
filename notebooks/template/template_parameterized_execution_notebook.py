@@ -28,7 +28,8 @@
 #     - [Constants](#1-5)   
 # - [Analysis](#2)   
 #     - [Data Generation](#2-1)   
-#     - [Data Plotting](#2-2)     
+#     - [Data Plotting](#2-2)  
+#     - [Data Saving](#2-3)
 # - [Final Timestamp](#3)  
 
 # <a name="0"></a>
@@ -104,10 +105,12 @@ from IPython.display import display, HTML
 
 # > Constants for overall behaviour.
 
+# + tags=["parameters"]
 LOGGER_CONFIG_NAME = "logger_file"
 PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
+# -
 
 options.display.max_rows = 500
 options.display.max_columns = 500
@@ -124,15 +127,21 @@ if ADDAPT_WIDTH:
 # ### External Libraries
 # [ToC](#ToC)  
 
+# +
+from datetime import datetime
+from pandas import DataFrame
+
 import matplotlib.pyplot as plt
 # %matplotlib inline
+# -
 
 # <a name="1-4"></a>
 # ### Internal Code
 # [ToC](#ToC)  
 # Code, libraries, classes, functions from within the repository.
 
-
+from src.data.saver_and_loader import SaverAndLoader
+from src.utils.date_time_functions import create_datetime_id
 
 # <a name="1-5"></a>
 # ### Constants
@@ -153,7 +162,8 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # [ToC](#ToC)  
 
 # + tags=["parameters"]
-ID = None # this is mandatory and servs for identification of the outputs of the notebook with the notebook.
+# ID this is mandatory and serves for identification of the outputs of the notebook with the notebook.
+ID = create_datetime_id(now=datetime.now(), add_micro=False)
 
 n = 20
 a = 1
@@ -169,6 +179,8 @@ title = "Title"
 # <a name="2"></a>
 # # ANALYSIS
 # [ToC](#ToC)  
+
+saver_and_loader = SaverAndLoader()
 
 # <a name="2-1"></a>
 # ## Data Generation
@@ -186,6 +198,19 @@ Y = [a*x + b for x in X]
 
 plt.plot(X, Y, "y.")
 plt.title(f"{ID}_{title}")
+
+# <a name="2-3"></a>
+# ## Data Saving
+# [ToC](#ToC) 
+
+print(PYTHON_CONFIG_NAME)
+print(Config().get_data().path.processed_data)
+print(ID)
+
+df = DataFrame(data=[[1, 2], [3, 4]], columns=["ONE", "TWO"])
+df
+
+saver_and_loader.save_dataframe_to_pickle(df=df, file_name=f"{ID}", where="processed_data")
 
 # <a name="3"></a>
 # # Final Timestamp
