@@ -28,7 +28,7 @@ class BlockSidebar:
     def _add_image() -> Div:
         return Div([
             html.Img(
-                src=Config().get().dash.sett.path_to_image,
+                src=Config().get_data().dash.sett.path_to_image,
                 style={"height": "5%", "width": "50%"})
         ], style={"textAlign": "center"})
 
@@ -39,16 +39,18 @@ class BlockSidebar:
         :return: Nav. Navigation panel on the sidebar.
         """
         nav_bar_items = []
-        for item in Config().get().dash.sidebar_config:
+        for item in Config().get_data().dash.sidebar_config:
             if len(item[0]) == 1:
-                nav_bar_items.append(NavItem(NavLink(Config().get().dash.list_of_pages[item[0][0]][1],
-                                                     href=Config().get().dash.list_of_pages[item[0][0]][0],
-                                                     style={"color": Config().get().dash.sett.header_link_color})))
+                nav_bar_items.append(NavItem(NavLink(Config().get_data().dash.list_of_pages[item[0][0]][1],
+                                                     href=Config().get_data().dash.list_of_pages[item[0][0]][0],
+                                                     style={"color": Config().get_data().dash.sett.header_link_color})))
+                                                     # style={"color": Config().get_data().dash.sett.header_link_color,
+                                                     #        "border": "2px solid black"})))
             else:
                 dropdown_menu = []
                 for sub_item in item:
-                    dropdown_menu.append(DropdownMenuItem(Config().get().dash.list_of_pages[sub_item[0]][1],
-                                                          href=Config().get().dash.list_of_pages[sub_item[0]][0]))
+                    dropdown_menu.append(DropdownMenuItem(Config().get_data().dash.list_of_pages[sub_item[0]][1],
+                                                          href=Config().get_data().dash.list_of_pages[sub_item[0]][0]))
                 nav_bar_items.append(
                     DropdownMenu(
                         label=item[0][1],
@@ -60,7 +62,9 @@ class BlockSidebar:
             navbar=True,
             vertical=True,
             pills=True,
-            style={"font-weight": Config().get().dash.sett.header_font_weight}
+            style={"font-weight": Config().get_data().dash.sett.header_font_weight}
+            # style = {"font-weight": Config().get_data().dash.sett.header_font_weight, "backgroundColor": "#B2BEB5",
+            #      "border": "2px solid black"}
         )
 
     def create(self) -> Div:
@@ -69,10 +73,8 @@ class BlockSidebar:
         :return: Navbar. Navbar for sidebar.
         """
         return Div([
-            html.H2("Sidebar", className="display-4"),
+            html.H2("safetica", className="display-4", style={"textAlign": "center"}),
             html.Hr(),
-            html.P(
-                "A simple sidebar layout with navigation links", className="lead"
-            ),
+            html.P("Data Science PoC", className="lead", style={"textAlign": "center"}),
             self._create_navigation_section()
-        ], style=Config().get().dash.sidebar_style)
+        ], style=Config().get_data().dash.sidebar_style)

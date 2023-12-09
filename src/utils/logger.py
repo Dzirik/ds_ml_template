@@ -2,8 +2,6 @@
 Code for logging.
 
 A singleton pattern is used for that.
-
-https://stackoverflow.com/questions/57730749/python-logging-two-loggers-two-log-files-how-to-configure-logging-ini
 """
 
 import logging.config
@@ -12,7 +10,6 @@ from os import getcwd
 from os.path import join, exists
 from time import sleep
 from typing import Any
-from datetime import datetime
 
 import git
 
@@ -27,7 +24,7 @@ class Logger(metaclass=Singleton):
     Class for logging. Extends the functionality of standard logger with:
     - Possibility of setting different logger configurations from the config file based on the value of
       environment variable.
-    - Allows adding time measurements from the timer.
+    - Allows add time measurements from the timerer.
     """
     _is_logger = False
     _logger: Any
@@ -42,10 +39,11 @@ class Logger(metaclass=Singleton):
             profile_file_path = join("../../", FOLDER_CONFIGURATIONS, profile_file_name)
 
             if not exists(profile_file_path):
-                # because of problems with running dash from /index.py - in config as well
+                # because of problems with running dash drom /index.py - in config as well
                 profile_file_path = join(getcwd(), FOLDER_CONFIGURATIONS, profile_file_name)
 
                 if not exists(profile_file_path):
+                    print("hello")
                     self._log_bad_file()
                     raise ValueError("Logger profile does not exit in the selected path.")
 
@@ -60,8 +58,7 @@ class Logger(metaclass=Singleton):
             except:
                 branch_name = "ERROR"
             # pylint: enable=bare-except
-            self._logger.info("Logger was created from %s on %s in branch %s.", profile_file_name, platform.node(),
-                               branch_name)
+            self._logger.info("Logger was created on %s in branche %s.", platform.node(), branch_name)
 
     @staticmethod
     def _log_bad_file() -> None:
@@ -108,41 +105,36 @@ class Logger(metaclass=Singleton):
     def debug(self, message: str) -> None:
         """
         Creates debug message.
-        :param message: str. Log message without datetime.
+        :param message: str. Log message.
         """
-        message = f"{datetime.now().strftime('%y-%m-%d %H:%M:%S')}: {message}"
         self._logger.debug(message)
 
     def info(self, message: str) -> None:
         """
         Creates info message.
-        :param message: str. Log message without datetime.
+        :param message: str. Log message.
         """
-        message = f"{datetime.now().strftime('%y-%m-%d %H:%M:%S')}: {message}"
         self._logger.info(message)
 
     def warning(self, message: str) -> None:
         """
         Creates warning message.
-        :param message: str. Log message without datetime.
+        :param message: str. Log message.
         """
-        message = f"{datetime.now().strftime('%y-%m-%d %H:%M:%S')}: {message}"
         self._logger.warning(message)
 
     def error(self, message: str) -> None:
         """
         Creates error message.
-        :param message: str. Log message without datetime.
+        :param message: str. Log message.
         """
-        message = f"{datetime.now().strftime('%y-%m-%d %H:%M:%S')}: {message}"
         self._logger.error(message)
 
     def critical(self, message: str) -> None:
         """
         Creates critical message.
-        :param message: str. Log message without datetime.
+        :param message: str. Log message.
         """
-        message = f"{datetime.now().strftime('%y-%m-%d %H:%M:%S')}: {message}"
         self._logger.critical(message)
 
     def get(self) -> Any:

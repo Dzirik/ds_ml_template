@@ -30,7 +30,7 @@ class PageButton(TemplateDashPage):  # type:ignore
             Br(),
             Div(id='my-output'),
             dcc.Link("Go to Main Page", href="/"),
-            html.Img(src=Config().get().dash.sett.path_to_image, style={"height": "10%", "width": "10%"}),
+            html.Img(src=Config().get_data().dash.sett.path_to_image, style={"height": "10%", "width": "10%"}),
         ]
 
 
