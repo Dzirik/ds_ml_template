@@ -60,8 +60,7 @@ class SaverAndLoader():
         path = get_path(file_name, where, ".keras")
         if os.path.exists(path):
             return keras.models.load_model(path)
-        else:
-            raise FileNotFound(description=f"File {path} was not found on selected path.")
+        raise FileNotFound(description=f"File {path} was not found on selected path.")
 
     def save_dataframe_to_csv(self, df: DataFrame, file_name: str, where: str = "raw_data") -> None:
         """
@@ -186,8 +185,7 @@ class SaverAndLoader():
         path = get_path(file_name, where, ".conf")
         if os.path.exists(path):
             return typedload.load(ConfigFactory.parse_file(path), config_data_structure)
-        else:
-            raise FileNotFound(description=f"File {path} was not found on selected path.")
+        raise FileNotFound(description=f"File {path} was not found on selected path.")
 
 
 if __name__ == "__main__":

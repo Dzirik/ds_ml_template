@@ -246,6 +246,9 @@ plot_histograms_and_residuals(train_residuals, test_residuals)
 # - Prob(Omnibus): probability of residuals being normally distributed.
 # - Durbin Watson: ideal is in between 1-2.
 # - Prob(JB): The same as omnibus.
+#
+#
+# Durbin Watson Critical Values: [tables](https://www3.nd.edu/~wevans1/econ30331/Durbin_Watson_tables.pdf)
 
 
 model = StatsLinRegModel()
