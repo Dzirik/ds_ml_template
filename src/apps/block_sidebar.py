@@ -73,7 +73,7 @@ class BlockSidebar:
         :return: Navbar. Navbar for sidebar.
         """
         return Div([
-            html.H2("DASH", className="display-4", style={"textAlign": "center"}),
+            html.H2("Sidebar", className="display-4", style={"textAlign": "center"}),
             html.Hr(),
             html.P("Data Science PoC", className="lead", style={"textAlign": "center"}),
             self._create_navigation_section()
