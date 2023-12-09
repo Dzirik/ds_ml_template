@@ -14,7 +14,7 @@
 # ---
 
 # # Template for Final Notebook
-# *Version:* `1.1` *(Jupytext, time measurements, logger, param notebook execution)*
+# *Version:* `1.2` *(Jupytext, time measurements, logger, param notebook execution, fixes)*
 
 # <a name="ToC"></a>
 # # Table of Content
@@ -81,7 +81,6 @@ from IPython.display import display, HTML
 # > Constants for overall behaviour.
 
 LOGGER_CONFIG_NAME = "logger_file_limit_console" # default
-PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
 
@@ -89,7 +88,6 @@ options.display.max_rows = 500
 options.display.max_columns = 500
 envs = Envs()
 envs.set_logger(LOGGER_CONFIG_NAME)
-envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
 if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
     create_button()
@@ -101,12 +99,11 @@ if ADDAPT_WIDTH:
 # [ToC](#ToC)  
 
 # +
-# import pandas as pd
-# import numpy as np
-# import matplotlib.pyplot as plt
+from datetime import datetime
 
 # from importlib import reload
 
+# import matplotlib.pyplot as plt
 # # %matplotlib notebook
 # # %matplotlib inline
 # -
@@ -116,9 +113,7 @@ if ADDAPT_WIDTH:
 # [ToC](#ToC)  
 # Code, libraries, classes, functions from within the repository.
 
-# +
-# Space for importing my own code.
-# -
+from src.utils.date_time_functions import create_datetime_id
 
 # <a name="1-5"></a>
 # ### Constants
@@ -139,8 +134,16 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # [ToC](#ToC)  
 
 # + tags=["parameters"]
-
+# MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION #########################################
+PYTHON_CONFIG_NAME = "python_local"
+ID = create_datetime_id(now=datetime.now(), add_micro=False)
+# (END) MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION ###################################
 # -
+
+# #### Python Config Initialisation
+# [ToC](#ToC)  
+
+envs.set_config(PYTHON_CONFIG_NAME)
 
 # #### Notebook Specific Constants
 # [ToC](#ToC)  
@@ -151,7 +154,11 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # # ANALYSIS
 # [ToC](#ToC)  
 
- config_data = Config().get_data()
+# +
+config_data = Config().get_data()
+    
+print(config_data.path.processed_data)
+# -
 
 # <a name="2-1"></a>
 # ## Chapter
