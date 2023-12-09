@@ -27,7 +27,7 @@ class Logger(metaclass=Singleton):
     Class for logging. Extends the functionality of standard logger with:
     - Possibility of setting different logger configurations from the config file based on the value of
       environment variable.
-    - Allows add time measurements from the timerer.
+    - Allows adding time measurements from the timer.
     """
     _is_logger = False
     _logger: Any
