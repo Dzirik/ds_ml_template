@@ -19,7 +19,7 @@ from src.utils.envs import Envs
 from src.utils.timer import Timer
 
 # THESE PARAMETERS ARE IN CONFIG FILE
-PYTHON_CONFIG_NAME = "python_repo" # None
+PYTHON_CONFIG_NAME = "python_repo"  # None
 DEFAULT_NTB_PATH = "../../notebooks/template/template_parameterized_execution_notebook.ipynb"
 DEFAULT_OUTPUT_FOLDER = "../../reports"
 DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, float]]]] = [
