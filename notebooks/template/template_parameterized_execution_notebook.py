@@ -51,6 +51,12 @@
 # - The solution: 
 #     - Comment out import of get_notebook_name() and create_button().
 #     - Comment out its usage and replace with string.
+#     
+# ### Parameters Tag
+# **Parameters tag can be assigned to only one cells; if assigned to multiple cells, it works only for the first one.**
+#
+# ### Python Config
+# It is diffence between script config (the notebooks are saved based on this one) and notebook config (the results are saved based on paths in notebook config, not script config; of course in case if they are not identical).
 #
 # ### Usage
 #
@@ -105,18 +111,14 @@ from IPython.display import display, HTML
 
 # > Constants for overall behaviour.
 
-# + tags=["parameters"]
 LOGGER_CONFIG_NAME = "logger_file"
-PYTHON_CONFIG_NAME = "python_personal" # default
 CREATE_BUTTON = False
 ADDAPT_WIDTH = False
-# -
 
 options.display.max_rows = 500
 options.display.max_columns = 500
 envs = Envs()
 envs.set_logger(LOGGER_CONFIG_NAME)
-envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
 if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
     create_button()
@@ -162,14 +164,18 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # [ToC](#ToC)  
 
 # + tags=["parameters"]
-# ID this is mandatory and serves for identification of the outputs of the notebook with the notebook.
+# MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION #########################################
+PYTHON_CONFIG_NAME = "python_personal"
 ID = create_datetime_id(now=datetime.now(), add_micro=False)
+# (END) MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION ###################################
 
 n = 20
 a = 1
 b = 0
 title = "Title"
 # -
+
+envs.set_config(PYTHON_CONFIG_NAME)
 
 # #### Notebook Specific Constants
 # [ToC](#ToC)  
@@ -180,7 +186,10 @@ title = "Title"
 # # ANALYSIS
 # [ToC](#ToC)  
 
+# +
+
 saver_and_loader = SaverAndLoader()
+# -
 
 # <a name="2-1"></a>
 # ## Data Generation

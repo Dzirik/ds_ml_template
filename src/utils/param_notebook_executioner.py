@@ -19,13 +19,13 @@ from src.utils.envs import Envs
 from src.utils.timer import Timer
 
 # THESE PARAMETERS ARE IN CONFIG FILE
-PYTHON_CONFIG_NAME = "python_repo"  # None
+PYTHON_CONFIG_NAME = "python_local"  # None
 DEFAULT_NTB_PATH = "../../notebooks/template/template_parameterized_execution_notebook.ipynb"
 DEFAULT_OUTPUT_FOLDER = "../../reports"
 DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, float]]]] = [
-    {"n": 10, "a": 1, "b": 1, "title": "Positive", "PYTHON_CONFIG_NAME": "python_local"},
-    {"n": 15, "a": -1, "b": -1, "title": "Negative", "PYTHON_CONFIG_NAME": "python_local"},
-    {"n": 20, "a": 0, "b": 2, "title": "Zero", "PYTHON_CONFIG_NAME": "python_repo"}
+    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 10, "a": 1, "b": 1, "title": "Positive"},
+    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 15, "a": -1, "b": -1, "title": "Negative"},
+    {"ID": None, "PYTHON_CONFIG_NAME": "python_repo", "n": 20, "a": 0, "b": 2, "title": "Zero"}
 ]
 
 
