@@ -46,6 +46,8 @@ if __name__ == "__main__":
     print(f"The dash debug mode is set to: {os.environ.get(ENV_DASH_DEBUG_MODE)}")
     print(f"The logger is set to: {ENVS.get_logger()}")
     print(f"The config is set to: {ENVS.get_config()}")
+    # Not sure how to solve the following trouble:
+    print("THERE IS A TROUBLE WITH LOGGER LOCATION - IT IS DIRECTLY ON THE DRIVE")
 
     if os.environ.get(ENV_DASH_DOCKER) == "True":
         print("Running dash in docker.\n")

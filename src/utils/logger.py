@@ -43,7 +43,6 @@ class Logger(metaclass=Singleton):
                 profile_file_path = join(getcwd(), FOLDER_CONFIGURATIONS, profile_file_name)
 
                 if not exists(profile_file_path):
-                    print("hello")
                     self._log_bad_file()
                     raise ValueError("Logger profile does not exit in the selected path.")
 
