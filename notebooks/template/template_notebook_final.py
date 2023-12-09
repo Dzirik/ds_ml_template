@@ -64,6 +64,13 @@ sys.path+=[os.path.join(os.getcwd(), ".."), os.path.join(os.getcwd(), "../..")] 
 # - Notebook data frame setting for better visibility.
 # - Initial timestamp setting and logging the start of the execution.
 
+# #### Overall Setting Specification
+
+LOGGER_CONFIG_NAME = "logger_file_limit_console"
+ADDAPT_WIDTH = False
+
+# #### Overall Behaviour Setting
+
 try:
     from src.utils.notebook_support_functions import create_button, get_notebook_name
     NOTEBOOK_NAME = get_notebook_name()
@@ -78,21 +85,17 @@ from src.utils.config import Config
 from pandas import options
 from IPython.display import display, HTML
 
-# > Constants for overall behaviour.
-
-LOGGER_CONFIG_NAME = "logger_file_limit_console" # default
-CREATE_BUTTON = False
-ADDAPT_WIDTH = False
-
 options.display.max_rows = 500
 options.display.max_columns = 500
 envs = Envs()
 envs.set_logger(LOGGER_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
-if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
-    create_button()
 if ADDAPT_WIDTH:
     display(HTML("<style>.container { width:100% !important; }</style>")) # notebook width
+
+# +
+# create_button()
+# -
 
 # <a name="1-3"></a>
 # ### External Libraries
