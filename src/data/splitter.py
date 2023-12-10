@@ -47,6 +47,24 @@ class Splitter:
         )
         return X_train, X_test, Y_train, Y_test
 
+    @staticmethod
+    def create_equal_time_period_split(start_time: datetime, end_time: datetime, n_periods: int, \
+                                       only_inside_splits: bool = False) -> List[datetime]:
+        """
+        Splits time period into equidistant intervals and returns those intervals boundaries.
+        :param start_time: datetime.
+        :param end_time: datetime.
+        :param n_periods: int. Number of periods to be created.
+        :param only_inside_splits: bool. If to exclude beginning and the end.
+        :return: List[datetime].
+        """
+        if n_periods < 2:
+            return []
+        delta = (end_time - start_time) / n_periods
+        if only_inside_splits:
+            return [start_time + delta * i for i in range(1, n_periods)]
+        return [start_time + delta * i for i in range(0, n_periods + 1)]
+
     def create_train_test_split_df(self, df: DataFrame, attrs_x: List[str], attrs_y: List[str],
                                    attr_date_time: Optional[str], \
                                    cv_random_state: Optional[int] = None, cv_train_size: float = 0.75) -> \

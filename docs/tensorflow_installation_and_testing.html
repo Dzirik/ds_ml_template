@@ -14579,7 +14579,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Tensorflow-Installation-and-Testing">Tensorflow Installation and Testing<a class="anchor-link" href="#Tensorflow-Installation-and-Testing">&#182;</a></h1><p><em>Version:</em> <code>1.0</code> <em>(Jupytext, time measurements, logger)</em></p>
+<h1 id="Tensorflow-Installation-and-Testing">Tensorflow Installation and Testing<a class="anchor-link" href="#Tensorflow-Installation-and-Testing">&#182;</a></h1><p><em>Version:</em> <code>1.2</code> <em>(Jupytext, time measurements, logger, param notebook execution, fixes)</em></p>
 
 </div>
 </div>
@@ -14697,10 +14697,10 @@ General settings for the notebook (paths, python libraries, own code, notebook c
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><a name="1-2"></a></p>
-<h3 id="Notebook-Functionality-and-Appearance">Notebook Functionality and Appearance<a class="anchor-link" href="#Notebook-Functionality-and-Appearance">&#182;</a></h3><p><a href="#ToC">ToC</a><br>
+<h3 id="Notebook-Functionality-and-Appearance">Notebook Functionality and Appearance<a class="anchor-link" href="#Notebook-Functionality-and-Appearance">&#182;</a></h3><p><a href="#ToC">ToC</a>
 Necessary libraries for notebook functionality:</p>
 <ul>
-<li>A button for hiding/showing the code. By default it is deactivated and can be activated by setting CREATE_BUTTON constant to True. <blockquote><p><strong>NOTE: This way, using the function, the button works only in active notebook. If the functionality needs to be preserved in html export, then the code has to be incluced directly into notebook.</strong></p>
+<li>A button for hiding/showing the code. By default it is deactivated and can be activated by setting CREATE_BUTTON constant to True.<blockquote><p><strong>NOTE: This way, using the function, the button works only in active notebook. If the functionality needs to be preserved in html export, then the code has to be incluced directly into notebook.</strong></p>
 </blockquote>
 </li>
 <li>Set notebook width to 100%.</li>
@@ -14708,6 +14708,17 @@ Necessary libraries for notebook functionality:</p>
 <li>Initial timestamp setting and logging the start of the execution.</li>
 </ul>
 
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Overall-Setting-Specification">Overall Setting Specification<a class="anchor-link" href="#Overall-Setting-Specification">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -14719,12 +14730,8 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.notebook_support_functions</span> <span class="kn">import</span> <span class="n">create_button</span><span class="p">,</span> <span class="n">get_notebook_name</span>
-<span class="kn">from</span> <span class="nn">src.utils.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
-<span class="kn">from</span> <span class="nn">src.utils.envs</span> <span class="kn">import</span> <span class="n">Envs</span>
-<span class="kn">from</span> <span class="nn">src.utils.config</span> <span class="kn">import</span> <span class="n">Config</span>
-<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">options</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">LOGGER_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;logger_file_limit_console&quot;</span>
+<span class="n">ADDAPT_WIDTH</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 
      </div>
@@ -14739,9 +14746,7 @@ Necessary libraries for notebook functionality:</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<blockquote><p>Constants for overall behaviour.</p>
-</blockquote>
-
+<h4 id="Overall-Behaviour-Setting">Overall Behaviour Setting<a class="anchor-link" href="#Overall-Behaviour-Setting">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -14753,11 +14758,33 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">LOGGER_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;logger_file_console&quot;</span> <span class="c1"># default</span>
-<span class="n">PYTHON_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;python_personal&quot;</span> <span class="c1"># default</span>
-<span class="n">CREATE_BUTTON</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">ADDAPT_WIDTH</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">NOTEBOOK_NAME</span> <span class="o">=</span> <span class="n">get_notebook_name</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">src.utils.notebook_support_functions</span> <span class="kn">import</span> <span class="n">create_button</span><span class="p">,</span> <span class="n">get_notebook_name</span>
+    <span class="n">NOTEBOOK_NAME</span> <span class="o">=</span> <span class="n">get_notebook_name</span><span class="p">()</span>
+    <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">NOTEBOOK_NAME</span> <span class="o">=</span> <span class="s2">&quot;NO_NAME&quot;</span>
+    <span class="n">SUPPORT_FUNCTIONS_READ</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
+<span class="kn">from</span> <span class="nn">src.utils.envs</span> <span class="kn">import</span> <span class="n">Envs</span>
+<span class="kn">from</span> <span class="nn">src.utils.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">options</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
 </pre></div>
 
      </div>
@@ -14770,17 +14797,14 @@ Necessary libraries for notebook functionality:</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_rows</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_columns</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">envs</span> <span class="o">=</span> <span class="n">Envs</span><span class="p">()</span>
 <span class="n">envs</span><span class="o">.</span><span class="n">set_logger</span><span class="p">(</span><span class="n">LOGGER_CONFIG_NAME</span><span class="p">)</span>
-<span class="n">envs</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">PYTHON_CONFIG_NAME</span><span class="p">)</span>
 <span class="n">Logger</span><span class="p">()</span><span class="o">.</span><span class="n">start_timer</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NOTEBOOK; Notebook name: </span><span class="si">{</span><span class="n">NOTEBOOK_NAME</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">CREATE_BUTTON</span><span class="p">:</span>
-    <span class="n">create_button</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">ADDAPT_WIDTH</span><span class="p">:</span>
     <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;style&gt;.container { width:100% !important; }&lt;/style&gt;&quot;</span><span class="p">))</span> <span class="c1"># notebook width</span>
 </pre></div>
@@ -14804,16 +14828,30 @@ Necessary libraries for notebook functionality:</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>A: ../../configurations\logger_file_console.conf
-2023-11-28 12:52:13,128 - git.util - DEBUG - Failed checking if running in CYGWIN due to: FileNotFoundError(2, &#39;The system cannot find the file specified&#39;, None, 2, None)
-2023-11-28 12:52:13,131 - file_console - DEBUG - Logger was created on WS-3000 in branche 014_update_repository.
-2023-11-28 12:52:13,131 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer started;
+<pre>2023-12-10 16:03:22,971 - file_limit_console - INFO - Logger was created on WS-3000 in branche 001_repository_set_up.
+2023-12-10 16:03:22,972 - file_limit_console - INFO - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer started;
 </pre>
 </div>
 </div>
 
 </div>
 
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create_button()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div>
@@ -14829,15 +14867,17 @@ Necessary libraries for notebook functionality:</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
@@ -14849,33 +14889,6 @@ Necessary libraries for notebook functionality:</p>
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-11-28 12:52:15,635 - tensorflow - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
-2023-11-28 12:52:16,078 - h5py._conv - DEBUG - Creating converter from 7 to 5
-2023-11-28 12:52:16,079 - h5py._conv - DEBUG - Creating converter from 5 to 7
-2023-11-28 12:52:16,079 - h5py._conv - DEBUG - Creating converter from 7 to 5
-2023-11-28 12:52:16,080 - h5py._conv - DEBUG - Creating converter from 5 to 7
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -14897,10 +14910,10 @@ Code, libraries, classes, functions from within the repository.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">src.utils.date_time_functions</span> <span class="kn">import</span> <span class="n">create_datetime_id</span>
 </pre></div>
 
      </div>
@@ -14941,7 +14954,7 @@ Constants for the notebook.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from src.global_constants import *  # Remember to import only the constants in use</span>
@@ -14967,15 +14980,46 @@ Constants for the notebook.</p>
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_parameters">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION #########################################</span>
+<span class="n">PYTHON_CONFIG_NAME</span> <span class="o">=</span> <span class="s2">&quot;python_local&quot;</span>
+<span class="n">ID</span> <span class="o">=</span> <span class="n">create_datetime_id</span><span class="p">(</span><span class="n">now</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">add_micro</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># (END) MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION ###################################</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Python-Config-Initialisation">Python Config Initialisation<a class="anchor-link" href="#Python-Config-Initialisation">&#182;</a></h4><p><a href="#ToC">ToC</a></p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">envs</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">PYTHON_CONFIG_NAME</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15024,45 +15068,6 @@ Constants for the notebook.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> <span class="n">config_data</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-11-28 12:52:18,443 - file_console - DEBUG - Python config was created from python_personal.conf file.
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15081,7 +15086,7 @@ Constants for the notebook.</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TF_FORCE_GPU_ALLOW_GROWTH&quot;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="c1"># &quot;false&quot; or # os.environ.setdefault(&quot;TF_FORCE_GPU_ALLOW_GROWTH&quot;, &quot;true&quot;)</span>
@@ -15137,7 +15142,7 @@ Device Description: device: XLA_CPU device</code></pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">device_list</span> <span class="o">=</span> <span class="n">list_local_devices</span><span class="p">()</span>
@@ -15187,7 +15192,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_gpu_devices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -15222,7 +15227,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
 
 
 
@@ -15295,7 +15300,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Num GPUs Available: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -15353,7 +15358,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_available_gpus</span><span class="p">():</span>
@@ -15377,7 +15382,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
 
 
 
@@ -15416,7 +15421,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s2">&quot;CPU&quot;</span><span class="p">)</span>
@@ -15437,7 +15442,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 
 
 
@@ -15476,7 +15481,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s2">&quot;GPU&quot;</span><span class="p">)</span>
@@ -15497,7 +15502,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
 
 
 
@@ -15517,7 +15522,7 @@ Device Description: device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">device_list</span> <span class="o">=</span> <span class="n">list_local_devices</span><span class="p">()</span>
@@ -15548,7 +15553,7 @@ device_type: &#34;CPU&#34;
 memory_limit: 268435456
 locality {
 }
-incarnation: 12698633049892547768
+incarnation: 6182071724670744343
 xla_global_id: -1
 ,
  name: &#34;/device:GPU:0&#34;
@@ -15559,7 +15564,7 @@ locality {
   links {
   }
 }
-incarnation: 5412896314988251502
+incarnation: 16902650495206509656
 physical_device_desc: &#34;device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:0b:00.0, compute capability: 8.9&#34;
 xla_global_id: 416903419
 ]
@@ -15589,7 +15594,7 @@ xla_global_id: 416903419
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_gpu_devices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -15625,7 +15630,7 @@ xla_global_id: 416903419
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
 
 
 
@@ -15645,7 +15650,7 @@ xla_global_id: 416903419
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_gpu_devices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -15681,7 +15686,7 @@ xla_global_id: 416903419
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
 
 
 
@@ -15714,7 +15719,7 @@ xla_global_id: 416903419
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Logger</span><span class="p">()</span><span class="o">.</span><span class="n">end_timer</span><span class="p">()</span>
@@ -15739,7 +15744,7 @@ xla_global_id: 416903419
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>2023-11-28 12:52:19,735 - file_console - DEBUG - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer ended; Process Duration [s]: 6.6; Process Duration [m]: 0.11
+<pre>2023-12-10 16:03:27,877 - file_limit_console - INFO - Process: NOTEBOOK; Notebook name: tensorflow_installation_and_testing.py; Timer ended; Process Duration [s]: 4.91; Process Duration [m]: 0.08
 </pre>
 </div>
 </div>
