@@ -20,6 +20,9 @@ ATTRS_HOURS = [f"HOUR_{i}.0" for i in range(24)]
 ATTRS_DAYS_OF_WEEK = [f"DAY_OF_WEEK_{i}.0" for i in range(7)]
 ATTRS_MONTHS = [f"MONTH_{i}.0" for i in range(1, 13, 1)]
 
+PREPOSITION_DIFF = "DIFF"
+PREPOSITION_DIFF_PERC = "DIFF_PERC"
+
 ATTR_DATETIME = Attribute("Datetime".upper(), "datetime64[ns]")
 ATTR_OPEN = Attribute("Open".upper(), "float32")
 ATTR_HIGH = Attribute("High".upper(), "float32")
