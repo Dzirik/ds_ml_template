@@ -14,7 +14,7 @@
 # ---
 
 # # Machine Learning Models Documentation
-# *Version:* `1.0` *(Jupytext, time measurements, logger)*
+# *Version:* `1.2` *(Jupytext, time measurements, logger, param notebook execution, fixes)*
 
 # <a name="ToC"></a>
 # # Table of Content
