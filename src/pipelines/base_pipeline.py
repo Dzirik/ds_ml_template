@@ -9,6 +9,10 @@ from typing import Union, Optional
 
 from src.pipelines.columns_grouping_pipeline_config import ColumnsGroupingPipelineConfig
 from src.pipelines.columns_grouping_pipeline_config_data import ColumnsGroupingPipelineConfigData
+from src.pipelines.new_attributes_pipeline_config import NewAttributesPipelineConfig
+from src.pipelines.new_attributes_pipeline_config_data import NewAttributesPipelineConfigData
+from src.pipelines.post_processing_pipeline_config import PostProcessingPipelineConfig
+from src.pipelines.post_processing_pipeline_config_data import PostProcessingPipelineConfigData
 from src.pipelines.row_blocks_grouping_pipeline_config import RowBlocksGroupingPipelineConfig
 from src.pipelines.row_blocks_grouping_pipeline_config_data import RowBlocksGroupingPipelineConfigData
 from src.pipelines.transfomations_executioner_pipeline_config import TransformationsExecutionerPipelineConfig
@@ -22,14 +26,17 @@ class BasePipeline(MetaClass):  # type:ignore
     """
 
     def __init__(self, class_name: str, config_file_name: Optional[str], \
-                 config_class: Union[TransformationsExecutionerPipelineConfig, RowBlocksGroupingPipelineConfig,
-                                     ColumnsGroupingPipelineConfig]) -> None:
+                 config_class: Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
+                                     RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
+                                     PostProcessingPipelineConfig]) -> None:
         MetaClass.__init__(self, class_type=PIPELINE_TYPE_NAME, class_name=class_name)
 
         self._config_data: Union[
+            NewAttributesPipelineConfigData,
             TransformationsExecutionerPipelineConfigData,
             RowBlocksGroupingPipelineConfigData,
-            ColumnsGroupingPipelineConfigData
+            ColumnsGroupingPipelineConfigData,
+            PostProcessingPipelineConfigData
         ]
         self.read_config_data(config_file_name, config_class)
 
@@ -40,33 +47,39 @@ class BasePipeline(MetaClass):  # type:ignore
         """
 
     def read_config_data(self, config_file_name: Optional[str], config_class: \
-            Union[TransformationsExecutionerPipelineConfig, RowBlocksGroupingPipelineConfig,
-                                     ColumnsGroupingPipelineConfig]) -> None:
+            Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
+                  RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig, PostProcessingPipelineConfig]) \
+            -> None:
         """
         Reads the config data.
         :param config_file_name: Optional[str].
-        :param config_class: Union[TransformationsExecutionerPipelineConfig, RowBlocksGroupingPipelineConfig,
-                                     ColumnsGroupingPipelineConfig].
+        :param config_class: Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
+                                   RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
+                                   PostProcessingPipelineConfig].
         """
         if config_file_name is not None:
             self._config_data = config_class(config_file_name).get_data()
 
-    def set_config_data(self, config_data: Union[TransformationsExecutionerPipelineConfigData,
+    def set_config_data(self, config_data: Union[NewAttributesPipelineConfigData,
+                                                 TransformationsExecutionerPipelineConfigData,
                                                  RowBlocksGroupingPipelineConfigData,
-                                                 ColumnsGroupingPipelineConfigData]) -> None:
+                                                 ColumnsGroupingPipelineConfigData,
+                                                 PostProcessingPipelineConfigData]) -> None:
         """
         Sets the config data.
-        :param config_data: Union[TransformationsExecutionerPipelineConfigData, RowBlocksGroupingPipelineConfigData,
-                                  ColumnsGroupingPipelineConfigData].
+        :param config_data: Union[NewAttributesPipelineConfigData, TransformationsExecutionerPipelineConfigData,
+                                  RowBlocksGroupingPipelineConfigData, ColumnsGroupingPipelineConfigData,
+                                  PostProcessingPipelineConfigData].
         """
         self._config_data = config_data
 
-    def get_config_data(self) -> Union[TransformationsExecutionerPipelineConfigData,
-                                                 RowBlocksGroupingPipelineConfigData,
-                                                 ColumnsGroupingPipelineConfigData]:
+    def get_config_data(self) -> Union[NewAttributesPipelineConfigData, TransformationsExecutionerPipelineConfigData,
+                                       RowBlocksGroupingPipelineConfigData, ColumnsGroupingPipelineConfigData,
+                                       PostProcessingPipelineConfigData]:
         """
         Gets the config data.
-        :return: Union[TransformationsExecutionerPipelineConfigData, RowBlocksGroupingPipelineConfigData,
-                       ColumnsGroupingPipelineConfigData].
+        :return: Union[NewAttributesPipelineConfigData, TransformationsExecutionerPipelineConfigData,
+                       RowBlocksGroupingPipelineConfigData, ColumnsGroupingPipelineConfigData,
+                       PostProcessingPipelineConfigData].
         """
         return self._config_data
