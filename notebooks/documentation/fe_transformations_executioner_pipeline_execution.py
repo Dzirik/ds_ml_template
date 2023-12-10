@@ -141,6 +141,8 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 PYTHON_CONFIG_NAME = "python_local"
 ID = create_datetime_id(now=datetime.now(), add_micro=False)
 # (END) MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION ###################################
+
+from src.data.anomaly_detection_sample_data import ATTRS
 # -
 
 # #### Python Config Initialisation
@@ -151,11 +153,7 @@ envs.set_config(PYTHON_CONFIG_NAME)
 # #### Notebook Specific Constants
 # [ToC](#ToC)  
 
-# +
 CONFIG_FILE_NAME = "pipeline_transformations_executioner_x_documentation"
-
-ATTRS = [A.rel_hum_cav_pct.name, A.rel_hum_amb_pct.name, A.abs_hum_cav_gm3.name, A.temp_amb_c.name]
-# -
 
 # <a name="2"></a>
 # # ANALYSIS
