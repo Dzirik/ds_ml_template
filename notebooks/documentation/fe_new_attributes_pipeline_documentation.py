@@ -13,8 +13,8 @@
 #     name: python3
 # ---
 
-# # Columns Grouping Pipeline Documentation
-# *Version:* `1.1` *(Jupytext, time measurements, logger, param notebook execution)*
+# # New Attributes Pipeline Documentation
+# *Version:* `1.2` *(Jupytext, time measurements, logger, param notebook execution, fixes)*
 
 # <a name="ToC"></a>
 # # Table of Content
@@ -28,8 +28,8 @@
 #     - [Constants](#1-5)   
 # - [Analysis](#2)   
 #     - [Data Reading](#2-1)   
-#     - [Pipeline Execution from By Hand Config](#2-2)
-#     - [Pipeline Execution from File Configuration](#2-3)
+#     - [Explicit Configuration Definition](#2-2)
+#     - [Using Configuration From Configuration File](#2-3)
 #     - [Results Comparison](#2-4)
 # - [Final Timestamp](#3)  
 
@@ -37,7 +37,7 @@
 # # Notebook Description
 # [ToC](#ToC) 
 
-# > *Please put your comments about the notebook functionality here.*  
+# In this notebook, only artifially generated data is used to show the usage of the code. Please see other notebooks for usage on production data.
 
 # <a name="1"></a>
 # # GENERAL SETTINGS
@@ -66,13 +66,20 @@ sys.path+=[os.path.join(os.getcwd(), ".."), os.path.join(os.getcwd(), "../..")] 
 # - Notebook data frame setting for better visibility.
 # - Initial timestamp setting and logging the start of the execution.
 
+# #### Overall Setting Specification
+
+LOGGER_CONFIG_NAME = "logger_file_limit_console"
+ADDAPT_WIDTH = False
+
+# #### Overall Behaviour Setting
+
 try:
     from src.utils.notebook_support_functions import create_button, get_notebook_name
     NOTEBOOK_NAME = get_notebook_name()
     SUPPORT_FUNCTIONS_READ = True
 except:
     NOTEBOOK_NAME = "NO_NAME"
-    SUPPORT_FUNCTIONS_READ = False  
+    SUPPORT_FUNCTIONS_READ = False
 
 from src.utils.logger import Logger
 from src.utils.envs import Envs
@@ -80,29 +87,23 @@ from src.utils.config import Config
 from pandas import options
 from IPython.display import display, HTML
 
-# > Constants for overall behaviour.
-
-LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_personal" # default
-CREATE_BUTTON = False
-ADDAPT_WIDTH = False
-
 options.display.max_rows = 500
 options.display.max_columns = 500
 envs = Envs()
 envs.set_logger(LOGGER_CONFIG_NAME)
-envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
-if SUPPORT_FUNCTIONS_READ and CREATE_BUTTON:
-    create_button()
-if SUPPORT_FUNCTIONS_READ and ADDAPT_WIDTH:
+if ADDAPT_WIDTH:
     display(HTML("<style>.container { width:100% !important; }</style>")) # notebook width
+
+# +
+# create_button()
+# -
 
 # <a name="1-3"></a>
 # ### External Libraries
 # [ToC](#ToC)  
 
-
+from datetime import datetime
 
 # <a name="1-4"></a>
 # ### Internal Code
@@ -110,12 +111,13 @@ if SUPPORT_FUNCTIONS_READ and ADDAPT_WIDTH:
 # Code, libraries, classes, functions from within the repository.
 
 # +
+from src.utils.date_time_functions import create_datetime_id
+
 from src.data.time_series_one_minute_data import TimeSeriesOneMinuteData
 
-from src.data.df_explorer import DFExplorer
+from src.pipelines.new_attributes_pipeline import NewAttributesPipeline
 
-from src.pipelines.columns_grouping_pipeline import ColumnsGroupingPipeline
-from src.pipelines.columns_grouping_pipeline_config_data import ColumnsGroupingPipelineConfigData, ColumnsGrouping
+from src.pipelines.new_attributes_pipeline_config_data import NewAttributesPipelineConfigData, NewAttribute
 # -
 
 # <a name="1-5"></a>
@@ -134,14 +136,24 @@ FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
 DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 
 # #### Constants for Setting Automatic Run
-# [ToC](#ToC)  
+# [ToC](#ToC)
 
+# + tags=["parameters"]
+# MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION #########################################
+PYTHON_CONFIG_NAME = "python_local"
+ID = create_datetime_id(now=datetime.now(), add_micro=False)
+# (END) MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION ###################################
+# -
 
+# #### Python Config Initialisation
+# [ToC](#ToC)
+
+envs.set_config(PYTHON_CONFIG_NAME)
 
 # #### Notebook Specific Constants
 # [ToC](#ToC)  
 
-CONFIG_FILE_NAME = "pipeline_columns_grouping_documentation"
+CONFIG_FILE_NAME = "pipeline_new_attributes_documentation"
 
 # <a name="2"></a>
 # # ANALYSIS
@@ -154,75 +166,98 @@ CONFIG_FILE_NAME = "pipeline_columns_grouping_documentation"
 
 ts_data = TimeSeriesOneMinuteData()
 df = ts_data.get_data_frame()
+attrs = ts_data.get_attrs()
 
-df.head()
+df.head(N_ROWS_TO_DISPLAY)
 
-df.tail()
+df.tail(N_ROWS_TO_DISPLAY)
 
 # <a name="2-2"></a>
-# ## Pipeline Execution from By Hand Config
-# [ToC](#ToC)
+# ## Explicit Configuration Definition
+# [ToC](#ToC)  
 #
-# Example of grouping:
-#
+# The definition is as follows:
 # ~~~
-# grouping = [
-#     ColumnsGrouping(
-#         True,
-#         [A.low.name, A.high.name],
-#         "mean",
-#         "LH_MEAN"
-#     )
-# ]
+# explicit_config = NewAttributesPipelineConfigData(
+#     name="explicit_config",
+#     new_attributes=[
+#         NewAttribute(
+#             create=True,
+#             name_of_transformation="datetime_family",
+#             for_attrs=[],
+#             use_saved=False,
+#             name_of_file="",
+#             parameters={"add_hours": True, "add_days_of_week": True}
+#         )
+#     ]
+# )
 # ~~~
 
-config_data = ColumnsGroupingPipelineConfigData(
-    name="my",
-    columns_grouping=[
-        ColumnsGrouping(
+
+explicit_config = NewAttributesPipelineConfigData(
+    name="explicit_config",
+    new_attributes=[
+        NewAttribute(
             create=True,
-            attrs=["I", "-I"],
-            grouping_fun="mean",
-            params={},
-            new_attr_name="I-I_MEAN"
+            name_of_transformation="diff",
+            for_attrs=["2*I"],
+            use_saved=False,
+            name_of_file="",
+            parameters={}
         ),
-        ColumnsGrouping(
+        NewAttribute(
             create=True,
-            attrs=["1", "2", "I", "-I"],
-            grouping_fun="sum",
-            params={},
-            new_attr_name="SUM_1_2_I_-I"
+            name_of_transformation="diff_perc",
+            for_attrs=["1"],
+            use_saved=False,
+            name_of_file="",
+            parameters={}
+        ),
+        NewAttribute(
+            create=True,
+            name_of_transformation="datetime_family",
+            for_attrs=[],
+            use_saved=False,
+            name_of_file="",
+            parameters={"add_hours": True, "add_days_of_week": True}
         )
     ]
 )
-config_data
 
-config_file_name = None
-pipeline = ColumnsGroupingPipeline(config_file_name)
-pipeline.set_config_data(config_data)
-df_out = pipeline.execute(df.copy())
+# +
+config_file_name = None # CONFIG_FILE_NAME
 
-df_out.head()
+pipeline = NewAttributesPipeline(config_file_name)
+pipeline.set_config_data(explicit_config)
 
-df_out.tail()
+df_out_explicit = pipeline.execute(df.copy())
+# -
+
+df_out_explicit.head(N_ROWS_TO_DISPLAY)
+
+df_out_explicit.tail(N_ROWS_TO_DISPLAY)
 
 # <a name="2-3"></a>
-# ## Pipeline Execution from File Configuration
-# [ToC](#ToC)  
+# ## Using Configuration From Configuration File
+# [ToC](#ToC) 
 
+# +
 config_file_name = CONFIG_FILE_NAME
-pipeline = ColumnsGroupingPipeline(config_file_name)
+
+pipeline = NewAttributesPipeline(config_file_name)
+
 df_out_from_file = pipeline.execute(df.copy())
+# -
 
-df_out_from_file.head()
+df_out_from_file.head(N_ROWS_TO_DISPLAY)
 
-df_out_from_file.tail()
+df_out_from_file.tail(N_ROWS_TO_DISPLAY)
 
 # <a name="2-4"></a>
 # ## Results Comparison
-# [ToC](#ToC)  
+# [ToC](#ToC) 
 
-assert df_out.equals(df_out_from_file)
+assert df_out_explicit.equals(df_out_from_file)
 
 # <a name="3"></a>
 # # Final Timestamp
