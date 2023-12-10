@@ -14,7 +14,7 @@
 # ---
 
 # # Joining Files from Folder
-# *Version:* `1.0` *(Jupytext, time measurements, logger)*
+# *Version:* `1.2` *(Jupytext, time measurements, logger, param notebook execution, fixes)*
 
 # This notebook helps to join data frames from many files in a folder.
 
@@ -42,7 +42,7 @@
 
 # <a name="1-1"></a>
 # ### Paths
-# [ToC](#0)  
+# [ToC](#ToC)
 #
 # Adding paths that are necessary to import code from within the repository.
 
@@ -52,49 +52,52 @@ sys.path+=[os.path.join(os.getcwd(), ".."), os.path.join(os.getcwd(), "../..")] 
 
 # <a name="1-2"></a>
 # ### Notebook Functionality and Appearance
-# [ToC](#0)  
+# [ToC](#ToC)
 # Necessary libraries for notebook functionality:
-# - A button for hiding/showing the code. By default it is deactivated and can be activated by setting CREATE_BUTTON constant to True. 
+# - A button for hiding/showing the code. By default it is deactivated and can be activated by setting CREATE_BUTTON constant to True.
 # > **NOTE: This way, using the function, the button works only in active notebook. If the functionality needs to be preserved in html export, then the code has to be incluced directly into notebook.**
 # - Set notebook width to 100%.
 # - Notebook data frame setting for better visibility.
 # - Initial timestamp setting and logging the start of the execution.
 
-from src.utils.notebook_support_functions import create_button, get_notebook_name
+# #### Overall Setting Specification
+
+LOGGER_CONFIG_NAME = "logger_file_limit_console"
+ADDAPT_WIDTH = False
+
+# #### Overall Behaviour Setting
+
+try:
+    from src.utils.notebook_support_functions import create_button, get_notebook_name
+    NOTEBOOK_NAME = get_notebook_name()
+    SUPPORT_FUNCTIONS_READ = True
+except:
+    NOTEBOOK_NAME = "NO_NAME"
+    SUPPORT_FUNCTIONS_READ = False
+
 from src.utils.logger import Logger
 from src.utils.envs import Envs
 from src.utils.config import Config
 from pandas import options
-from IPython.core.display import display, HTML
-
-# > Constants for overall behaviour.
-
-LOGGER_CONFIG_NAME = "logger_file_console" # default
-PYTHON_CONFIG_NAME = "python_personal" # default
-CREATE_BUTTON = False
-ADDAPT_WIDTH = False
-# doesnt work with auto notebook run
-try:
-    from src.utils.notebook_support_functions import create_button, get_notebook_name
-    NOTEBOOK_NAME = get_notebook_name()
-except:
-    NOTEBOOK_NAME = "joining_files_from_folder"
+from IPython.display import display, HTML
 
 options.display.max_rows = 500
 options.display.max_columns = 500
 envs = Envs()
 envs.set_logger(LOGGER_CONFIG_NAME)
-envs.set_config(PYTHON_CONFIG_NAME)
 Logger().start_timer(f"NOTEBOOK; Notebook name: {NOTEBOOK_NAME}")
-if CREATE_BUTTON:
-    create_button()
 if ADDAPT_WIDTH:
     display(HTML("<style>.container { width:100% !important; }</style>")) # notebook width
 
+# +
+# create_button()
+# -
+
 # <a name="1-3"></a>
 # ### External Libraries
-# [ToC](#0)  
+# [ToC](#ToC)
 
+from datetime import datetime
 import os
 from pandas import DataFrame, read_csv, concat
 from numpy import array, matrix
@@ -104,6 +107,7 @@ from numpy import array, matrix
 # [ToC](#0)  
 # Code, libraries, classes, functions from within the repository.
 
+from src.utils.date_time_functions import create_datetime_id
 from src.data.saver_and_loader import SaverAndLoader
 from src.utils.date_time_functions import convert_datetime_to_string_date
 
@@ -115,7 +119,7 @@ from src.utils.date_time_functions import convert_datetime_to_string_date
 # > *NOTE: Please use all letters upper.*
 
 # #### General Constants
-# [ToC](#0)  
+# [ToC](#ToC)
 
 # from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
@@ -123,12 +127,22 @@ FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
 DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 
 # #### Constants for Setting Automatic Run
-# [ToC](#0)  
+# [ToC](#ToC)
 
+# + tags=["parameters"]
+# MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION #########################################
+PYTHON_CONFIG_NAME = "python_local"
+ID = create_datetime_id(now=datetime.now(), add_micro=False)
+# (END) MANDATORY FOR CONFIG DEFINITION AND NOTEBOOK AND ITS OUTPUTS IDENTIFICATION ###################################
+# -
 
+# #### Python Config Initialisation
+# [ToC](#ToC)
+
+envs.set_config(PYTHON_CONFIG_NAME)
 
 # #### Notebook Specific Constants
-# [ToC](#0)  
+# [ToC](#ToC)
 
 
 
@@ -136,7 +150,7 @@ DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
 # # ANALYSIS
 # [ToC](#0)  
 
- config_data = Config().get_data()
+config_data = Config().get_data()
 
 # <a name="2-1"></a>
 # ## Setting Up the Run
@@ -167,10 +181,13 @@ for file in os.listdir(directory):
     else:
         continue
 
-df.reset_index(drop=True, inplace=True)
-print(df.shape)
-# df = df.drop_duplicates()
-print(df.shape)
+if df is not None:
+    df.reset_index(drop=True, inplace=True)
+    print(df.shape)
+    # df = df.drop_duplicates()
+    print(df.shape)
+else:
+    df = DataFrame()
 # -
 
 df.head(10)
@@ -181,8 +198,9 @@ df.head(10)
 
 saver_and_loader = SaverAndLoader()
 
-file_name = f"{FILE_NAME_FOR_SAVE}_{convert_datetime_to_string_date()}_JOINED_RESULTS"
-saver_and_loader.save_dataframe_to_csv(df, file_name, where="results_data")
+if df.shape[0] > 0:
+    file_name = f"{FILE_NAME_FOR_SAVE}_{convert_datetime_to_string_date()}_JOINED_RESULTS"
+    saver_and_loader.save_dataframe_to_csv(df, file_name, where="results_data")
 
 # <a name="3"></a>
 # # Final Timestamp
