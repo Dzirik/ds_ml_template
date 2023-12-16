@@ -9,7 +9,7 @@ IMPORTANT:
 """
 import os
 from datetime import datetime
-from typing import List, Dict, Union, Optional
+from typing import List, Dict, Union, Optional, Any
 
 import papermill
 
@@ -22,10 +22,14 @@ from src.utils.timer import Timer
 PYTHON_CONFIG_NAME = "python_local"  # None
 DEFAULT_NTB_PATH = "../../notebooks/template/template_parameterized_execution_notebook.ipynb"
 DEFAULT_OUTPUT_FOLDER = "../../reports"
-DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, float]]]] = [
-    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 10, "a": 1, "b": 1, "title": "Positive"},
-    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 15, "a": -1, "b": -1, "title": "Negative"},
-    {"ID": None, "PYTHON_CONFIG_NAME": "python_repo", "n": 20, "a": 0, "b": 2, "title": "Zero"}
+
+DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, float, List[List[Any]]]]]] = [
+    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 10, "a": 1, "b": 1, "title": "Positive",
+     "MODEL_CLASS_TYPE": "LinearModel", "MODEL_PARAMS_LIST": [["intercept", True]]},
+    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 15, "a": -1, "b": -1, "title": "Negative",
+     "MODEL_CLASS_TYPE": "LassoModel", "MODEL_PARAMS_LIST": [["alpha", 0.5], ["max_iter", 500]]},
+    {"ID": None, "PYTHON_CONFIG_NAME": "python_repo", "n": 20, "a": 0, "b": 2, "title": "Zero",
+     "MODEL_CLASS_TYPE": "LassoModel", "MODEL_PARAMS_LIST": [["alpha", 0.75], ["max_iter", 1000]]}
 ]
 
 
@@ -45,10 +49,10 @@ class ParamNotebookExecutioner:
 
         self._ntb_path: str
         self._output_folder: str
-        self._list_of_params: List[Dict[str, Optional[Union[str, float]]]]
+        self._list_of_params: List[Dict[str, Optional[Union[str, float, List[List[Any]]]]]]
 
     def set_up_params(self, notebook_path: str, output_folder: str,
-                      list_of_params: List[Dict[str, Optional[Union[str, float]]]]) -> None:
+                      list_of_params: List[Dict[str, Optional[Union[str, float, List[List[Any]]]]]]) -> None:
         """
         Sets up the params for run. If there is specified in config not to do it, it returns default values,
         otherwise it gets param from config.
@@ -117,7 +121,7 @@ if __name__ == "__main__":
     KEEP_NAME_STATIC = False
     ADD_DATETIME_ID = True
     ADD_FILE_NAME_TO_NOTEBOOK_NAME = True
-    ADD_PARAMS_TO_NAME = True
+    ADD_PARAMS_TO_NAME = False
     CONVERT_TO_HTML = True
     # RUN DEFINITION ---------------------------------------------------------------------------------------------------
 
