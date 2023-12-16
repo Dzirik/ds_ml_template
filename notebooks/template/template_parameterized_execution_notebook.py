@@ -30,6 +30,7 @@
 #     - [Data Generation](#2-1)   
 #     - [Data Plotting](#2-2)  
 #     - [Data Saving](#2-3)
+#     - [Models Params Dictionary Printing](#2-4)
 # - [Final Timestamp](#3)  
 
 # <a name="0"></a>
@@ -51,6 +52,9 @@
 # - The solution: 
 #     - Comment out import of get_notebook_name() and create_button().
 #     - Comment out its usage and replace with string.
+#     
+# Not able to pass dictionary:
+# - It is not possible because of some ... converstions. The possibility is shown here in the notebook - conversion of list of lists [key, value] into a dictionary.
 #     
 # ### Parameters Tag
 # **Parameters tag can be assigned to only one cells; if assigned to multiple cells, it works only for the first one.**
@@ -132,6 +136,7 @@ if ADDAPT_WIDTH:
 # +
 from datetime import datetime
 from pandas import DataFrame
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 # %matplotlib inline
@@ -173,7 +178,17 @@ n = 20
 a = 1
 b = 0
 title = "Title"
+
+MODEL_CLASS_TYPE = "Name"
+MODEL_PARAMS_LIST = [["intercept", True]]
 # -
+
+# this construct is here becuase of passing parameters through papermill
+MODEL_PARAMS = {}
+for items in MODEL_PARAMS_LIST:
+    key, value = items
+    MODEL_PARAMS[key] = value
+MODEL_PARAMS
 
 envs.set_config(PYTHON_CONFIG_NAME)
 
@@ -220,6 +235,12 @@ df = DataFrame(data=[[1, 2], [3, 4]], columns=["ONE", "TWO"])
 df
 
 saver_and_loader.save_dataframe_to_pickle(df=df, file_name=f"{ID}", where="processed_data")
+
+# <a name="2-4"></a>
+# ## Models Params Dictionary Printing
+# [ToC](#ToC) 
+
+pprint(MODEL_PARAMS)
 
 # <a name="3"></a>
 # # Final Timestamp
