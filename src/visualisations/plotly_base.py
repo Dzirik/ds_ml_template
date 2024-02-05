@@ -26,6 +26,21 @@ class PlotlyBase(ABC):
             "height": 750
         }
 
+    def set_colors(self, colors: Dict[str, List[str]]) -> None:
+        """
+        Sets the colors for the plot.
+        :param colors: Dict[str, List[str]]. Check src/constants/global_constants.py for more details.
+            {
+                "line": ["#0f0f0f", "#011936", "#2F3E46", "#354F52"],
+                "fill": ["#087E8B", "#99AA38", "#F58A07", "#F7F5FB", "#FFBB00"],
+                "error": ["#ED254E", "#C81D25"],
+                "dot": ["#99AA38", "#ED254E", "#ACD2ED"],
+                "paper_background": {"color": "#000000", "opacity": 0},
+                "grid_background": {"color": "#858B97", "opacity": 0.4}
+            }
+        """
+        self._colors = colors
+
     def _plot_single_figure(self, trace: Union[List[Dict[str, Any]], Dict[str, Any]], layout: Dict[str, Any],
                             shapes: Optional[List[Any]] = None, dashboard: bool = False) -> Optional[go.Figure]:
         fig = go.Figure(data=trace, layout=layout)

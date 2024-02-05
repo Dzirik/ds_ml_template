@@ -51,7 +51,8 @@
 #     - [Line Plot](#2-6)
 # - [Overall Customisation](#3)
 #     - [Size of the Picture](#3-1)
-# - [Final Timestamp](#10)
+#     - [Colours](#3-2)
+# - [Final Timestamp](#inf)
 
 # <a name="0"></a>
 # # Notebook Description
@@ -831,7 +832,45 @@ histogram.customize_size(autosize=False, width=2000, height=1500)
 histogram.plot(data=data, plot_title=plot_title, x_title=x_title)
 # -
 
-# <a name="10"></a>
+# <a name="3-2"></a>
+# ## Colours
+# [ToC](#ToC) 
+
+# +
+import src.visualisations.plotly_time_series as TS
+
+reload(TS)
+
+ts_visu = TS.PlotlyTimeSeries()
+
+ts_visu.plot(
+    series=[ts_1, ts_2, ts_3],  
+    series_names=["Random Sinus", "Another Random Sinus", "Wooow"],
+    series_obs_names=[ts_1_names, ts_2_names, ts_3_names],
+    plot_title=plot_title, 
+    y_title=y_title
+)
+# -
+
+# from some reason for lines fill is chosen - this should be checked properly
+my_colours = {
+    "line": ["#0f0f0f"],
+    "fill": ["#AF69EE"],  # green "#99AA38", red "#ED254E", blue #011936, purple #AF69EE
+    "paper_background": {"color": "#000000", "opacity": 0},
+    "grid_background": {"color": "#858B97", "opacity": 0.4},
+}
+
+ts_visu = TS.PlotlyTimeSeries()
+ts_visu.set_colors(my_colours)
+ts_visu.plot(
+    series=[ts_1, ts_2, ts_3],  
+    series_names=["Random Sinus", "Another Random Sinus", "Wooow"],
+    series_obs_names=[ts_1_names, ts_2_names, ts_3_names],
+    plot_title=plot_title, 
+    y_title=y_title
+)
+
+# <a name="inf"></a>
 # # Final Timestamp
 # [ToC](#ToC) 
 
