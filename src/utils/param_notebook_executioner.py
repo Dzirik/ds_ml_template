@@ -1,14 +1,15 @@
 """
 Code for automatic parameterized notebook execution.
-
-Based on papermill library.
-
-IMPORTANT:
+- Based on papermill library.
 - The notebook has to be in *.ipynb instead of *.py.
 - The script works being run from PyCharm. There is a problem with paths running it from console.
+Version: 1.2
+- Parallelization.
 """
 import os
 from datetime import datetime
+from multiprocessing import Pool, cpu_count
+from random import shuffle
 from typing import List, Dict, Union, Optional, Any
 
 import papermill
@@ -18,20 +19,59 @@ from src.utils.date_time_functions import create_datetime_id
 from src.utils.envs import Envs
 from src.utils.timer import Timer
 
-# THESE PARAMETERS ARE IN CONFIG FILE
-PYTHON_CONFIG_NAME = "python_local"  # None
+# THESE PARAMETERS ARE IN CONFIG FILE AS WELL, AS DEFAULT ONES THE ONES HERE ARE USED ##################################
 DEFAULT_NTB_PATH = "../../notebooks/template/template_parameterized_execution_notebook.ipynb"
-DEFAULT_OUTPUT_FOLDER = "../../reports"
+DEFAULT_OUTPUT_FOLDER = None  # "../../reports", if None, auto_notebooks folder from config path will be used
+# (END) THESE PARAMETERS ARE IN CONFIG FILE AS WELL, AS DEFAULT ONES THE ONES HERE ARE USED ############################
 
-DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, float, List[List[Any]]]]]] = [
-    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 10, "a": 1, "b": 1, "title": "Positive",
-     "MODEL_CLASS_TYPE": "LinearModel", "MODEL_PARAMS_LIST": [["intercept", True]]},
-    {"ID": None, "PYTHON_CONFIG_NAME": "python_local", "n": 15, "a": -1, "b": -1, "title": "Negative",
-     "MODEL_CLASS_TYPE": "LassoModel", "MODEL_PARAMS_LIST": [["alpha", 0.5], ["max_iter", 500]]},
-    {"ID": None, "PYTHON_CONFIG_NAME": "python_repo", "n": 20, "a": 0, "b": 2, "title": "Zero",
-     "MODEL_CLASS_TYPE": "LassoModel", "MODEL_PARAMS_LIST": [["alpha", 0.75], ["max_iter", 1000]]}
+# NOTEBOOKS RUN SETTINGS ###############################################################################################
+NOTEBOOK_NAME = "notebook"
+KEEP_NAME_STATIC = False
+ADD_DATETIME_ID = True
+ADD_FILE_NAME_TO_NOTEBOOK_NAME = True
+ADD_PARAMS_TO_NAME = False
+CONVERT_TO_HTML = True
+# (END) NOTEBOOKS RUN SETTINGS #########################################################################################
+
+# PARALLELIZATION SETTING ##############################################################################################
+NUMBER_OF_PROCESSES = 3  # None, 3
+SHUFFLE_BEFORE_RUNNING = True
+# (END) PARALLELIZATION SETTING ########################################################################################
+
+# PARAMETERS SETTINGS ##################################################################################################
+PYTHON_CONFIG_NAME = "python_personal"  # None
+
+N_SLEEP_SECONDSS = [
+    (10, 11),
+    (15, 19),
+    (20, 29)
 ]
 
+A_B_TITLE_MODEL_CLASS_TYPE_MODEL_PARAMS_LIST = [
+    (1, 1, "Positive", "LinearModel", [["intercept", True]]),
+    (-1, -1, "Negative", "LassoModel", [["alpha", 0.5], ["max_iter", 500]]),
+    (0, 1, "Zero", "LassoModel", [["alpha", 0.75], ["max_iter", 1000]])
+]
+
+DEFAULT_LIST_OF_PARAMS: List[Dict[str, Optional[Union[str, int, float, List[Any], List[List[Any]]]]]] = []
+for n, sleep_seconds in N_SLEEP_SECONDSS:
+    for a, b, title, model_class_type, model_params_list in A_B_TITLE_MODEL_CLASS_TYPE_MODEL_PARAMS_LIST:
+        DEFAULT_LIST_OF_PARAMS.append({
+            "PYTHON_CONFIG_NAME": PYTHON_CONFIG_NAME,
+            "ID": None,
+            "n": n,
+            "a": a,
+            "b": b,
+            "title": title,
+            "sleep_seconds": sleep_seconds,
+            "MODEL_CLASS_TYPE": model_class_type,
+            "MODEL_PARAMS_LIST": model_params_list
+        })
+
+
+# when run with no threading, the execution time is: 4.98 m
+# when run with 3 threads, the execution time is: 2.18 m in no shuffle mode
+# (END) PARAMETERS SETTINGS ############################################################################################
 
 class ParamNotebookExecutioner:
     """
@@ -49,10 +89,11 @@ class ParamNotebookExecutioner:
 
         self._ntb_path: str
         self._output_folder: str
-        self._list_of_params: List[Dict[str, Optional[Union[str, float, List[List[Any]]]]]]
+        self._list_of_params: List[Dict[str, Optional[Union[str, int, float, List[Any], List[List[Any]]]]]]
 
     def set_up_params(self, notebook_path: str, output_folder: str,
-                      list_of_params: List[Dict[str, Optional[Union[str, float, List[List[Any]]]]]]) -> None:
+                      list_of_params: List[Dict[str, Optional[Union[str, int, float, List[Any], List[List[Any]]]]]]) \
+            -> None:
         """
         Sets up the params for run. If there is specified in config not to do it, it returns default values,
         otherwise it gets param from config.
@@ -113,31 +154,25 @@ class ParamNotebookExecutioner:
                 os.system("jupyter nbconvert --to html " + path_out)
 
 
-if __name__ == "__main__":
-    TIMER = Timer()
+def execute_for_params(list_of_params: List[Dict[str, Optional[Union[str, int, float, List[Any], List[List[Any]]]]]]) \
+        -> None:
+    """
+    Executes for list of parameters. This function is here because of multiprocessing.
+    :param list_of_params: List[Dict[str, Optional[Union[str, int, float, List[Any], List[List[Any]]]]]].
+    """
+    executioner = ParamNotebookExecutioner(PYTHON_CONFIG_NAME)
 
-    # RUN DEFINITION ---------------------------------------------------------------------------------------------------
-    NOTEBOOK_NAME = "notebook"
-    KEEP_NAME_STATIC = False
-    ADD_DATETIME_ID = True
-    ADD_FILE_NAME_TO_NOTEBOOK_NAME = True
-    ADD_PARAMS_TO_NAME = False
-    CONVERT_TO_HTML = True
-    # RUN DEFINITION ---------------------------------------------------------------------------------------------------
+    if DEFAULT_OUTPUT_FOLDER is None:
+        output_folder = Config().get_data().path.auto_notebooks
+    else:
+        output_folder = DEFAULT_OUTPUT_FOLDER
 
-    CONFIG_NAME = PYTHON_CONFIG_NAME
-    EXECUTIONER = ParamNotebookExecutioner(CONFIG_NAME)
-
-    OUTPUT_FOLDER = Config().get_data().path.auto_notebooks
-    # OUTPUT_FOLDER = DEFAULT_OUTPUT_FOLDER
-
-    EXECUTIONER.set_up_params(
+    executioner.set_up_params(
         notebook_path=DEFAULT_NTB_PATH,
-        output_folder=OUTPUT_FOLDER,
-        list_of_params=DEFAULT_LIST_OF_PARAMS
+        output_folder=output_folder,
+        list_of_params=list_of_params
     )
-    TIMER.start()
-    EXECUTIONER.execute(
+    executioner.execute(
         notebook_name=NOTEBOOK_NAME,
         keep_name_static=KEEP_NAME_STATIC,
         add_datetime_id=ADD_DATETIME_ID,
@@ -145,4 +180,27 @@ if __name__ == "__main__":
         add_params_to_name=ADD_PARAMS_TO_NAME,
         convert_to_html=CONVERT_TO_HTML
     )
+
+
+if __name__ == "__main__":
+    TIMER = Timer()
+
+    TIMER.start()
+    print(f"\n{'#' * 50} EXECUTING FOR {NUMBER_OF_PROCESSES} PROCESSES {'#' * 50}")
+    print(f" - number of CPU is: {cpu_count()}")
+    if NUMBER_OF_PROCESSES is None:
+        execute_for_params(DEFAULT_LIST_OF_PARAMS)
+    else:
+        if SHUFFLE_BEFORE_RUNNING:
+            shuffle(DEFAULT_LIST_OF_PARAMS)
+        BATCH_SIZE = len(DEFAULT_LIST_OF_PARAMS) // NUMBER_OF_PROCESSES
+        params_batches = [
+            DEFAULT_LIST_OF_PARAMS[i:i + BATCH_SIZE] for i in range(0, len(DEFAULT_LIST_OF_PARAMS), BATCH_SIZE)
+        ]
+
+        with Pool(NUMBER_OF_PROCESSES) as notebook_pool:
+            notebook_pool.map(execute_for_params, params_batches)
+            notebook_pool.close()
+            notebook_pool.join()
+
     TIMER.end(label="End of Notebook Executioner")
