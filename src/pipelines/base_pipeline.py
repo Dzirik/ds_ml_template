@@ -5,7 +5,9 @@ Pipelines are high level operations with its own configs.
 """
 
 from abc import abstractmethod
-from typing import Union, Optional
+from typing import Union, Optional, List
+
+from pandas import DataFrame
 
 from src.pipelines.columns_grouping_pipeline_config import ColumnsGroupingPipelineConfig
 from src.pipelines.columns_grouping_pipeline_config_data import ColumnsGroupingPipelineConfigData
@@ -27,8 +29,8 @@ class BasePipeline(MetaClass):  # type:ignore
 
     def __init__(self, class_name: str, config_file_name: Optional[str], \
                  config_class: Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
-                                     RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
-                                     PostProcessingPipelineConfig]) -> None:
+                 RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
+                 PostProcessingPipelineConfig]) -> None:
         MetaClass.__init__(self, class_type=PIPELINE_TYPE_NAME, class_name=class_name)
 
         self._config_data: Union[
@@ -41,14 +43,28 @@ class BasePipeline(MetaClass):  # type:ignore
         self.read_config_data(config_file_name, config_class)
 
     @abstractmethod
-    def execute(self) -> None:
+    def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
         """
-        Executes the pipeline.
+        Executes operations equivalent to config file for one data frame.
+        :param df: DataFrame. Data frame to be transformed.
+        :return: DataFrame. Original data frame with new attributes from configuration.
         """
+
+    def execute(self, dfs: List[DataFrame]) -> List[DataFrame]:
+        """
+        Executes operations equivalent to config file.
+        Assumes all the data frames have enough observation for the necessary transformations.
+        :param dfs: List[Dataframe]. List of data frames to be updated.
+        :return: List[DataFrame].
+        """
+        dfs_out = []
+        for df in dfs:
+            dfs_out.append(self._execute_one_data_frame(df))
+        return dfs_out
 
     def read_config_data(self, config_file_name: Optional[str], config_class: \
             Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
-                  RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig, PostProcessingPipelineConfig]) \
+            RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig, PostProcessingPipelineConfig]) \
             -> None:
         """
         Reads the config data.
@@ -61,10 +77,10 @@ class BasePipeline(MetaClass):  # type:ignore
             self._config_data = config_class(config_file_name).get_data()
 
     def set_config_data(self, config_data: Union[NewAttributesPipelineConfigData,
-                                                 TransformationsExecutionerPipelineConfigData,
-                                                 RowBlocksGroupingPipelineConfigData,
-                                                 ColumnsGroupingPipelineConfigData,
-                                                 PostProcessingPipelineConfigData]) -> None:
+                              TransformationsExecutionerPipelineConfigData,
+                              RowBlocksGroupingPipelineConfigData,
+                              ColumnsGroupingPipelineConfigData,
+                              PostProcessingPipelineConfigData]) -> None:
         """
         Sets the config data.
         :param config_data: Union[NewAttributesPipelineConfigData, TransformationsExecutionerPipelineConfigData,

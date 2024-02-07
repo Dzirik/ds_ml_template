@@ -1,6 +1,5 @@
 """
-TA lib didnt work, some simpler library was used instead.
-https://github.com/Dzirik/algo-tr/blob/main/24_alpha_factor_library/02_common_alpha_factors.ipynb
+Pipeline.
 """
 from builtins import str
 from typing import Optional
@@ -39,12 +38,10 @@ class NewAttributesPipeline(BasePipeline):  # type: ignore
         # for testing purpose
         self._oh_t_file_name: str = ""
 
-    # pylint: disable=arguments-differ
-    def execute(self, df: DataFrame) -> DataFrame:
+    def _execute_for_one_data_frame(self, df: DataFrame) -> DataFrame:
         """
-        Creates new attributes.
+        Creates new attributes for one data frame..
         :param df: DataFrame. Data frame to be transformed.
-        :param attrs_configurations: List[DFNewAttributes]. List of configurations for new attributes.
         :return: DataFrame. Original data frame with new attributes from configuration.
         """
         for conf in self._config_data.new_attributes:
@@ -80,8 +77,6 @@ class NewAttributesPipeline(BasePipeline):  # type: ignore
                     print(conf.name_of_transformation)
                     raise NoProperOptionInIf
         return df
-
-    # pylint: enable=arguments-differ
 
     def get_oh_t_file_name(self) -> str:
         """
