@@ -1,7 +1,7 @@
 """
 Pipeline
 """
-from typing import Optional
+from typing import Optional, List
 
 from pandas import DataFrame
 
@@ -23,9 +23,22 @@ class ColumnsGroupingPipeline(BasePipeline):  # type: ignore
         self._column_transformer = GroupDFColumnsTransformer()
 
     # pylint: disable=arguments-differ
-    def execute(self, df: DataFrame) -> DataFrame:
+    def execute(self, dfs: List[DataFrame]) -> List[DataFrame]:
         """
-        Execute operations equivalent to config file.
+        Executes operations equivalent to config file for one data frame.
+        Assumes all the data frames have enough observation for the necessary transformations.
+        :param dfs: List[Dataframe]. List of data frames to be updated.
+        :return: List[DataFrame].
+        """
+        dfs_out = []
+        for df in dfs:
+            dfs_out.append(self._execute_one_data_frame(df))
+        return dfs_out
+
+    # pylint: enable=arguments-differ
+    def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
+        """
+        Executes operations equivalent to config file for one data frame.
         :param df: DataFrame. Data frame to be transformed.
         :return: DataFrame. Original data frame with new attributes from configuration.
         """
@@ -36,5 +49,3 @@ class ColumnsGroupingPipeline(BasePipeline):  # type: ignore
                 )
 
         return df
-
-    # pylint: enable=arguments-differ
