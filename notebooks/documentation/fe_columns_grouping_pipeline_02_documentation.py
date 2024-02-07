@@ -13,7 +13,7 @@
 #     name: python3
 # ---
 
-# # Columns Grouping Pipeline Execution
+# # Columns Grouping Pipeline Documentation
 # *Version:* `1.2` *(Jupytext, time measurements, logger, param notebook execution, fixes)*
 
 # <a name="ToC"></a>
@@ -28,7 +28,11 @@
 #     - [Constants](#1-5)   
 # - [Analysis](#2)   
 #     - [Data Reading](#2-1)   
-#     - [Execution From Config File](#2-2)      
+#     - [Pipeline Execution from By Hand Config](#2-2)
+#         - [One Data Frame](#2-2-1)
+#         - [More Data Frames](#2-2-2)
+#     - [Pipeline Execution from File Configuration](#2-3)
+#     - [Results Comparison](#2-4)
 # - [Final Timestamp](#3)  
 
 # <a name="0"></a>
@@ -77,7 +81,7 @@ try:
     SUPPORT_FUNCTIONS_READ = True
 except:
     NOTEBOOK_NAME = "NO_NAME"
-    SUPPORT_FUNCTIONS_READ = False  
+    SUPPORT_FUNCTIONS_READ = False
 
 from src.utils.logger import Logger
 from src.utils.envs import Envs
@@ -102,6 +106,8 @@ if ADDAPT_WIDTH:
 # [ToC](#ToC)  
 
 from datetime import datetime
+from numpy import array_split
+from pandas import concat
 
 # <a name="1-4"></a>
 # ### Internal Code
@@ -110,11 +116,13 @@ from datetime import datetime
 
 # +
 from src.utils.date_time_functions import create_datetime_id
-from src.data.attributes import A
 
 from src.data.time_series_one_minute_data import TimeSeriesOneMinuteData
 
+from src.data.df_explorer import DFExplorer
+
 from src.pipelines.columns_grouping_pipeline import ColumnsGroupingPipeline
+from src.pipelines.columns_grouping_pipeline_config_data import ColumnsGroupingPipelineConfigData, ColumnsGrouping
 # -
 
 # <a name="1-5"></a>
@@ -143,18 +151,19 @@ ID = create_datetime_id(now=datetime.now(), add_micro=False)
 # -
 
 # #### Python Config Initialisation
-# [ToC](#ToC)  
+# [ToC](#ToC)
 
 envs.set_config(PYTHON_CONFIG_NAME)
 
 # #### Notebook Specific Constants
-# [ToC](#ToC)  
+# [ToC](#ToC)
 
 CONFIG_FILE_NAME = "pipeline_columns_grouping_documentation"
 
 # <a name="2"></a>
 # # ANALYSIS
-# [ToC](#ToC)  
+# [ToC](#ToC)
+
 
 # <a name="2-1"></a>
 # ## Data Reading
@@ -163,26 +172,111 @@ CONFIG_FILE_NAME = "pipeline_columns_grouping_documentation"
 
 ts_data = TimeSeriesOneMinuteData()
 df = ts_data.get_data_frame()
-attrs = ts_data.get_attrs()
 
-df.head(N_ROWS_TO_DISPLAY)
+df.shape
 
-df.tail(N_ROWS_TO_DISPLAY)
+df.head()
+
+df.tail()
 
 # <a name="2-2"></a>
-# ## Execution From Config File
+# ## Pipeline Execution from By Hand Config
+# [ToC](#ToC)
+#
+# Example of grouping:
+#
+# ~~~
+# grouping = [
+#     ColumnsGrouping(
+#         True,
+#         [A.low.name, A.high.name],
+#         "mean",
+#         "LH_MEAN"
+#     )
+# ]
+# ~~~
+
+config_data = ColumnsGroupingPipelineConfigData(
+    name="my",
+    columns_grouping=[
+        ColumnsGrouping(
+            create=True,
+            attrs=["I", "-I"],
+            grouping_fun="mean",
+            params={},
+            new_attr_name="I-I_MEAN"
+        ),
+        ColumnsGrouping(
+            create=True,
+            attrs=["1", "2", "I", "-I"],
+            grouping_fun="sum",
+            params={},
+            new_attr_name="SUM_1_2_I_-I"
+        )
+    ]
+)
+config_data
+
+# <a name="2-2-1"></a>
+# ## One Data Frame
+# [ToC](#ToC)
+
+dfs = [df]
+# dfs = array_split(df, 10)
+
+config_file_name = None
+pipeline = ColumnsGroupingPipeline(config_file_name)
+pipeline.set_config_data(config_data)
+dfs_out = pipeline.execute(dfs)
+
+len(dfs_out)
+
+dfs_out[0].head()
+
+dfs_out[0].tail()
+
+dfs_out_one = dfs_out
+
+# <a name="2-2-2"></a>
+# ## More Data Frames
+# [ToC](#ToC)
+
+# dfs = [df]
+dfs = array_split(df, 10)
+
+config_file_name = None
+pipeline = ColumnsGroupingPipeline(config_file_name)
+pipeline.set_config_data(config_data)
+dfs_out = pipeline.execute(dfs)
+
+len(dfs_out)
+
+dfs_out[0].head()
+
+dfs_out[0].tail()
+
+assert concat(dfs_out_one).equals(concat(dfs_out))
+
+# <a name="2-3"></a>
+# ## Pipeline Execution from File Configuration
 # [ToC](#ToC)  
 
+dfs = [df]
+# dfs = array_split(df, 10)
 
-# +
-pipeline = ColumnsGroupingPipeline(CONFIG_FILE_NAME)
+config_file_name = CONFIG_FILE_NAME
+pipeline = ColumnsGroupingPipeline(config_file_name)
+dfs_out_from_file = pipeline.execute(dfs.copy())
 
-df_out = pipeline.execute(df)
-# -
+dfs_out_from_file[0].head()
 
-df_out.head(N_ROWS_TO_DISPLAY)
+dfs_out_from_file[0].tail()
 
-df_out.tail(N_ROWS_TO_DISPLAY)
+# <a name="2-4"></a>
+# ## Results Comparison
+# [ToC](#ToC)  
+
+assert concat(dfs_out).equals(concat(dfs_out_from_file))
 
 # <a name="3"></a>
 # # Final Timestamp
