@@ -174,15 +174,17 @@ df.tail(N_ROWS_TO_DISPLAY)
 # [ToC](#ToC)   
 
 
+dfs = [df]
+
 # +
 pipeline = PostProcessingPipeline(CONFIG_FILE_NAME)
 
-df_out = pipeline.execute(df)
+dfs_out = pipeline.execute(dfs)
 # -
 
-df_out.head(N_ROWS_TO_DISPLAY)
+dfs_out[0].head(N_ROWS_TO_DISPLAY)
 
-df_out.tail(N_ROWS_TO_DISPLAY)
+dfs_out[0].tail(N_ROWS_TO_DISPLAY)
 
 # <a name="3"></a>
 # # Final Timestamp

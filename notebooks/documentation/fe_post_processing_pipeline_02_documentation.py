@@ -29,6 +29,8 @@
 # - [Analysis](#2)   
 #     - [Data Reading](#2-1)     
 #     - [Pipeline Execution from By Hand Config](#2-2)
+#         - [One Data Frame](#2-2-1)
+#         - [More Data Frames](#2-2-2)
 #     - [Pipeline Execution from File Configuration](#2-3)
 #     - [Results Comparison](#2-4)    
 # - [Final Timestamp](#3)  
@@ -104,6 +106,8 @@ if ADDAPT_WIDTH:
 # [ToC](#ToC)  
 
 from datetime import datetime
+from numpy import array_split
+from pandas import concat
 
 # <a name="1-4"></a>
 # ### Internal Code
@@ -199,32 +203,64 @@ config_data = PostProcessingPipelineConfigData(
 )
 config_data
 
+# <a name="2-2-1"></a>
+# ### One Data Frame
+# [ToC](#ToC)
+
+dfs = [df.copy()]
+# dfs = array_split(df.copy(), 10)
+
 config_file_name = None
 pipeline = PostProcessingPipeline(config_file_name)
 pipeline.set_config_data(config_data)
-df_out = pipeline.execute(df.copy())
+dfs_out = pipeline.execute(dfs)
 
-df_out.head()
+len(dfs_out)
 
-df_out.tail()
+dfs_out[0].head()
+
+dfs_out[0].tail()
+
+dfs_out_one = dfs_out
+
+# <a name="2-2-2"></a>
+# ### More Data Frames
+# [ToC](#ToC)
+
+# dfs = [df.copy()]
+dfs = array_split(df.copy(), 10)
+
+config_file_name = None
+pipeline = PostProcessingPipeline(config_file_name)
+pipeline.set_config_data(config_data)
+dfs_out = pipeline.execute(dfs)
+
+len(dfs_out)
+
+dfs_out[0].head()
+
+dfs_out[0].tail()
 
 # <a name="2-3"></a>
 # ## Pipeline Execution from File Configuration
 # [ToC](#ToC)  
 
+dfs = [df.copy()]
+# dfs = array_split(df.copy(), 10)
+
 config_file_name = CONFIG_FILE_NAME
 pipeline = PostProcessingPipeline(config_file_name)
-df_out_from_file = pipeline.execute(df.copy())
+dfs_out_from_file = pipeline.execute(dfs)
 
-df_out_from_file.head()
+dfs_out_from_file[0].head()
 
-df_out_from_file.tail()
+dfs_out_from_file[0].tail()
 
 # <a name="2-4"></a>
 # ## Results Comparison
 # [ToC](#ToC)  
 
-assert df_out.equals(df_out_from_file)
+assert dfs_out_one[0].equals(dfs_out_from_file[0])
 
 # <a name="3"></a>
 # # Final Timestamp

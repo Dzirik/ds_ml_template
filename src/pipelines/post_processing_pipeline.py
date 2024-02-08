@@ -20,8 +20,7 @@ class PostProcessingPipeline(BasePipeline):  # type: ignore
                               config_file_name=config_file_name,
                               config_class=PostProcessingPipelineConfig)
 
-    # pylint: disable=arguments-differ
-    def execute(self, df: DataFrame) -> DataFrame:
+    def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
         """
         Transforms row blocks. Please see fe notebook or transformer documentation for more information.
         :param df: DataFrame. Data frame to be transformed.
@@ -39,5 +38,3 @@ class PostProcessingPipeline(BasePipeline):  # type: ignore
                     print(conf.name_of_operation)
                     raise NoProperOptionInIf
         return df
-
-    # pylint: enable=arguments-differ
