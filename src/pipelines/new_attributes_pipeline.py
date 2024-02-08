@@ -38,7 +38,7 @@ class NewAttributesPipeline(BasePipeline):  # type: ignore
         # for testing purpose
         self._oh_t_file_name: str = ""
 
-    def _execute_for_one_data_frame(self, df: DataFrame) -> DataFrame:
+    def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
         """
         Creates new attributes for one data frame..
         :param df: DataFrame. Data frame to be transformed.
