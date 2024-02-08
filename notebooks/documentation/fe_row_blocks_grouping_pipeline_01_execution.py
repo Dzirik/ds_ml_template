@@ -13,7 +13,7 @@
 #     name: python3
 # ---
 
-# # Row Blocks Grouping Pipeline Documentation
+# # Row Blocks Grouping Pipeline Execution
 # *Version:* `1.2` *(Jupytext, time measurements, logger, param notebook execution, fixes)*
 
 # <a name="ToC"></a>
@@ -27,10 +27,8 @@
 #     - [Internal Code](#1-4)
 #     - [Constants](#1-5)   
 # - [Analysis](#2)   
-#     - [Data Reading](#2-1)     
-#     - [Pipeline Execution from By Hand Config](#2-2)
-#     - [Pipeline Execution from File Configuration](#2-3)
-#     - [Results Comparison](#2-4)
+#     - [Data Reading](#2-1)   
+#     - [Execution From Config File](#2-2)     
 # - [Final Timestamp](#3)  
 
 # <a name="0"></a>
@@ -79,7 +77,7 @@ try:
     SUPPORT_FUNCTIONS_READ = True
 except:
     NOTEBOOK_NAME = "NO_NAME"
-    SUPPORT_FUNCTIONS_READ = False
+    SUPPORT_FUNCTIONS_READ = False  
 
 from src.utils.logger import Logger
 from src.utils.envs import Envs
@@ -112,15 +110,11 @@ from datetime import datetime
 
 # +
 from src.utils.date_time_functions import create_datetime_id
-
-from src.constants.global_constants import ATTR_DATE_TIME
+from src.data.attributes import A
 
 from src.data.time_series_one_minute_data import TimeSeriesOneMinuteData
 
-from src.data.df_explorer import DFExplorer
-
 from src.pipelines.row_blocks_grouping_pipeline import RowBlocksGroupingPipeline
-from src.pipelines.row_blocks_grouping_pipeline_config_data import RowBlocksGroupingPipelineConfigData, RowBlocksGrouping
 # -
 
 # <a name="1-5"></a>
@@ -149,20 +143,18 @@ ID = create_datetime_id(now=datetime.now(), add_micro=False)
 # -
 
 # #### Python Config Initialisation
-# [ToC](#ToC)
+# [ToC](#ToC)  
 
 envs.set_config(PYTHON_CONFIG_NAME)
 
 # #### Notebook Specific Constants
-# [ToC](#ToC)
+# [ToC](#ToC)  
 
 CONFIG_FILE_NAME = "pipeline_row_blocks_grouping_documentation"
 
 # <a name="2"></a>
 # # ANALYSIS
 # [ToC](#ToC)  
-
-df_explorer = DFExplorer()
 
 # <a name="2-1"></a>
 # ## Data Reading
@@ -171,92 +163,28 @@ df_explorer = DFExplorer()
 
 ts_data = TimeSeriesOneMinuteData()
 df = ts_data.get_data_frame()
+attrs = ts_data.get_attrs()
 
-df.head()
+df.head(N_ROWS_TO_DISPLAY)
 
-df.tail()
+df.tail(N_ROWS_TO_DISPLAY)
 
 # <a name="2-2"></a>
-# ## Pipeline Execution from By Hand Config
-# [ToC](#ToC)  
-#
-# Example of grouping:
-#
-# ~~~
-# grouping = [
-#     BlocksGrouping(
-#         create=True,
-#         attrs=[A.date_time.name, A.open.name],
-#         fun="first",
-#         rename={"FIRST": A.open.name}
-#     )
-# ]
-# ~~~
-
-config_data = RowBlocksGroupingPipelineConfigData(
-    name="my",
-    grouping_window_len="30min",
-    row_blocks_grouping=[
-        RowBlocksGrouping(
-            create=True,
-            attrs=["DATETIME", "1"],
-            fun="sum",
-            rename={"SUM": "SUM_1"}
-        ),
-        RowBlocksGrouping(
-            create=True,
-            attrs=["DATETIME", "1", "2"],
-            fun="sum",
-            rename={"SUM": "SUM_1_2"}
-        ),
-        RowBlocksGrouping(
-            create=True,
-            attrs=["DATETIME", "I", "-I"],
-            fun="sum",
-            rename={"SUM": "SUM_I-I"}
-        ),
-        RowBlocksGrouping(
-            create=True,
-            attrs=["DATETIME", "5*I", "10*I"],
-            fun="mean",
-            rename={"mean": "MEAN_5*I_10*I"}        
-        ),
-        RowBlocksGrouping(
-            create=True,
-            attrs=["DATETIME", "2*I"],
-            fun="count",
-            rename={"COUNT": "COUNT_1"}
-        )
-    ]
-)
-config_data
-
-config_file_name = None
-pipeline = RowBlocksGroupingPipeline(config_file_name, ATTR_DATE_TIME)
-pipeline.set_config_data(config_data)
-df_out = pipeline.execute(df.copy())
-
-df_out.head()
-
-df_out.tail()
-
-# <a name="2-3"></a>
-# ## Pipeline Execution from File Configuration
+# ## Execution From Config File
 # [ToC](#ToC)  
 
-config_file_name = CONFIG_FILE_NAME
-pipeline = RowBlocksGroupingPipeline(config_file_name, ATTR_DATE_TIME)
-df_out_from_file = pipeline.execute(df.copy())
 
-df_out_from_file.head()
+dfs = [df]
 
-df_out_from_file.tail()
+# +
+pipeline = RowBlocksGroupingPipeline(CONFIG_FILE_NAME, A.date_time.name)
 
-# <a name="2-4"></a>
-# ## Results Comparison
-# [ToC](#ToC)  
+dfs_out = pipeline.execute(dfs)
+# -
 
-assert df_out.equals(df_out_from_file)
+dfs_out[0].head(N_ROWS_TO_DISPLAY)
+
+dfs_out[0].tail(N_ROWS_TO_DISPLAY)
 
 # <a name="3"></a>
 # # Final Timestamp

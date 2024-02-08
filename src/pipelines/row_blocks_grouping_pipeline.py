@@ -24,8 +24,7 @@ class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore
         self._block_transformer = GroupDFBlocksByTimeTransformer()
         self._attr_date_time = attr_date_time
 
-    # pylint: disable=arguments-differ
-    def execute(self, df: DataFrame) -> DataFrame:
+    def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
         """
         Transforms row blocks. Please see fe notebook or transformer documentation for more information.
         :param df: DataFrame. Data frame to be transformed.
@@ -39,8 +38,6 @@ class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore
         if len(data_frames) == 0:
             return df
         return self._merge_data_frames_horizontally(data_frames)
-
-    # pylint: enable=arguments-differ
 
     def _create_grouped_attribute(self, df: DataFrame, attrs: List[str], grp_fun: str,
                                   rename_dict: Optional[Dict[str, str]] = None) -> DataFrame:
