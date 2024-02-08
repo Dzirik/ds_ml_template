@@ -244,6 +244,8 @@ pipeline.set_config_data(explicit_config)
 dfs_out = pipeline.execute(dfs)
 # -
 
+len(dfs_out)
+
 dfs_out[0].head(N_ROWS_TO_DISPLAY)
 
 dfs_out[0].tail(N_ROWS_TO_DISPLAY)
@@ -265,6 +267,8 @@ pipeline.set_config_data(explicit_config)
 
 dfs_out = pipeline.execute(dfs)
 # -
+
+len(dfs_out)
 
 dfs_out[0].head(N_ROWS_TO_DISPLAY)
 
@@ -293,7 +297,7 @@ dfs_out_from_file[0].tail(N_ROWS_TO_DISPLAY)
 # ## Results Comparison
 # [ToC](#ToC) 
 
-assert df_out_explicit.equals(df_out_from_file_one)
+assert dfs_out_one[0].equals(dfs_out_from_file[0])
 
 # <a name="3"></a>
 # # Final Timestamp
