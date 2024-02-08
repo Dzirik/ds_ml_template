@@ -218,11 +218,11 @@ config_data = ColumnsGroupingPipelineConfigData(
 config_data
 
 # <a name="2-2-1"></a>
-# ## One Data Frame
+# ### One Data Frame
 # [ToC](#ToC)
 
-dfs = [df]
-# dfs = array_split(df, 10)
+dfs = [df.copy()]
+# dfs = array_split(df.copy(), 10)
 
 config_file_name = None
 pipeline = ColumnsGroupingPipeline(config_file_name)
@@ -238,11 +238,11 @@ dfs_out[0].tail()
 dfs_out_one = dfs_out
 
 # <a name="2-2-2"></a>
-# ## More Data Frames
+# ### More Data Frames
 # [ToC](#ToC)
 
-# dfs = [df]
-dfs = array_split(df, 10)
+# dfs = [df.copy()]
+dfs = array_split(df.copy(), 10)
 
 config_file_name = None
 pipeline = ColumnsGroupingPipeline(config_file_name)
@@ -261,8 +261,8 @@ assert concat(dfs_out_one).equals(concat(dfs_out))
 # ## Pipeline Execution from File Configuration
 # [ToC](#ToC)  
 
-dfs = [df]
-# dfs = array_split(df, 10)
+dfs = [df.copy()]
+# dfs = array_split(df.copy(), 10)
 
 config_file_name = CONFIG_FILE_NAME
 pipeline = ColumnsGroupingPipeline(config_file_name)
