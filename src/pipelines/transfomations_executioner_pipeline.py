@@ -50,6 +50,15 @@ class TransformationsExecutionerlPipeline(BasePipeline):  # type:ignore
                 )
                 self._exec_trs.append(exec_tr)
 
+    def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
+        """
+        Executes operations equivalent to config file for one data frame.
+        IT IS NOT NECESSARY HERE, NOT VERY CONCEPTUAL, BUT ...
+        :param df: DataFrame. Data frame to be transformed.
+        :return: DataFrame. Original data frame with new attributes from configuration.
+        """
+        return DataFrame()
+
     def predict(self, dfs: List[DataFrame]) -> List[DataFrame]:
         """
         Predicts.

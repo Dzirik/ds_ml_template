@@ -260,6 +260,8 @@ dfs_out_one = dfs_out
 # ### More Data Frames
 # [ToC](#ToC)
 
+dfs[0].shape
+
 # dfs = [df.copy()]
 dfs = array_split(df.copy(), 10)
 
