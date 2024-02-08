@@ -24,6 +24,20 @@ class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore
         self._block_transformer = GroupDFBlocksByTimeTransformer()
         self._attr_date_time = attr_date_time
 
+    def execute(self, dfs: List[DataFrame]) -> List[DataFrame]:
+        """
+        Executes operations equivalent to config file.
+        Assumes all the data frames have enough observation for the necessary transformations.
+        :param dfs: List[Dataframe]. List of data frames to be updated.
+        :return: List[DataFrame].
+        """
+        dfs_out = []
+        for df in dfs:
+            df_grouped = self._execute_one_data_frame(df)
+            if df_grouped.shape[0] >= self._config_data.min_df_size_to_keep:
+                dfs_out.append(df_grouped)
+        return dfs_out
+
     def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
         """
         Transforms row blocks. Please see fe notebook or transformer documentation for more information.

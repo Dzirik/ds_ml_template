@@ -200,6 +200,7 @@ df.tail()
 config_data = RowBlocksGroupingPipelineConfigData(
     name="my",
     grouping_window_len="30min",
+    min_df_size_to_keep=30,
     row_blocks_grouping=[
         RowBlocksGrouping(
             create=True,
