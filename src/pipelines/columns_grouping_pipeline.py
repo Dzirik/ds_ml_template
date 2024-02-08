@@ -22,10 +22,9 @@ class ColumnsGroupingPipeline(BasePipeline):  # type: ignore
 
         self._column_transformer = GroupDFColumnsTransformer()
 
-    # pylint: disable=arguments-differ
-    def execute(self, df: DataFrame) -> DataFrame:
+    def _execute_one_data_frame(self, df: DataFrame) -> DataFrame:
         """
-        Execute operations equivalent to config file.
+        Executes operations equivalent to config file for one data frame.
         :param df: DataFrame. Data frame to be transformed.
         :return: DataFrame. Original data frame with new attributes from configuration.
         """
@@ -36,5 +35,3 @@ class ColumnsGroupingPipeline(BasePipeline):  # type: ignore
                 )
 
         return df
-
-    # pylint: enable=arguments-differ

@@ -22,7 +22,10 @@ class RowBlocksGrouping(NamedTuple):
 class RowBlocksGroupingPipelineConfigData(NamedTuple):
     """
     For storing parameters for pipeline.
+    - min_df_size_to_keep - int. Minimum number of observations in the data frame after grouping for the data frame to
+                                 be kept.
     """
     name: str
     grouping_window_len: str  # see transformer for more details
+    min_df_size_to_keep: int
     row_blocks_grouping: List[RowBlocksGrouping]
