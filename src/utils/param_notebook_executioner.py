@@ -126,6 +126,8 @@ class ParamNotebookExecutioner:
 
         # n = 0
         for params in self._list_of_params:
+            datetime_id = create_datetime_id(now=datetime.now(), add_micro=False)
+            params["ID"] = datetime_id
             if keep_name_static:
                 path_out = os.path.abspath(os.path.join(self._output_folder,
                                                         f"{notebook_name}_{os.path.basename(__file__)[:-3]}.ipynb"))
@@ -136,9 +138,7 @@ class ParamNotebookExecutioner:
                 if add_file_name_to_notebook_name:
                     name = f"{name}_{os.path.basename(__file__)[:-3]}"
                 if add_datetime_id:
-                    datetime_id = create_datetime_id(now=datetime.now(), add_micro=False)
                     name = f"{datetime_id}_{name}"
-                    params["ID"] = datetime_id
                 if add_params_to_name:
                     for key, value in params.items():
                         if key != "ID":
@@ -187,7 +187,8 @@ if __name__ == "__main__":
 
     TIMER.start()
     print(f"\n{'#' * 50} EXECUTING FOR {NUMBER_OF_PROCESSES} PROCESSES {'#' * 50}")
-    print(f" - number of CPU is: {cpu_count()}")
+    print(f" - number of threads is: {cpu_count()}")
+    print(f" - running {NUMBER_OF_PROCESSES} processes")
     if NUMBER_OF_PROCESSES is None:
         execute_for_params(DEFAULT_LIST_OF_PARAMS)
     else:
