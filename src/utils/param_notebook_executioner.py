@@ -73,6 +73,7 @@ for n, sleep_seconds in N_SLEEP_SECONDSS:
 # when run with 3 threads, the execution time is: 2.18 m in no shuffle mode
 # (END) PARAMETERS SETTINGS ############################################################################################
 
+
 class ParamNotebookExecutioner:
     """
     Class for execution of the parameterized notebook with different set of parameters for each run.
@@ -194,6 +195,10 @@ if __name__ == "__main__":
     else:
         if SHUFFLE_BEFORE_RUNNING:
             shuffle(DEFAULT_LIST_OF_PARAMS)
+        if len(DEFAULT_LIST_OF_PARAMS) < NUMBER_OF_PROCESSES:
+            NUMBER_OF_PROCESSES = len(DEFAULT_LIST_OF_PARAMS)
+            print(f" - updating number of processes to: {NUMBER_OF_PROCESSES} "
+                  f"for length: {len(DEFAULT_LIST_OF_PARAMS)}")
         BATCH_SIZE = len(DEFAULT_LIST_OF_PARAMS) // NUMBER_OF_PROCESSES
         params_batches = [
             DEFAULT_LIST_OF_PARAMS[i:i + BATCH_SIZE] for i in range(0, len(DEFAULT_LIST_OF_PARAMS), BATCH_SIZE)
