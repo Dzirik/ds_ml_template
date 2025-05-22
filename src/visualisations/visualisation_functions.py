@@ -2,7 +2,7 @@
 Functions for visualisations.
 """
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict, Any
 
 from numpy import sin
 from numpy.random import seed, randn
@@ -41,3 +41,19 @@ def create_time_series(seed_number: int = 3872, x_multiplier: float = 1, name: O
     data = [15 + 5 * sin(x_multiplier * x) + randn() for x in range(n)]
 
     return Series(data=data, index=datetime_index, name=name)
+
+
+def get_colors_for_level(fill_color: str) -> Dict[str, Any]:
+    """
+    Gets the colors for levels.
+    :param fill_color: str. "green", "red", "blue", "purple"
+    """
+    color_dict = {"green": "#99AA38", "red": "#ED254E", "blue": "#1338BE", "purple": "#AF69EE", "": "#0f0f0f"}
+    return {
+        "line": ["#0f0f0f"],
+        "fill": [color_dict[fill_color]],
+        "paper_background": {"color": "#000000", "opacity": 0},
+        "grid_background": {"color": "#858B97", "opacity": 0.4},
+        "error": ["#ED254E", "#C81D25"],
+        "dot": ["#99AA38", "#ED254E", "#ACD2ED"]
+    }

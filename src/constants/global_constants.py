@@ -30,13 +30,18 @@ P = "p"  # predict function in transformers
 I = "i"  # inverse function
 
 # Colors for visualizations
+# white: F7F5FB, greys: #707070, 6B6B6B, 5C5C5C
 COLORS = {
     "line": ["#0f0f0f", "#011936", "#2F3E46", "#354F52"],  # black, oxford  blue, charcoal, dask slate gray
-    "fill": ["#087E8B", "#99AA38", "#F58A07", "#F7F5FB"],  # metallic seaweed (B), citron (G), dark orange, ghost white
+    "fill": ["#087E8B", "#99AA38", "#F58A07", "#F7F5FB", "#FFBB00"],  # metallic seaweed (B), citron (G), dark orange,
+    # ghost white, sunflower
     "error": ["#ED254E", "#C81D25"],  # red crayola, lava
-    "dot": ["#99AA38", "#F9DC5C", "#ACD2ED"],  # green, yello, blue, grass "#3F681C", red crayola "#ED254E"
+    "dot": ["#99AA38", "#ED254E", "#ACD2ED"],  # green "#99AA38", yello "#F9DC5C", blue, grass "#3F681C",
+    # red crayola "#ED254E"
     "paper_background": {"color": "#000000", "opacity": 0},  # outside of the plot, black with 0 opacity
     "grid_background": {"color": "#858B97", "opacity": 0.4},
+    "vertical_line": ["#000000"]
+    # "vertical_line": ["#000000"]
 }
 
 ATTR_DATE_TIME = "DATETIME"

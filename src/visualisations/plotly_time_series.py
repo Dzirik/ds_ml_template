@@ -23,7 +23,8 @@ class PlotlyTimeSeries(PlotlyTimeSeriesBase):  # type:ignore
     def plot(self, series: List[Series], series_names: Optional[List[str]] = None, series_obs_names: \
             Optional[List[List[str]]] = None, anomalies: Optional[List[int]] = None, anomalies_obs_names: \
             Optional[List[str]] = None, plot_title: str = "Title", y_title: str = "Y Axis Title", \
-             fill_areas: bool = False, dashboard: bool = False) -> Optional[go.Figure]:
+             fill_areas: bool = False, dashboard: bool = False, \
+             vertical_lines_positions: Optional[List[float]] = None) -> Optional[go.Figure]:
         """
         Creates an bar chart.
         :param series: List[Series]. List of time series to be plotted.
@@ -46,7 +47,8 @@ class PlotlyTimeSeries(PlotlyTimeSeriesBase):  # type:ignore
         if anomalies is not None:
             traces = traces + self._create_anomalies_from_index_trace(series[0], anomalies, anomalies_obs_names)
         layout = self._create_layout(plot_title, y_title)
+        lines = self._create_vertical_lines(vertical_lines_positions)
 
-        return self._plot_single_figure(trace=traces, layout=layout, dashboard=dashboard)
+        return self._plot_single_figure(trace=traces, layout=layout, shapes=lines, dashboard=dashboard)
     # pylint: enable=too-many-arguments
     # pylint: enable=arguments-differ

@@ -20,11 +20,17 @@ BASE_SELECTORS: List[Dict[str, Any]] = [
     {"count": 3, "label": "3d", "step": "day", "stepmode": "backward"},
     {"count": 7, "label": "1w", "step": "day", "stepmode": "backward"},
     {"count": 1, "label": "1m", "step": "month", "stepmode": "backward"},
+    {"count": 3, "label": "3m", "step": "month", "stepmode": "backward"},
+    {"count": 6, "label": "6m", "step": "month", "stepmode": "backward"},
     {"step": "all"}
 ]
 
 
 # Selectors examples:
+# {"count": 12, "label": "12h", "step": "hour", "stepmode": "backward"},
+# {"count": 3, "label": "3d", "step": "day", "stepmode": "backward"},
+# {"count": 7, "label": "1w", "step": "day", "stepmode": "backward"},
+# {"count": 1, "label": "1m", "step": "month", "stepmode": "backward"},
 # {"count": 5, "label": "5min", "step": "minute", "stepmode": "backward"},
 # {"count": 15, "label": "15min", "step": "minute", "stepmode": "backward"},
 # {"count": 30, "label": "30min", "step": "minute", "stepmode": "backward"},
@@ -139,12 +145,20 @@ class PlotlyTimeSeriesBase(PlotlyBase):  # type:ignore
             "xaxis": {
                 "rangeselector": {"buttons": self._selectors},
                 "rangeslider": {"visible": True},
-                "type": "date"},
+                "type": "date",
+                "title_font": {"size": self._other_params["axis_font_size"]},
+                "tickfont": {"size": self._other_params["axis_font_size"]}
+            },
             "title": plot_title,
             "paper_bgcolor": hex_to_rgb(self._colors["paper_background"]["color"],
                                         self._colors["paper_background"]["opacity"]),
             "plot_bgcolor": hex_to_rgb(self._colors["grid_background"]["color"],
-                                       self._colors["grid_background"]["opacity"])
+                                       self._colors["grid_background"]["opacity"]),
+            "yaxis": {
+                "title": "",  # Optionally set or modify the y-axis title
+                "title_font": {"size": self._other_params["axis_font_size"]},  # Title font size
+                "tickfont": {"size": self._other_params["axis_font_size"]}  # Tick label font size
+            }
         }
 
     def _create_anomalies_from_index_trace(self, ts: Series, anomalies: List[int], anomalies_obs_names: \

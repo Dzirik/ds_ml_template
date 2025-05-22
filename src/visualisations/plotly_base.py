@@ -25,6 +25,17 @@ class PlotlyBase(ABC):
             "width": 1000,
             "height": 750
         }
+        self._other_params = {
+            "axis_font_size": None
+        }
+
+    def set_other_params(self, params: Dict[str, Any]) -> None:
+        """
+        Sets the additional parameters for the plotly visualisations.
+        :param params: Dict[str, Any]. Dictionary with params to be changed.
+        """
+        for key, value in params.items():
+            self._other_params[key] = value
 
     def set_colors(self, colors: Dict[str, List[str]]) -> None:
         """
@@ -65,7 +76,7 @@ class PlotlyBase(ABC):
             return None
 
         lines = []
-        for line_x_coordinates in vertical_lines_positions:
+        for i, line_x_coordinates in enumerate(vertical_lines_positions):
             # "dash": "solid", "dash" - - -, "dot"
             line = go.layout.Shape(type="line",
                                    xref="x",
@@ -74,7 +85,13 @@ class PlotlyBase(ABC):
                                    y0=0,
                                    x1=line_x_coordinates,
                                    y1=1,
-                                   line={"dash": "dash", "color": self._colors["line"][0], "width": 1.5})
+                                   line={
+                                       "dash": "dash",
+                                       "color": self._colors["vertical_line"][i % len(self._colors["vertical_line"])],
+                                       "width": 1.5}
+                                   )
+            # line={"dash": "dash", "color": self._colors["vertical_line"][0], "width": 1.5})
+            # fillcolor=hex_to_rgb(self._colors["line"][i % len(self._colors["line"])], 0.1)
             lines.append(line)
         return lines
 
