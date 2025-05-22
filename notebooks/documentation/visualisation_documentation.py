@@ -38,6 +38,7 @@
 #             - [Multiple Series](#2-3-2-2)
 #             - [Filling](#2-3-2-3)
 #             - [Anomalies](#2-3-2-4)
+#             - [Vertical Lines Positions](#2-3-2-5)
 #         - [Time Series Events](#2-3-3)
 #             - [Simple Plot](#2-3-3-1)
 #             - [Full Plot](#2-3-3-2)
@@ -52,6 +53,7 @@
 # - [Overall Customisation](#3)
 #     - [Size of the Picture](#3-1)
 #     - [Colours](#3-2)
+#     - [Other Params Settings](#3-3)
 # - [Final Timestamp](#inf)
 
 # <a name="0"></a>
@@ -154,7 +156,7 @@ from src.visualisations.visualisation_functions import create_time_series
 # from src.global_constants import *  # Remember to import only the constants in use
 N_ROWS_TO_DISPLAY = 2
 FIGURE_SIZE_SETTING = {"autosize": False, "width": 2200, "height": 750}
-DATA_PROCESSING_CONFIG_NAME = "data_processing_basic"
+
 
 # #### Constants for Setting Automatic Run
 # [ToC](#ToC)
@@ -174,7 +176,12 @@ envs.set_config(PYTHON_CONFIG_NAME)
 # #### Notebook Specific Constants
 # [ToC](#ToC)   
 
-from src.data.attributes import ATTR_OPEN, ATTR_HIGH, ATTR_LOW, ATTR_CLOSE
+from src.data.attributes import A
+
+ATTR_OPEN = A.open.name
+ATTR_HIGH = A.high.name
+ATTR_LOW = A.low.name
+ATTR_CLOSE = A.close.name
 
 # <a name='2'></a>
 # # Visualizations Examples
@@ -453,6 +460,31 @@ ts_visu.plot(
 )
 # -
 
+# <a name='2-3-2-5'></a>
+# #### Vertical Lines Positions
+# [ToC](#ToC) 
+
+vertical_lines_positions = [ts_1.index[3], ts_1.index[12]]
+
+# +
+import src.visualisations.plotly_time_series as TS
+
+reload(TS)
+
+ts_visu = TS.PlotlyTimeSeries()
+
+ts_visu.plot(
+    series=[ts_1, ts_2],  
+    series_names=["Random Sinus", "Another Random Sinus"],
+    series_obs_names=[ts_1_names, ts_2_names],
+    anomalies=[2, 10],
+    anomalies_obs_names=["False", "Perfect"],
+    plot_title=plot_title, 
+    y_title=y_title,
+    vertical_lines_positions=vertical_lines_positions
+)
+# -
+
 # <a name='2-3-3'></a>
 # ### Time Series Events
 # [ToC](#ToC) 
@@ -516,7 +548,7 @@ ts_visu.plot(
     event_names=["Buys", "Sells"],
     event_obs_names=[buy_names, sell_names],
     plot_title=plot_title, 
-    y_title=y_title
+    y_title=y_title, 
 )
 # -
 
@@ -525,10 +557,10 @@ ts_visu.plot(
 # [ToC](#ToC) 
 
 df_1 = DataFrame(create_time_series(seed_number=11, x_multiplier=0.3))
-df_1.rename(columns={0: ATTR_OPEN.name}, inplace=True)
-df_1[ATTR_HIGH.name] = create_time_series(seed_number=7651, x_multiplier=0.2)
-df_1[ATTR_LOW.name] = create_time_series(seed_number=751, x_multiplier=0.4)
-df_1[ATTR_CLOSE.name] = create_time_series(seed_number=76, x_multiplier=0.1)
+df_1.rename(columns={0: ATTR_OPEN}, inplace=True)
+df_1[ATTR_HIGH] = create_time_series(seed_number=7651, x_multiplier=0.2)
+df_1[ATTR_LOW] = create_time_series(seed_number=751, x_multiplier=0.4)
+df_1[ATTR_CLOSE] = create_time_series(seed_number=76, x_multiplier=0.1)
 df_1.head(2)
 
 ts_1 = create_time_series(seed_number=11, x_multiplier=0.3)
@@ -868,6 +900,35 @@ ts_visu.plot(
     series_obs_names=[ts_1_names, ts_2_names, ts_3_names],
     plot_title=plot_title, 
     y_title=y_title
+)
+
+# <a name="3-3"></a>
+# ## Other Params Settings
+# [ToC](#ToC) 
+
+# from some reason for lines fill is chosen - this should be checked properly
+my_colours = {
+    "line": ["#0f0f0f"],
+    "fill": ["#AF69EE"],  # green "#99AA38", red "#ED254E", blue #011936, purple #AF69EE
+    "paper_background": {"color": "#000000", "opacity": 0},
+    "grid_background": {"color": "#858B97", "opacity": 0.4},
+    "vertical_line": ["#ED254E"]
+}
+
+other_params = {
+    "axis_font_size": 20
+}
+
+ts_visu = TS.PlotlyTimeSeries()
+ts_visu.set_colors(my_colours)
+ts_visu.set_other_params(other_params)
+ts_visu.plot(
+    series=[ts_1, ts_2, ts_3],  
+    series_names=["Random Sinus", "Another Random Sinus", "Wooow"],
+    series_obs_names=[ts_1_names, ts_2_names, ts_3_names],
+    plot_title=plot_title, 
+    y_title=y_title,
+    vertical_lines_positions=[ts_1.index[6], ts_1.index[20]]
 )
 
 # <a name="inf"></a>
