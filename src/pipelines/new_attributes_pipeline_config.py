@@ -3,12 +3,13 @@ Pipelines configuration file.
 """
 
 from pprint import pprint
+from typing import cast
 
 from src.pipelines.new_attributes_pipeline_config_data import NewAttributesPipelineConfigData
 from src.utils.base_config import BaseConfig
 
 
-class NewAttributesPipelineConfig(BaseConfig):  # type: ignore
+class NewAttributesPipelineConfig(BaseConfig):  # type: ignore[misc]
     """
     Pipelines configuration file.
     """
@@ -28,7 +29,8 @@ class NewAttributesPipelineConfig(BaseConfig):  # type: ignore
 if __name__ == "__main__":
     CONFIG_FILE_NAME = "pipeline_new_attributes_documentation"
 
-    config_data = NewAttributesPipelineConfig(CONFIG_FILE_NAME).get_data()
+    config_data = cast(NewAttributesPipelineConfigData,
+                       NewAttributesPipelineConfig(CONFIG_FILE_NAME).get_data())
 
     print("\n")
     pprint(config_data.name)

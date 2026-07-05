@@ -1,16 +1,17 @@
 """
 Pipeline
 """
-from typing import Optional
+from typing import Optional, cast
 
 from pandas import DataFrame
 
 from src.exceptions.development_exception import NoProperOptionInIf
 from src.pipelines.base_pipeline import BasePipeline
 from src.pipelines.post_processing_pipeline_config import PostProcessingPipelineConfig
+from src.pipelines.post_processing_pipeline_config_data import PostProcessingPipelineConfigData
 
 
-class PostProcessingPipeline(BasePipeline):  # type: ignore
+class PostProcessingPipeline(BasePipeline):  # type: ignore[misc]
     """
     Pipeline for doing grouping operations on the block of time (rows) data of a data frame.
     """
@@ -26,7 +27,8 @@ class PostProcessingPipeline(BasePipeline):  # type: ignore
         :param df: DataFrame. Data frame to be transformed.
         :return: DataFrame. Data frame with DATETIME attribute and attributes from grouping configuration.
         """
-        for conf in self._config_data.post_processing_operations:
+        config_data = cast(PostProcessingPipelineConfigData, self._config_data)
+        for conf in config_data.post_processing_operations:
             if conf.create:
                 if conf.name_of_operation == "remove_from_head":
                     n = int(conf.parameters["n_of_rows"])

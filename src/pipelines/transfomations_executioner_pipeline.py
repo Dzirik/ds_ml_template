@@ -3,19 +3,20 @@ Pipeline
 
 See documentation notebooks for more details.
 """
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, cast
 
 from pandas import DataFrame, concat
 
 from src.constants.global_constants import FP, P, I
 from src.data.saver_and_loader import SaverAndLoader
-from src.exceptions.development_exception import NoProperOptionInIf, NotReadyFunctionality
+from src.exceptions.development_exception import NoProperOptionInIf
 from src.pipelines.base_pipeline import BasePipeline
 from src.pipelines.transfomations_executioner_pipeline_config import TransformationsExecutionerPipelineConfig
+from src.pipelines.transfomations_executioner_pipeline_config_data import TransformationsExecutionerPipelineConfigData
 from src.transformations.transformations_executioner_transformer import TransformationsExecutionerTransformer
 
 
-class TransformationsExecutionerlPipeline(BasePipeline):  # type:ignore
+class TransformationsExecutionerlPipeline(BasePipeline):  # type: ignore[misc]
     """
     Pipeline for pre-model transformations and their inverses.
     """
@@ -25,8 +26,11 @@ class TransformationsExecutionerlPipeline(BasePipeline):  # type:ignore
                               config_file_name=config_file_name,
                               config_class=TransformationsExecutionerPipelineConfig)
 
-        self._exec_trs: List[TransformationsExecutionerTransformer]
+        self._exec_trs: List[TransformationsExecutionerTransformer] = []
         self._saver_and_loader = SaverAndLoader()
+
+        if config_file_name is not None:
+            self.fit([None])
 
     def fit(self, dfs: List[Optional[DataFrame]]) -> None:
         """
@@ -40,7 +44,8 @@ class TransformationsExecutionerlPipeline(BasePipeline):  # type:ignore
             df_concatenated = self._concatenate_data_frames(dfs, axis=0)
 
         self._exec_trs = []
-        for exec_conf in self._config_data.trans_executioners_confs:
+        config_data = cast(TransformationsExecutionerPipelineConfigData, self._config_data)
+        for exec_conf in config_data.trans_executioners_confs:
             if exec_conf.create:
                 exec_tr = TransformationsExecutionerTransformer()
                 exec_tr.fit(
@@ -84,11 +89,17 @@ class TransformationsExecutionerlPipeline(BasePipeline):  # type:ignore
 
     def inverse(self, dfs: List[DataFrame]) -> List[DataFrame]:
         """
-        Does the inverse.
+        Does the inverse transformation by applying each executioner's inverse in reverse order.
         :param dfs: List[DataFrame].
         :return: List[DataFrame].
         """
-        # TODO: Do inverse.
+        dfs_out = []
+        for df in dfs:
+            df_inv = df.copy()
+            for exec_tr in reversed(self._exec_trs):
+                df_inv = exec_tr.inverse(df_inv)
+            dfs_out.append(df_inv)
+        return dfs_out
 
     # pylint: disable=arguments-differ
     def execute(self, dfs_train: Optional[List[DataFrame]], dfs_test: Optional[List[DataFrame]], type_of_method: str) \
@@ -114,8 +125,10 @@ class TransformationsExecutionerlPipeline(BasePipeline):  # type:ignore
             if dfs_test is not None:
                 dfs_test_out = self.predict(dfs_test)
         elif type_of_method == I:
-            # TODO: Add inverse.
-            raise NotReadyFunctionality
+            # the fitted parameters are there, so just transformers need to be restored before inverting.
+            self.fit([None])
+            if dfs_test is not None:
+                dfs_test_out = self.inverse(dfs_test)
         else:
             raise NoProperOptionInIf
         return dfs_train_out, dfs_test_out

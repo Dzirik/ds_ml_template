@@ -8,7 +8,7 @@ from src.pipelines.transfomations_executioner_pipeline_config_data import Transf
 from src.utils.base_config import BaseConfig
 
 
-class TransformationsExecutionerPipelineConfig(BaseConfig):  # type:ignore
+class TransformationsExecutionerPipelineConfig(BaseConfig):  # type: ignore[misc]
     """
     Class for handling config file for pre model pipeline.
     """

@@ -2,7 +2,7 @@
 Pipeline.
 """
 from builtins import str
-from typing import Optional
+from typing import Optional, cast
 
 from pandas import DataFrame
 
@@ -11,6 +11,7 @@ from src.data.saver_and_loader import SaverAndLoader
 from src.exceptions.development_exception import NoProperOptionInIf
 from src.pipelines.base_pipeline import BasePipeline
 from src.pipelines.new_attributes_pipeline_config import NewAttributesPipelineConfig
+from src.pipelines.new_attributes_pipeline_config_data import NewAttributesPipelineConfigData
 from src.transformations.datetime_one_hot_transformer import DatetimeOneHotEncoderTransformer
 from src.transformations.difference_percentage_change_transformer import DifferencePercentageChangeTransformer
 from src.transformations.difference_transformer import DifferenceTransformer
@@ -19,7 +20,7 @@ from src.utils.date_time_functions import convert_datetime_to_string_date
 
 # pylint: disable=too-many-instance-attributes
 # pylint: disable=too-many-branches
-class NewAttributesPipeline(BasePipeline):  # type: ignore
+class NewAttributesPipeline(BasePipeline):  # type: ignore[misc]
     """
     Creates new attributes.
     """
@@ -44,7 +45,8 @@ class NewAttributesPipeline(BasePipeline):  # type: ignore
         :param df: DataFrame. Data frame to be transformed.
         :return: DataFrame. Original data frame with new attributes from configuration.
         """
-        for conf in self._config_data.new_attributes:
+        config_data = cast(NewAttributesPipelineConfigData, self._config_data)
+        for conf in config_data.new_attributes:
             if conf.create:
                 if conf.name_of_transformation == "diff":
                     for attr_name in conf.for_attrs:

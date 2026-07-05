@@ -3,12 +3,13 @@ Pipelines configuration file.
 """
 
 from pprint import pprint
+from typing import cast
 
 from src.pipelines.row_blocks_grouping_pipeline_config_data import RowBlocksGroupingPipelineConfigData
 from src.utils.base_config import BaseConfig
 
 
-class RowBlocksGroupingPipelineConfig(BaseConfig):  # type:ignore
+class RowBlocksGroupingPipelineConfig(BaseConfig):  # type: ignore[misc]
     """
     Pipelines configuration file.
     """
@@ -28,7 +29,8 @@ class RowBlocksGroupingPipelineConfig(BaseConfig):  # type:ignore
 if __name__ == "__main__":
     CONFIG_FILE_NAME = "pipeline_row_blocks_grouping_documentation"
 
-    config_data = RowBlocksGroupingPipelineConfig(CONFIG_FILE_NAME).get_data()
+    config_data = cast(RowBlocksGroupingPipelineConfigData,
+                       RowBlocksGroupingPipelineConfig(CONFIG_FILE_NAME).get_data())
 
     print("\n")
     pprint(config_data.name)
