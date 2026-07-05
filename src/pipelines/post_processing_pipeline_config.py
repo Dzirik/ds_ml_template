@@ -3,12 +3,13 @@ Pipelines configuration file.
 """
 
 from pprint import pprint
+from typing import cast
 
 from src.pipelines.post_processing_pipeline_config_data import PostProcessingPipelineConfigData
 from src.utils.base_config import BaseConfig
 
 
-class PostProcessingPipelineConfig(BaseConfig):  # type: ignore
+class PostProcessingPipelineConfig(BaseConfig):  # type: ignore[misc]
     """
     Pipelines configuration file.
     """
@@ -28,7 +29,8 @@ class PostProcessingPipelineConfig(BaseConfig):  # type: ignore
 if __name__ == "__main__":
     CONFIG_FILE_NAME = "pipeline_post_processing_documentation"
 
-    config_data = PostProcessingPipelineConfig(CONFIG_FILE_NAME).get_data()
+    config_data = cast(PostProcessingPipelineConfigData,
+                       PostProcessingPipelineConfig(CONFIG_FILE_NAME).get_data())
 
     print("\n")
     pprint(config_data.name)

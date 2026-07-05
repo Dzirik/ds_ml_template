@@ -5,6 +5,8 @@
 
 .PHONY: help
 
+SHELL := /bin/bash
+
 include make_config.mk
 
 FILE_CODE = src/$(FILE_FOLDER)/$(FILE_NAME).py
@@ -28,11 +30,11 @@ clear-console:
 
 create-venv: clear-console
 	@python ./src/utils/make_print_documentation.py create-venv
-	pip install virtualenv==20.19.0
+	python -m pip install virtualenv==20.19.0
 	test -d .venv || virtualenv .venv
 	( \
        source .venv/Scripts/activate;\
-       pip install -r requirements.txt;\
+       python -m pip install -r requirements.txt;\
 	)
 
 freeze-out: clear-console

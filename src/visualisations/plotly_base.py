@@ -6,9 +6,23 @@ from abc import ABC, abstractmethod
 from typing import Union, List, Dict, Any, Optional
 
 import plotly.graph_objs as go
-import plotly.offline as py
+import plotly.io as pio
 
 from src.constants.global_constants import COLORS
+
+# Configure Plotly to work with Jupyter Notebook
+# This ensures plots display correctly in Jupyter Notebook 6.x with Plotly 6.x
+try:
+    # Try to detect if we're in a Jupyter environment
+    get_ipython()  # type: ignore
+    # If we are, set the renderer to 'notebook' for classic Jupyter Notebook
+    pio.renderers.default = 'notebook'
+except NameError:
+    # Not in Jupyter, keep default renderer
+    pass
+
+# Type alias for the colors dictionary - values are List[str] for indexable color arrays
+ColorsDict = Dict[str, Any]  # Contains List[str] for color arrays and Dict for backgrounds
 
 
 class PlotlyBase(ABC):
@@ -17,16 +31,16 @@ class PlotlyBase(ABC):
     """
 
     def __init__(self) -> None:
-        self._opacity = 0.25
-        self._colors = COLORS
+        self._colors: ColorsDict = COLORS
         self._hist_func: str
-        self._figure_size = {
+        self._figure_size: Dict[str, Any] = {
             "autosize": True,
             "width": 1000,
             "height": 750
         }
-        self._other_params = {
-            "axis_font_size": None
+        self._other_params: Dict[str, Any] = {
+            "axis_font_size": None,
+            "opacity": 0.25
         }
 
     def set_other_params(self, params: Dict[str, Any]) -> None:
@@ -37,10 +51,10 @@ class PlotlyBase(ABC):
         for key, value in params.items():
             self._other_params[key] = value
 
-    def set_colors(self, colors: Dict[str, List[str]]) -> None:
+    def set_colors(self, colors: ColorsDict) -> None:
         """
         Sets the colors for the plot.
-        :param colors: Dict[str, List[str]]. Check src/constants/global_constants.py for more details.
+        :param colors: ColorsDict. Check src/constants/global_constants.py for more details.
             {
                 "line": ["#0f0f0f", "#011936", "#2F3E46", "#354F52"],
                 "fill": ["#087E8B", "#99AA38", "#F58A07", "#F7F5FB", "#FFBB00"],
@@ -56,10 +70,10 @@ class PlotlyBase(ABC):
                             shapes: Optional[List[Any]] = None, dashboard: bool = False) -> Optional[go.Figure]:
         fig = go.Figure(data=trace, layout=layout)
 
-        if not self._figure_size["autosize"]:
-            fig.update_layout(autosize=self._figure_size["autosize"])
-            fig.update_layout(width=self._figure_size["width"])
-            fig.update_layout(height=self._figure_size["height"])
+        if self._figure_size["autosize"]:
+            fig.update_layout(autosize=True, height=self._figure_size["height"])
+        else:
+            fig.update_layout(autosize=False, width=self._figure_size["width"], height=self._figure_size["height"])
 
         if shapes is not None:
             for shape in shapes:
@@ -68,8 +82,9 @@ class PlotlyBase(ABC):
         if dashboard:
             return fig
 
-        py.iplot(fig)
-        return None
+        # For Jupyter notebooks, return the figure so it gets displayed
+        # The figure will be automatically rendered by Jupyter's display system
+        return fig
 
     def _create_vertical_lines(self, vertical_lines_positions: Optional[List[float]]) -> Optional[List[Any]]:
         if vertical_lines_positions is None:

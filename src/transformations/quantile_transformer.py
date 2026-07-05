@@ -109,3 +109,23 @@ class QuantileTransformer(BaseTransformer):  # type:ignore
         return None
 
     # pylint: enable=arguments-differ
+
+    def get_params(self) -> Dict[str, Any]:
+        """
+        Gets the params needed to reconstruct the fitted state (the training values and their
+        corresponding quantiles). Overrides the base implementation, whose generic ``_params``
+        dict is not populated by this transformer's ``fit``.
+        :return: Dict[str, Any]. Params.
+        """
+        return {"data": self._data.tolist(), "quantiles": self._quantiles.reshape(-1).tolist()}
+
+    def restore_from_params(self, params: Dict[str, Any]) -> None:
+        """
+        Rebuilds the fitted state from params produced by ``get_params``, mirroring ``fit``.
+        :param params: Dict[str, Any].
+        """
+        self._data = array(params["data"], dtype=double)
+        quantiles_1d: ndarray[Any, dtype[double]] = array(params["quantiles"], dtype=double)
+        self._train_dict = dict(zip(self._data, quantiles_1d))
+        self._quantiles = quantiles_1d.reshape((len(self._data), 1))
+        self._prediction_dict = {}

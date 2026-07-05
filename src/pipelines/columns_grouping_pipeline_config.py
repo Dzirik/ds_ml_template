@@ -3,12 +3,13 @@ Pipelines configuration file.
 """
 
 from pprint import pprint
+from typing import cast
 
 from src.pipelines.columns_grouping_pipeline_config_data import ColumnsGroupingPipelineConfigData
 from src.utils.base_config import BaseConfig
 
 
-class ColumnsGroupingPipelineConfig(BaseConfig):  # type:ignore
+class ColumnsGroupingPipelineConfig(BaseConfig):  # type: ignore[misc]
     """
     Pipelines configuration file.
     """
@@ -28,7 +29,8 @@ class ColumnsGroupingPipelineConfig(BaseConfig):  # type:ignore
 if __name__ == "__main__":
     CONFIG_FILE_NAME = "pipeline_columns_grouping_documentation"
 
-    config_data = ColumnsGroupingPipelineConfig(CONFIG_FILE_NAME).get_data()
+    config_data = cast(ColumnsGroupingPipelineConfigData,
+                       ColumnsGroupingPipelineConfig(CONFIG_FILE_NAME).get_data())
 
     print("\n")
     pprint(config_data.name)

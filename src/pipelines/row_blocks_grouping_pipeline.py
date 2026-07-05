@@ -1,17 +1,18 @@
 """
 Pipeline
 """
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, cast
 
 from pandas import DataFrame
 
 from src.constants.global_constants import ATTR_DATE_TIME
 from src.pipelines.base_pipeline import BasePipeline
 from src.pipelines.row_blocks_grouping_pipeline_config import RowBlocksGroupingPipelineConfig
+from src.pipelines.row_blocks_grouping_pipeline_config_data import RowBlocksGroupingPipelineConfigData
 from src.transformations.group_df_blocks_by_time_transformer import GroupDFBlocksByTimeTransformer
 
 
-class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore
+class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore[misc]
     """
     Pipeline for doing grouping operations on the block of time (rows) data of a data frame.
     """
@@ -31,10 +32,11 @@ class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore
         :param dfs: List[Dataframe]. List of data frames to be updated.
         :return: List[DataFrame].
         """
+        config_data = cast(RowBlocksGroupingPipelineConfigData, self._config_data)
         dfs_out = []
         for df in dfs:
             df_grouped = self._execute_one_data_frame(df)
-            if df_grouped.shape[0] >= self._config_data.min_df_size_to_keep:
+            if df_grouped.shape[0] >= config_data.min_df_size_to_keep:
                 dfs_out.append(df_grouped)
         return dfs_out
 
@@ -44,9 +46,10 @@ class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore
         :param df: DataFrame. Data frame to be transformed.
         :return: DataFrame. Data frame with DATETIME attribute and attributes from grouping configuration.
         """
+        config_data = cast(RowBlocksGroupingPipelineConfigData, self._config_data)
         data_frames = []
 
-        for grp in self._config_data.row_blocks_grouping:
+        for grp in config_data.row_blocks_grouping:
             if grp.create:
                 data_frames.append(self._create_grouped_attribute(df, grp.attrs, grp.fun, grp.rename))
         if len(data_frames) == 0:
@@ -63,8 +66,9 @@ class RowBlocksGroupingPipeline(BasePipeline):  # type: ignore
         :param rename_dict: Optional[Dict[str, str]]. Dictionary for renaming the column. If None, nothing is renamed.
         :return: DataFrame. Grouped data frame.
         """
+        config_data = cast(RowBlocksGroupingPipelineConfigData, self._config_data)
         df_grp = self._block_transformer.fit_predict(df[attrs], self._attr_date_time,
-                                                     self._config_data.grouping_window_len, grp_fun)
+                                                     config_data.grouping_window_len, grp_fun)
         df_grp.index = df_grp[self._attr_date_time].values
         df_grp.index.name = ""
         if rename_dict is not None:

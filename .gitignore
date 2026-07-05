@@ -1,6 +1,7 @@
 # PERSONAL SETTING ------------------------------------------------------------------
 # Data files
 #/Data/
+/tmp
 
 # requirements
 /requirements_linux.txt

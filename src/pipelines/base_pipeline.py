@@ -5,7 +5,7 @@ Pipelines are high level operations with its own configs.
 """
 
 from abc import abstractmethod
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Type
 
 from pandas import DataFrame
 
@@ -21,16 +21,19 @@ from src.pipelines.transfomations_executioner_pipeline_config import Transformat
 from src.pipelines.transfomations_executioner_pipeline_config_data import TransformationsExecutionerPipelineConfigData
 from src.utils.meta_class import MetaClass, PIPELINE_TYPE_NAME
 
+# Type alias for pipeline config classes
+PipelineConfigType = Type[Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
+                                RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
+                                PostProcessingPipelineConfig]]
 
-class BasePipeline(MetaClass):  # type:ignore
+
+class BasePipeline(MetaClass):  # type: ignore[misc]
     """
     Parent/base class for all pipelines to ensure the same interface.
     """
 
-    def __init__(self, class_name: str, config_file_name: Optional[str], \
-                 config_class: Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
-                 RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
-                 PostProcessingPipelineConfig]) -> None:
+    def __init__(self, class_name: str, config_file_name: Optional[str],
+                 config_class: PipelineConfigType) -> None:
         MetaClass.__init__(self, class_type=PIPELINE_TYPE_NAME, class_name=class_name)
 
         self._config_data: Union[
@@ -62,16 +65,12 @@ class BasePipeline(MetaClass):  # type:ignore
             dfs_out.append(self._execute_one_data_frame(df))
         return dfs_out
 
-    def read_config_data(self, config_file_name: Optional[str], config_class: \
-            Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
-            RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig, PostProcessingPipelineConfig]) \
-            -> None:
+    def read_config_data(self, config_file_name: Optional[str],
+                         config_class: PipelineConfigType) -> None:
         """
         Reads the config data.
         :param config_file_name: Optional[str].
-        :param config_class: Union[TransformationsExecutionerPipelineConfig, NewAttributesPipelineConfig,
-                                   RowBlocksGroupingPipelineConfig, ColumnsGroupingPipelineConfig,
-                                   PostProcessingPipelineConfig].
+        :param config_class: PipelineConfigType. Type of the pipeline config class.
         """
         if config_file_name is not None:
             self._config_data = config_class(config_file_name).get_data()

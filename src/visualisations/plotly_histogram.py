@@ -52,7 +52,8 @@ class PlotlyHistogram(PlotlyBase):  # type:ignore
         trace = go.Histogram(x=data,
                              xbins={"start": start, "end": end, "size": size},
                              histfunc=self._hist_func,
-                             marker_color=hex_to_rgb(color=self._colors["fill"][0], opacity=self._opacity),
+                             marker_color=hex_to_rgb(color=self._colors["fill"][0],
+                                                     opacity=self._other_params["opacity"]),
                              marker_line_color=self._colors["line"][3],
                              marker_line_width=1.5)
 

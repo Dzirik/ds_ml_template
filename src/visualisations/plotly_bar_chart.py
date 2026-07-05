@@ -42,7 +42,7 @@ class PlotlyBarChart(PlotlyBase):  # type:ignore
         """
         trace = go.Bar(x=array_ids,
                        y=array_values,
-                       marker_color=hex_to_rgb(color=self._colors["fill"][3], opacity=self._opacity),
+                       marker_color=hex_to_rgb(color=self._colors["fill"][3], opacity=self._other_params["opacity"]),
                        marker_line_color=self._colors["line"][2],
                        marker_line_width=1.5)
 

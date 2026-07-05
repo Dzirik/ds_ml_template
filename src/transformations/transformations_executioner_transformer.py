@@ -2,7 +2,7 @@
 Transformer
 """
 
-from typing import Any, List, Dict, NamedTuple, Union, Optional
+from typing import Any, List, Dict, NamedTuple, Union, Optional, Type, cast
 
 from numpy import float64
 from pandas import DataFrame
@@ -17,6 +17,11 @@ from src.transformations.log_transformer import LogTransformer
 from src.transformations.min_max_scaling_transformer import MinMaxScalingTransformer
 from src.transformations.quantile_transformer import QuantileTransformer
 from src.transformations.shift_by_value_transformer import ShiftByValueTransformer
+
+# Type alias for transformer classes
+TransformerClassType = Type[Union[DifferenceTransformer, DifferencePercentageChangeTransformer,
+                                   LogTransformer, LogNegativeTransformer, MinMaxScalingTransformer,
+                                   QuantileTransformer, ShiftByValueTransformer]]
 
 
 class TransformerConfiguration(NamedTuple):
@@ -33,7 +38,7 @@ class TransformerConfiguration(NamedTuple):
     params_fitted: Dict[str, Any]
 
 
-class TransformationsExecutionerTransformer(BaseTransformer):  # type:ignore
+class TransformationsExecutionerTransformer(BaseTransformer):  # type: ignore[misc]
     """
     A complex transformer for executing a list of transformations on selected column(s) together with their inverse.
     If all the transformers are invertible, inversion is possible.
@@ -53,11 +58,12 @@ class TransformationsExecutionerTransformer(BaseTransformer):  # type:ignore
         self._attrs: List[str] = []
         self._configurations: List[TransformerConfiguration] = []
         self._is_invertible: bool = True
-        self._transformers: List[Union[LogTransformer, MinMaxScalingTransformer,
-                                       ShiftByValueTransformer]] = []
+        self._transformers: List[Union[DifferenceTransformer, DifferencePercentageChangeTransformer,
+                                       LogTransformer, LogNegativeTransformer, MinMaxScalingTransformer,
+                                       QuantileTransformer, ShiftByValueTransformer]] = []
 
         # "": {"class": , "invertible": },
-        self._transformers_dictionary = {
+        self._transformers_dictionary: Dict[str, Dict[str, Union[TransformerClassType, bool]]] = {
             "DifferenceTransformer": {"class": DifferenceTransformer, "invertible": False, "one_dim": True},
             "DifferencePercentageChangeTransformer": {
                 "class": DifferencePercentageChangeTransformer, "invertible": False, "one_dim": True
@@ -88,19 +94,31 @@ class TransformationsExecutionerTransformer(BaseTransformer):  # type:ignore
         self._is_invertible = True
 
         self._transformers = []
+        # Maintain a working copy of attribute data so each transformer fits on the
+        # output of the previous one, mirroring the sequential logic in predict().
+        working_data = data[self._attrs].to_numpy(dtype=float64) if data is not None else None
         for i, conf in enumerate(self._configurations):
             if self._transformers_dictionary[conf.name]["one_dim"] and len(attrs) > 1:
                 raise MismatchedDimension
-            t = self._transformers_dictionary[conf.name]["class"]()
-            self._is_invertible = self._is_invertible and self._transformers_dictionary[conf.name]["invertible"]
+            transformer_class = cast(TransformerClassType,
+                                     self._transformers_dictionary[conf.name]["class"])
+            t = transformer_class()
+            invertible = cast(bool, self._transformers_dictionary[conf.name]["invertible"])
+            self._is_invertible = self._is_invertible and invertible
             if conf.fit:
-                if data is not None:
-                    t.fit(data[self._attrs].to_numpy(dtype=float64), **conf.params_for_fit)
-                    self._configurations[i] = conf._replace(params_fitted=t.get_params())
+                if working_data is not None:
+                    t.fit(working_data, **conf.params_for_fit)
+                    self._configurations[i] = conf._replace(fit=False, params_fitted=t.get_params())
+                    working_data = t.predict(working_data)
+                elif conf.params_fitted:
+                    t.restore_from_params(conf.params_fitted)
+                    self._configurations[i] = conf._replace(fit=False)
                 else:
                     raise IncorrectDataStructure
             else:
                 t.restore_from_params(conf.params_fitted)
+                if working_data is not None:
+                    working_data = t.predict(working_data)
             self._transformers.append(t)
 
     def fit_predict(self, data: Optional[DataFrame], attrs: List[str], configurations: List[TransformerConfiguration]) \
@@ -122,6 +140,7 @@ class TransformationsExecutionerTransformer(BaseTransformer):  # type:ignore
         :param data: DataFrame.
         :return: DataFrame.
         """
+        data = data.copy()
         for t in self._transformers:
             data[self._attrs] = t.predict(data[self._attrs].to_numpy(dtype=float64))
         return data
@@ -133,7 +152,10 @@ class TransformationsExecutionerTransformer(BaseTransformer):  # type:ignore
         :return: DataFrame.
         """
         if self._is_invertible:
+            data = data.copy()
             for t in reversed(self._transformers):
+                # Only invertible transformers (LogTransformer, LogNegativeTransformer, MinMaxScalingTransformer,
+                # ShiftByValueTransformer) reach here, and they all accept a data argument.
                 data[self._attrs] = t.inverse(data[self._attrs].to_numpy(dtype=float64))
             return data
         raise NotValidOperation
@@ -165,8 +187,11 @@ class TransformationsExecutionerTransformer(BaseTransformer):  # type:ignore
         self._is_invertible = True
         for d in params["configurations"]:
             conf = TransformerConfiguration(**d)
-            t = self._transformers_dictionary[conf.name]["class"]()
-            self._is_invertible = self._is_invertible and self._transformers_dictionary[conf.name]["invertible"]
+            transformer_class = cast(TransformerClassType,
+                                     self._transformers_dictionary[conf.name]["class"])
+            t = transformer_class()
+            invertible = cast(bool, self._transformers_dictionary[conf.name]["invertible"])
+            self._is_invertible = self._is_invertible and invertible
             t.restore_from_params(conf.params_fitted)
 
             self._configurations.append(conf)
